@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="270dp"
+    android:layout_height="165dp"
+	android:orientation="vertical"
+    android:background="@drawable/shape_rectangle_dialog_edit_bg" >
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="121dp"
+		android:orientation="vertical">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="@dimen/seventeen"
+			android:textColor="@color/black"
+			android:text="密码"
+			android:layout_gravity="center_horizontal"
+			android:layout_marginTop="20dp"/>
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="@dimen/thirteen"
+			android:textColor="@color/black"
+			android:layout_gravity="center_horizontal"
+			android:text="请输入直播间密码"
+			android:layout_marginTop="4dp"/>
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="26dp"
+			android:layout_marginTop="20dp"
+			android:layout_marginLeft="15dp"
+			android:layout_marginRight="15dp"
+			>
+			<EditText
+				android:id="@+id/et_password"
+				android:layout_width="match_parent"
+				android:layout_height="24dp"
+				android:layout_centerInParent="true"
+				android:background="@color/white_color"
+				android:textSize="@dimen/thirteen"
+				android:textColor="@color/black"
+				android:hint="请输入密码"
+				android:textColorHint="@color/dark"
+				android:paddingLeft="4dp"
+				android:paddingRight="4dp"
+				android:maxLength="10"
+				android:inputType="textPassword"
+				android:digits="@string/digits"
+				/>
+		</RelativeLayout>
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="44dp"
+		android:orientation="vertical">
+
+		<!-- 水平分割线 -->
+		<ImageView
+			android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:src="@color/spliter_line_color" />
+
+		<LinearLayout
+			android:id="@+id/ll_two_button_area"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:background="@color/spliter_line_color">
+
+			<Button
+				android:id="@+id/btn_left"
+				android:layout_weight="1"
+				android:layout_width="match_parent"
+				android:layout_height="43dp"
+				android:textSize="@dimen/sixteen"
+				android:text="取消"
+				android:gravity="center"
+				android:textColor="@color/dark"
+				android:layout_marginRight="0.5dp"
+				android:background="#ECE5D9"/>
+
+			<Button
+				android:id="@+id/btn_right"
+				android:layout_weight="1"
+				android:layout_height="43dp"
+				android:layout_width="match_parent"
+				android:gravity="center"
+				android:textSize="@dimen/sixteen"
+				android:layout_marginLeft="0.5dp"
+				android:textColor="@color/red"
+				android:text="确定"
+				android:background="#ECE5D9"/>
+
+		</LinearLayout>
+	</LinearLayout>
+
+</LinearLayout>

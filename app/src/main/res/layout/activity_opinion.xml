@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/app_backgrount_color">
+    <include layout="@layout/common_title"
+        android:id="@+id/title"/>
+    <EditText
+        android:id="@+id/et_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="240dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_white_bg"
+        android:hint="您的意见是我们进步的动力！"
+        android:textColorHint="@color/dark"
+        android:gravity="top"
+        android:padding="10dp"
+        android:textSize="@dimen/fourteen"
+        android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/tv_commit"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/shape_round_btn_red"
+        android:textColor="@color/white_color"
+        android:textSize="@dimen/sixteen"
+        android:text="提交"
+        android:gravity="center"
+        android:layout_marginTop="20dp"/>
+</LinearLayout>

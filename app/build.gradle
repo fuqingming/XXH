@@ -1,0 +1,79 @@
+apply plugin: 'com.android.application'
+apply from: '../MobSDK.gradle'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.jy.xxh"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "小鲜汇${defaultConfig.versionName}_${releaseTime()}.apk"
+                }
+            }
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("GMT+8"))
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    //    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    implementation 'com.android.support:design:26.1.0'
+    compile 'com.blankj:utilcode:1.9.0'
+    compile 'org.greenrobot:greendao:3.2.0'
+    //    compile 'com.android.support:design:26.1.0'
+    //ImageLoader
+    compile project(path: ':netexpand')
+    compile project(path: ':chat')
+    compile project(path: ':easeui')
+    compile project(path: ':library')
+    compile 'com.android.support:multidex:1.0.1'
+    //    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'io.reactivex:rxjava:1.3.0'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    compile 'com.kaopiz:kprogresshud:1.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile 'com.tamic.novate:novate:1.5.4.5'
+    //noinspection GradleCompatible
+    compile 'com.google.firebase:firebase-messaging:11.8.0'
+    compile 'com.tencent.bugly:crashreport:2.6.6.1'
+    compile 'com.tencent.bugly:nativecrashreport:3.3.1'
+    compile 'com.parse:parse-android:1.13.1'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    compile 'com.yanzhenjie:recyclerview-swipe:1.1.3'
+    compile 'com.wuxiaolong.pullloadmorerecyclerview:library:1.1.2'
+    /**
+     *       配置依赖的图片框架
+     *       注意：作为示例，该库修改图片框架为Fresco，如果不想修改图片默认框架Glide，那么需要在这里指定依赖的Glide版本
+     */
+    implementation project(':sugar-ui')
+}

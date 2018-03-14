@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">小鲜汇</string>
+    <string name="digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="edit_digits_captcha">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>
+    <string name="load_more_loading">加载更多...</string>
+    <string name="load_more_error">加载失败</string>
+    <string name="Agreed_to_your_group_chat_application">同意了你的群聊申请</string>
+    <string name="Invite_you_to_join_a_group_chat">邀请你加入了群聊</string>
+    <string name="title_activity_wxentry">WXEntryActivity</string>
+    <string name="title_activity_wxcallback">WXCallbackActivity</string>
+</resources>

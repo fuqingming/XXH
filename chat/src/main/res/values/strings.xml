@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Chat</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="msg_recall_by_self">This message has been recalled by myself</string>
+    <string name="msg_recall_by_user">This message has been recalled by %1$s</string>
+    <string name="registration_failed_without_permission">注册失败，无权限！</string>
+    <string name="register_exceed_service_limit">您的App用户注册数量已达上限,请升级至企业版</string>
+    <string name="Registration_failed">注册失败</string>
+    <string name="at_your_in_group">%s在群聊中@了你</string>
+</resources>

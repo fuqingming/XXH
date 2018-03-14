@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="red_color">#E42837</color>
+    <color name="red">#DB2C2C</color>
+    <color name="dark">#888888</color>
+    <color name="white_color">#FFFFFF</color>
+    <color name="brown_color">#855B33</color>
+    <color name="app_backgrount_color">#F5F5F5</color>
+    <color name="button_bg_color_pressed">#FCFAF8</color>
+    <color name="black">#333333</color>
+    <color name="blue_color">#007AFF</color>
+    <color name="spliter_line_color">#D8D8D8</color>
+    <color name="verify_false_color">#EC9994</color>
+
+    <!-- 应用的主体背景色：白色 -->
+    <color name="app_bg_color">#F5EFE5</color>
+    <!-- 对话框 -->
+    <color name="dialog_gray">#F9F9F9</color>
+    <!-- 正常view颜色 -->
+    <color name="lib_sb_color_normal_view">#E3E3E3</color>
+    <!-- 正常view边框颜色 -->
+    <color name="lib_sb_stroke_color_normal_view">#D2D2D2</color>
+    <!-- 选中view颜色 -->
+    <color name="lib_sb_color_checked_view">#4AD863</color>
+    <!-- 选中view边框颜色 -->
+    <color name="lib_sb_stroke_color_checked_view">@color/lib_sb_color_checked_view</color>
+
+    <!-- 手柄view颜色 -->
+    <color name="lib_sb_color_thumb_view">#FFFFFF</color>
+    <!-- 手柄view边框颜色 -->
+    <color name="lib_sb_stroke_color_thumb_view">#D2D2D2</color>
+
+    <!-- 浅蓝色 -->
+    <color name="light_blue_color">#037AFF</color>
+
+    <!-- 浅灰色线 -->
+    <color name="light_black_line_color">#DCDADA</color>
+</resources>

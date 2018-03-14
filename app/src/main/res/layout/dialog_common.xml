@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dialog_width"  
+    android:layout_height="wrap_content"
+    android:orientation="vertical"  
+    android:background="@drawable/shape_rectangle_dialog_bg" >
+  
+    <TextView  
+        android:id="@+id/tv_title"
+        style="@style/dialog_title"
+        android:text="" />
+
+    <TextView  
+        android:id="@+id/tv_msg"
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:gravity="center"
+        android:singleLine="false"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:lineSpacingExtra="6dp"
+        android:text="" />        
+
+    <!-- 水平分割线 -->
+    <ImageView 
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:src="@drawable/shape_line_gray" />
+        
+    <LinearLayout
+        android:id="@+id/ll_two_button_area" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+		android:background="#ECE5D9">
+        
+	    <Button 
+	        android:id="@+id/btn_left"
+	        style="@style/dialog_button"
+	    	android:text=""
+			android:layout_marginRight="0.5dp"/>
+	    
+
+	            
+	    <Button 
+	        android:id="@+id/btn_right"
+	        style="@style/dialog_button"
+			android:layout_marginLeft="0.5dp"
+	    	android:text="" />	
+	    	
+	</LinearLayout>
+	    
+</LinearLayout>  
