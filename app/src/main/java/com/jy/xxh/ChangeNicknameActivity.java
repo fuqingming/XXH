@@ -23,8 +23,6 @@ import butterknife.OnClick;
 public class ChangeNicknameActivity extends BaseAppCompatActivity {
     private static final String LOG_TAG = "OpinionActivity";
 
-    KProgressHUD kProgressHUD;
-
     @BindView(R.id.et_text)
     EditText m_etText;
     @BindView(R.id.tv_title_back)
@@ -37,10 +35,6 @@ public class ChangeNicknameActivity extends BaseAppCompatActivity {
     @Override
     protected int setLayoutResourceId() {
         return R.layout.activity_change_nickname;
-    }
-
-    protected void init(){
-        kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
     }
 
     @Override

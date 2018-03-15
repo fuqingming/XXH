@@ -23,8 +23,6 @@ import butterknife.OnClick;
 public class OpinionActivity extends BaseAppCompatActivity {
     private static final String LOG_TAG = "OpinionActivity";
 
-    KProgressHUD kProgressHUD;
-
     @BindView(R.id.et_text)
     EditText m_etText;
 
@@ -33,10 +31,6 @@ public class OpinionActivity extends BaseAppCompatActivity {
     @Override
     protected int setLayoutResourceId() {
         return R.layout.activity_opinion;
-    }
-
-    protected void init(){
-        kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
     }
 
     @Override

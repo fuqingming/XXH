@@ -30,7 +30,6 @@ public class TeacherDetailsActivity extends BaseAppCompatActivity {
     public static final int UNCONCERNED = 0;                //未关注
     public static final int ALREADY_PAID_ATTENTION_TO = 1;  //已关注
 
-    KProgressHUD kProgressHUD;
 //    @BindView(R.id.recycler_view)
 //    RecyclerView m_recyclerView;
 //    private TeacherDetailsAdapter m_adapterTeacherDetails;
@@ -64,18 +63,22 @@ public class TeacherDetailsActivity extends BaseAppCompatActivity {
     @Override
     protected void init() {
         super.init();
-        kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
         m_strTeacherId = getIntent().getStringExtra("strTeacherId");
     }
 
     @Override
     protected void setUpView() {
         ButterKnife.bind(this);
-        callHttpForTeacherDetails();
 //        m_adapterTeacherDetails = new TeacherDetailsAdapter(this, ResponseData.initTeacherDetailsBean());
 //        m_recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        m_recyclerView.setAdapter(m_adapterTeacherDetails);
 //        m_recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.VERTICAL, 10, getResources().getColor(R.color.app_backgrount_color)));
+    }
+
+    @Override
+    protected void setUpData() {
+        super.setUpData();
+        callHttpForTeacherDetails();
     }
 
     private void callHttpForTeacherDetails(){

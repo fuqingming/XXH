@@ -39,6 +39,8 @@ public class FragmentHallAdapter extends BaseRecyclerViewAdapter<RoomBean> {
     ImageView m_ivLock;
     @BindView(R.id.ll_item_click)
     LinearLayout m_llItemClick;
+    @BindView(R.id.tv_online)
+    TextView m_tvOnline;
 
     public FragmentHallAdapter(Context context, List<RoomBean> datas) {
         super(context, datas);
@@ -68,6 +70,12 @@ public class FragmentHallAdapter extends BaseRecyclerViewAdapter<RoomBean> {
                 m_ListenerSelectFragment.OnSelectFragmentClick(position);
             }
         });
+
+        if(data.getR_t_online() == RoomBean.isOnline){
+            m_tvOnline.setText("在线");
+        }else{
+            m_tvOnline.setText("离线");
+        }
     }
 
     private OnSelectFragmentClickListener m_ListenerSelectFragment = null;

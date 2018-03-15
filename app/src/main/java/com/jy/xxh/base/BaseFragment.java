@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jy.xxh.http.HttpClient;
+import com.jy.xxh.util.HUDProgressUtils;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 /**
  * Created by HH
@@ -19,6 +21,8 @@ public abstract class BaseFragment extends Fragment {
     private View mContentView;
     private Context mContext;
     private LayoutInflater mLayoutInflater;
+
+    protected KProgressHUD kProgressHUD;
 
     @Nullable
     @Override
@@ -37,6 +41,9 @@ public abstract class BaseFragment extends Fragment {
         mContentView = inflater.inflate(setLayoutResourceID(), null);
         mContext = getContext();
         mLayoutInflater = inflater;
+
+        kProgressHUD = new HUDProgressUtils().showLoadingImage(getMContext());
+
         init();
         setUpView();
         setUpData();

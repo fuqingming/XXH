@@ -56,16 +56,18 @@
             android:gravity="center_vertical"
             android:layout_alignParentRight="true">
             <TextView
+                android:id="@+id/tv_online"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/fourteen"
                 android:textColor="@color/black"
-                android:text="在线"/>
+                />
             <View
                 android:layout_width="2dp"
                 android:layout_height="13dp"
                 android:background="@color/red"
                 android:layout_marginLeft="5dp"
+                android:visibility="gone"
                 />
             <TextView
                 android:id="@+id/tv_count"
@@ -74,7 +76,8 @@
                 android:text="1396人参与"
                 android:textColor="@color/dark"
                 android:textSize="@dimen/fourteen"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:visibility="gone"/>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

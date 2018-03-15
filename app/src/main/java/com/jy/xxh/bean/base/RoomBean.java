@@ -10,12 +10,13 @@ import java.io.Serializable;
 public class RoomBean implements Serializable {
 
     public static  final int isLocked = 1;
+    public static final int isOnline = 1;
 
     private String t_nic_name;
     private String t_id;
     private String r_id;
     private int r_is_screte;
-    private String r_t_online;
+    private int r_t_online;
     private String r_people;
     private String r_icon;
     private String r_room_id;
@@ -63,11 +64,11 @@ public class RoomBean implements Serializable {
         this.r_is_screte = r_is_screte;
     }
 
-    public String getR_t_online() {
+    public int getR_t_online() {
         return r_t_online;
     }
 
-    public void setR_t_online(String r_t_online) {
+    public void setR_t_online(int r_t_online) {
         this.r_t_online = r_t_online;
     }
 

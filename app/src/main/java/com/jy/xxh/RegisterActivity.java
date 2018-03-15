@@ -38,8 +38,6 @@ public class RegisterActivity extends BaseAppCompatActivity {
     private static final int RESEND_VERIFY_CODE_SECOND = 60;
     private SmsSendCounter m_myCount = null;
 
-    KProgressHUD kProgressHUD;
-
     @BindView(R.id.et_phone)
     EditText m_etPhone;
     @BindView(R.id.et_verify_number)
@@ -56,10 +54,6 @@ public class RegisterActivity extends BaseAppCompatActivity {
     @Override
     protected int setLayoutResourceId() {
         return R.layout.activity_register;
-    }
-
-    protected void init(){
-        kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
     }
 
     @Override

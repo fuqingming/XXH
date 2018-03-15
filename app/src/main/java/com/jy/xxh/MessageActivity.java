@@ -26,8 +26,6 @@ import butterknife.ButterKnife;
 public class MessageActivity extends BaseAppCompatActivity {
     private static final String LOG_TAG = "MessageActivity";
 
-    KProgressHUD kProgressHUD;
-
     @BindView(R.id.recycler_view)
     SwipeMenuRecyclerView m_recyclerView;
 
@@ -41,7 +39,6 @@ public class MessageActivity extends BaseAppCompatActivity {
     }
 
     protected void init(){
-        kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
         m_arrMessageBean = new ArrayList<>();
         page = 0;
     }

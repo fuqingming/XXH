@@ -28,7 +28,6 @@ import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.ui.EaseChatRoomListener;
 import com.hyphenate.easeui.widget.EaseChatPrimaryMenuBase;
 import com.hyphenate.util.EMLog;
-import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.jy.xxh.adapter.ChatAdapterb;
 import com.jy.xxh.alert.AlertUtils;
 import com.jy.xxh.bean.base.ChatMessageBean;
@@ -56,19 +55,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
+
 import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
 import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
 import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultDisposable;
 import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+
 import static com.hyphenate.util.EasyUtils.TAG;
 
-public class ChatActivityb extends KJActivity implements PullLoadMoreRecyclerView.PullLoadMoreListener {
+public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView.PullLoadMoreListener {
 
     public static final int UNCONCERNED = 0;                //未关注
     public static final int ALREADY_PAID_ATTENTION_TO = 1;  //已关注
@@ -113,7 +108,7 @@ public class ChatActivityb extends KJActivity implements PullLoadMoreRecyclerVie
 
     @Override
     public void setRootView() {
-        setContentView(org.kymjs.chat.R.layout.activity_chatb);
+        setContentView(org.kymjs.chat.R.layout.activity_chat);
     }
 
     @Override
@@ -309,7 +304,7 @@ public class ChatActivityb extends KJActivity implements PullLoadMoreRecyclerVie
      */
     private void openRadio() {
         RxGalleryFinal
-                .with(ChatActivityb.this)
+                .with(ChatActivity.this)
                 .image()
                 .radio()
 //                .cropAspectRatioOptions(0, new AspectRatio("3:3", 30, 10))
@@ -318,7 +313,7 @@ public class ChatActivityb extends KJActivity implements PullLoadMoreRecyclerVie
                 .subscribe(new RxBusResultDisposable<ImageRadioResultEvent>() {
                     @Override
                     protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
-                        Uri dataUri = Utils.getMediaUriFromPath(ChatActivityb.this,imageRadioResultEvent.getResult().getOriginalPath());
+                        Uri dataUri = Utils.getMediaUriFromPath(ChatActivity.this,imageRadioResultEvent.getResult().getOriginalPath());
                         if (dataUri != null) {
                             File file = FileUtils.uri2File(aty, dataUri);
 
@@ -372,8 +367,8 @@ public class ChatActivityb extends KJActivity implements PullLoadMoreRecyclerVie
     /**
      * @return 聊天列表内存点击事件监听器
      */
-    private ChatActivityb.OnChatItemClickListener getOnChatItemClickListener() {
-        return new ChatActivityb.OnChatItemClickListener() {
+    private ChatActivity.OnChatItemClickListener getOnChatItemClickListener() {
+        return new ChatActivity.OnChatItemClickListener() {
             @Override
             public void onPhotoClick(int position,String imgPath) {
 //                if(data.getC_messageType().equals(ChatMessageBean.teacher_rep) || data.getC_messageType().equals(ChatMessageBean.teacher_char) || data.getC_messageType().equals(ChatMessageBean.teacher_pic)){
@@ -588,8 +583,8 @@ public class ChatActivityb extends KJActivity implements PullLoadMoreRecyclerVie
             runOnUiThread(new Runnable() {
                 public void run() {
                     if (roomId.equals(m_strRoomeId)) {
-                        Toast.makeText(ChatActivityb.this, com.hyphenate.easeui.R.string.the_current_chat_room_destroyed, Toast.LENGTH_LONG).show();
-                        Activity activity = ChatActivityb.this;
+                        Toast.makeText(ChatActivity.this, com.hyphenate.easeui.R.string.the_current_chat_room_destroyed, Toast.LENGTH_LONG).show();
+                        Activity activity = ChatActivity.this;
                         if (activity != null && !activity.isFinishing()) {
                             activity.finish();
                         }
@@ -603,8 +598,8 @@ public class ChatActivityb extends KJActivity implements PullLoadMoreRecyclerVie
             runOnUiThread(new Runnable() {
                 public void run() {
                     if (roomId.equals(m_strRoomeId)) {
-                        Toast.makeText(ChatActivityb.this, com.hyphenate.easeui.R.string.quiting_the_chat_room, Toast.LENGTH_LONG).show();
-                        Activity activity = ChatActivityb.this;
+                        Toast.makeText(ChatActivity.this, com.hyphenate.easeui.R.string.quiting_the_chat_room, Toast.LENGTH_LONG).show();
+                        Activity activity = ChatActivity.this;
                         if (activity != null && !activity.isFinishing()) {
                             activity.finish();
                         }
@@ -642,7 +637,7 @@ public class ChatActivityb extends KJActivity implements PullLoadMoreRecyclerVie
     }
 
     protected void onChatRoomViewCreation() {
-        final ProgressDialog pd = ProgressDialog.show(ChatActivityb.this, "", "Joining......");
+        final ProgressDialog pd = ProgressDialog.show(ChatActivity.this, "", "Joining......");
         EMClient.getInstance().chatroomManager().joinChatRoom(m_strRoomeId, new EMValueCallBack<EMChatRoom>() {
 
             @Override
@@ -650,7 +645,7 @@ public class ChatActivityb extends KJActivity implements PullLoadMoreRecyclerVie
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(ChatActivityb.this.isFinishing() || !m_strRoomeId.equals(value.getId()))
+                        if(ChatActivity.this.isFinishing() || !m_strRoomeId.equals(value.getId()))
                             return;
                         pd.dismiss();
                         EMChatRoom room = EMClient.getInstance().chatroomManager().getChatRoom(m_strRoomeId);

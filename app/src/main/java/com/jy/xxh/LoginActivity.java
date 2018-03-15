@@ -36,8 +36,6 @@ import butterknife.OnClick;
  */
 public class LoginActivity extends BaseAppCompatActivity {
 
-    KProgressHUD kProgressHUD;
-
     private static final String TAG = "LoginActivity";
 
     @BindView(R.id.et_phone)
@@ -50,10 +48,6 @@ public class LoginActivity extends BaseAppCompatActivity {
     @Override
     protected int setLayoutResourceId() {
         return R.layout.activity_login;
-    }
-
-    protected void init(){
-        kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
     }
 
     @Override

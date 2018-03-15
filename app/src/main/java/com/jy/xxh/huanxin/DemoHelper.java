@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.hyphenate.chat.EMImageMessageBody;
-import com.jy.xxh.ChatActivityb;
+import com.jy.xxh.ChatActivity;
 import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.huanxin.db.DemoDBManager;
 import com.jy.xxh.huanxin.domain.InviteMessage.InviteMessageStatus;
@@ -400,7 +400,7 @@ public class DemoHelper {
             @Override
             public Intent getLaunchIntent(EMMessage message) {
             	// you can set what activity you want display when user click the notification
-                Intent intent = new Intent(appContext, ChatActivityb.class);
+                Intent intent = new Intent(appContext, ChatActivity.class);
                 ChatType chatType = message.getChatType();
                 if (chatType == ChatType.Chat) { // single chat message
                     intent.putExtra("userId", message.getFrom());

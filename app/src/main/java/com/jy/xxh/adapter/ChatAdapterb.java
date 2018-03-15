@@ -25,11 +25,12 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.jy.xxh.ChatActivityb;
+import com.jy.xxh.ChatActivity;
 import com.jy.xxh.R;
 import com.jy.xxh.bean.base.ChatMessageBean;
 import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.util.TimeUtils;
+import com.jy.xxh.util.Utils;
 import com.jy.xxh.view.commonRecyclerAdapter.CommonRecyclerAdapter;
 import com.jy.xxh.view.commonRecyclerAdapter.ViewHolder;
 import com.vise.xsnow.loader.ILoader;
@@ -44,9 +45,9 @@ import org.kymjs.kjframe.KJBitmap;
 public class ChatAdapterb extends CommonRecyclerAdapter<ChatMessageBean> {
     private KJBitmap kjb;
     private Context mContext;
-    private ChatActivityb.OnChatItemClickListener listener;
+    private ChatActivity.OnChatItemClickListener listener;
 
-    public ChatAdapterb(@NonNull Context context, ChatActivityb.OnChatItemClickListener listener) {
+    public ChatAdapterb(@NonNull Context context, ChatActivity.OnChatItemClickListener listener) {
         super(context, 0);
         this.mContext = context;
         kjb = new KJBitmap();
@@ -88,7 +89,7 @@ public class ChatAdapterb extends CommonRecyclerAdapter<ChatMessageBean> {
                 sb.append(data.getC_replay_name());
                 sb.append(":");
                 sb.append(data.getC_st_content());
-                tvChatText.setText(sb.toString());
+                tvChatText.setText(Utils.delHTMLTag(sb.toString()));
             }else{
                 tvChatText.setVisibility(View.GONE);
             }
@@ -111,13 +112,16 @@ public class ChatAdapterb extends CommonRecyclerAdapter<ChatMessageBean> {
 //            } else {
 //                tvChatcontent = UrlUtils.handleText(tvChatcontent, data.getC_st_content());
 //            }
+            String charText = "";
             if(data.getC_messageType().equals(ChatMessageBean.teacher_rep)){
-                tvChatcontent.setText(data.getC_t_content());
+                charText = data.getC_t_content();
             }else if(data.getC_messageType().equals(ChatMessageBean.teacher_char)){
-                tvChatcontent.setText(data.getC_t_content());
+                charText = data.getC_t_content();
             }else{
-                tvChatcontent.setText(data.getC_st_content());
+                charText = data.getC_st_content();
             }
+            tvChatcontent.setText(Utils.delHTMLTag(charText));
+
         } else {
             tvChatcontent.setVisibility(View.GONE);
             ivChatimage.setVisibility(View.VISIBLE);

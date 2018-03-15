@@ -42,8 +42,6 @@ import java.util.List;
  * */
 public class FragmentHall extends BaseFragment {
 
-	KProgressHUD kProgressHUD;
-
 	private RecyclerView m_recyclerView;
 	private BannerPager m_bpBanner;
 
@@ -71,7 +69,6 @@ public class FragmentHall extends BaseFragment {
 		m_recyclerView = getContentView().findViewById(R.id.recycler_view);
 		m_bpBanner = getContentView().findViewById(R.id.banner_pager);
 
-		kProgressHUD = new HUDProgressUtils().showLoadingImage(getMContext());
 		m_bannerBean = new ArrayList<>();
 		m_roomBean = new ArrayList<>();
 		m_arrBanner = new ArrayList<>();
@@ -130,7 +127,7 @@ public class FragmentHall extends BaseFragment {
 	}
 
 	private void intentChatActivity(){
-		Intent it = new Intent(getMContext(),ChatActivityb.class);
+		Intent it = new Intent(getMContext(),ChatActivity.class);
 		it.putExtra("strRoomId",toChatUsername);
 		it.putExtra("strTeacherPhoto",m_strTeacherPhoto);
 		it.putExtra("strTeacherName",m_strTeacherName);

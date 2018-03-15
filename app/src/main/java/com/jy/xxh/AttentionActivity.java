@@ -32,8 +32,6 @@ public class AttentionActivity extends BaseAppCompatActivity {
     private static final String LOG_TAG = "AttentionActivity";
     public static final int IS_ACTIVITY_CHANGE = 1;
 
-    KProgressHUD kProgressHUD;
-
     @BindView(R.id.recycler_view)
     SwipeMenuRecyclerView m_recyclerView;
 
@@ -47,7 +45,6 @@ public class AttentionActivity extends BaseAppCompatActivity {
     }
 
     protected void init(){
-        kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
         m_arrAttentionBean = new ArrayList<>();
         page = 0;
     }
@@ -65,6 +62,11 @@ public class AttentionActivity extends BaseAppCompatActivity {
         m_recyclerView.setLoadMoreListener(loadMoreListener);
         m_recyclerView.setAdapter(m_adapterAttention);
         m_recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.VERTICAL, 1, getResources().getColor(R.color.app_backgrount_color)));
+    }
+
+    @Override
+    protected void setUpData() {
+        super.setUpData();
         callHttpForAttention();
     }
 

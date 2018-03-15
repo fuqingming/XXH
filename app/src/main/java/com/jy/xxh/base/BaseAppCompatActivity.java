@@ -11,6 +11,10 @@ import android.view.WindowManager;
 
 import com.jy.xxh.backhandler.BackHandlerHelper;
 import com.jy.xxh.http.HttpClient;
+import com.jy.xxh.util.HUDProgressUtils;
+import com.kaopiz.kprogresshud.KProgressHUD;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by HH
@@ -18,6 +22,8 @@ import com.jy.xxh.http.HttpClient;
  */
 
 public abstract class BaseAppCompatActivity extends AppCompatActivity {
+
+    protected KProgressHUD kProgressHUD;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,6 +37,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
         setUpData();
     }
 
@@ -78,5 +85,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         config.setToDefaults();
         res.updateConfiguration(config,res.getDisplayMetrics() );
         return res;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

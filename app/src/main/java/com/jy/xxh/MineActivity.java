@@ -33,8 +33,6 @@ import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 public class MineActivity extends BaseAppCompatActivity {
     private static final String LOG_TAG = "MineActivity";
 
-    KProgressHUD kProgressHUD;
-
     @BindView(R.id.tv_nickname)
     TextView m_tvNickname;
     @BindView(R.id.iv_icon)
@@ -45,10 +43,6 @@ public class MineActivity extends BaseAppCompatActivity {
     @Override
     protected int setLayoutResourceId() {
         return R.layout.activity_mine;
-    }
-
-    protected void init(){
-        kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
     }
 
     @Override
