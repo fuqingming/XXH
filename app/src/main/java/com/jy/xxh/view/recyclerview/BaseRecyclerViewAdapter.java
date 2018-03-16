@@ -42,4 +42,16 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
     protected abstract int getContentView(int viewType);
 
     protected abstract void covert(BaseRecyclerViewHolder holder, T data, int position);
+
+    protected OnSelectClickListener m_ListenerSelectFragment = null;
+
+    public interface OnSelectClickListener
+    {
+        void OnSelectClick(int position);
+    }
+
+    public void onSelectFragmentClickListener(OnSelectClickListener listener)
+    {
+        m_ListenerSelectFragment = listener;
+    }
 }

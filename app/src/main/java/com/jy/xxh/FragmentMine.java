@@ -27,6 +27,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.jpush.android.api.JPushInterface;
+
+import static com.jy.xxh.base.BaseApplication.applicationContext;
 
 /**
  *
@@ -74,6 +77,11 @@ public class FragmentMine extends BaseFragment {
 			public void onCheckedChanged(boolean checked, FSwitchButton view)
 			{
 				SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverIsReceiveMessage,checked);
+				if(checked){
+					JPushInterface.resumePush(applicationContext);
+				}else{
+					JPushInterface.stopPush(applicationContext);
+				}
 			}
 		});
 	}
@@ -204,5 +212,4 @@ public class FragmentMine extends BaseFragment {
 			});
 		}
 	}
-
 }

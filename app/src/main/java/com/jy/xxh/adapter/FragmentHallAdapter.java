@@ -67,7 +67,7 @@ public class FragmentHallAdapter extends BaseRecyclerViewAdapter<RoomBean> {
         m_llItemClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                m_ListenerSelectFragment.OnSelectFragmentClick(position);
+                m_ListenerSelectFragment.OnSelectClick(position);
             }
         });
 
@@ -78,16 +78,6 @@ public class FragmentHallAdapter extends BaseRecyclerViewAdapter<RoomBean> {
         }
     }
 
-    private OnSelectFragmentClickListener m_ListenerSelectFragment = null;
 
-    public interface OnSelectFragmentClickListener
-    {
-        void OnSelectFragmentClick(int position);
-    }
-
-    public void onSelectFragmentClickListener(OnSelectFragmentClickListener listener)
-    {
-        m_ListenerSelectFragment = listener;
-    }
 
 }

@@ -34,4 +34,12 @@ public class BannerBean implements Serializable {
     public void setB_link(String b_link) {
         this.b_link = b_link;
     }
+
+    public String getB_turn_link() {
+        return b_turn_link;
+    }
+
+    public void setB_turn_link(String b_turn_link) {
+        this.b_turn_link = b_turn_link;
+    }
 }

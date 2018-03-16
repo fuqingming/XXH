@@ -190,7 +190,7 @@ public class ChatAllAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
         tvDate.setText(TimeUtils.time2String(data.getC_time_linux()*1000, "MM-dd HH:mm"));
 //        tvDate.setText(StringUtils.friendlyTime(StringUtils.getDataTime("yyyy-MM-dd " +"HH:mm:ss")));
 //        LoaderManager.getLoader().loadNet(holder.ivIcon, data.getUserIcon(), new ILoader.Options(R.drawable.chat_to_bg_selector, R.drawable.chat_to_bg_selector));
-        LoaderManager.getLoader().loadNet(ivIcon, data.getUser_photo(), new ILoader.Options(org.kymjs.chat.R.drawable.chat_to_bg_selector, org.kymjs.chat.R.drawable.chat_to_bg_selector));
+        LoaderManager.getLoader().loadNet(ivIcon, data.getUser_photo(), new ILoader.Options(org.kymjs.chat.R.drawable.default_head, org.kymjs.chat.R.drawable.default_head));
 
         tvName.setText(data.getNic_name());
 

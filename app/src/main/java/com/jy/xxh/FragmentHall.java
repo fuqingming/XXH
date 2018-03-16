@@ -1,6 +1,7 @@
 package com.jy.xxh;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -90,11 +91,11 @@ public class FragmentHall extends BaseFragment {
 		m_recyclerView.addItemDecoration(new RecycleViewDivider(getMContext(), LinearLayoutManager.VERTICAL, 10, getResources().getColor(R.color.app_backgrount_color)));
 		m_recyclerView.setFocusable(false);
 		m_recyclerView.setAdapter(m_adapterFragmentHall);
-		m_adapterFragmentHall.onSelectFragmentClickListener(new FragmentHallAdapter.OnSelectFragmentClickListener()
+		m_adapterFragmentHall.onSelectFragmentClickListener(new FragmentHallAdapter.OnSelectClickListener()
 		{
 
 			@Override
-			public void OnSelectFragmentClick(int position)
+			public void OnSelectClick(int position)
 			{
 				if (!DemoHelper.getInstance().isLoggedIn()) {
 					Intent it = new Intent(getMContext(),LoginActivity.class);
@@ -170,7 +171,13 @@ public class FragmentHall extends BaseFragment {
 		m_bpBanner.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(int location, int position) {
-//				Utils.showToast(getMContext(),m_bannerBean.get(position).getB_id());
+				if(m_bannerBean.get(position).getB_turn_link() != null && !"".equals(m_bannerBean.get(position).getB_turn_link())){
+					Intent intent = new Intent();
+					intent.setAction("android.intent.action.VIEW");
+					Uri content_url = Uri.parse(m_bannerBean.get(position).getB_turn_link());
+					intent.setData(content_url);
+					startActivity(intent);
+				}
 			}
 		});
 	}
@@ -195,6 +202,9 @@ public class FragmentHall extends BaseFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		if(m_bpBanner!=null){
+			m_bpBanner.startTurning();
+		}
 	}
 
 	@Override
@@ -247,7 +257,6 @@ public class FragmentHall extends BaseFragment {
 			@Override
 			public void OnSuccess(ResponseHallBean response) {
 				if(response.getResult()){
-					swipeRefresh.setFreshResult(ISwipe.FreshStatus.SUCCESS);
 					if(m_bannerBean.size() > 0 ){
 						m_bannerBean.clear();
 						m_arrBanner.clear();
@@ -270,6 +279,7 @@ public class FragmentHall extends BaseFragment {
 			@Override
 			public void OnFailure(String message) {
 				messageCenter("错误",message);
+				swipeRefresh.setFreshResult(ISwipe.FreshStatus.SUCCESS);
 			}
 
 			@Override
@@ -280,6 +290,7 @@ public class FragmentHall extends BaseFragment {
 			@Override
 			public void OnRequestFinish() {
 				kProgressHUD.dismiss();
+				swipeRefresh.setFreshResult(ISwipe.FreshStatus.SUCCESS);
 			}
 		});
 	}

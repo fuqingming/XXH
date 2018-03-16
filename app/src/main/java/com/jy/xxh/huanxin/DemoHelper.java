@@ -1161,9 +1161,6 @@ public class DemoHelper {
                     EMLog.d(TAG, "onMessageReceived id : " + message.getMsgId());
                     // in background, do not refresh UI, notify it in notification bar
                     EMMessage.Type msgType =  message.getType();
-                    if(!SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverIsReceiveMessage)){
-                        return;
-                    }
 
                     if(SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserId).equals(message.getStringAttribute("sayID",null))){
                         return;

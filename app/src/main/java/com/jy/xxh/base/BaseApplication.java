@@ -4,7 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.Utils;
+import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.snow.db.DbHelper;
 import com.jy.xxh.snow.loader.FrescoLoader;
 import com.mob.MobSDK;
@@ -57,6 +59,9 @@ public class BaseApplication extends Application  implements ProtectedMemberKeep
 
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+        if(!SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverIsReceiveMessage)){
+            JPushInterface.stopPush(applicationContext);
+        }
     }
     private void initLog() {
         ViseLog.getLogConfig()
