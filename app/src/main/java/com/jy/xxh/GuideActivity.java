@@ -26,6 +26,9 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
+
+import static com.jy.xxh.base.BaseApplication.applicationContext;
 
 public class GuideActivity extends BaseAppCompatActivity {
     private static final String LOG_TAG = "GuideActivity";
@@ -45,7 +48,11 @@ public class GuideActivity extends BaseAppCompatActivity {
     protected void setUpView() {
         ButterKnife.bind(this);
         SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverIsUserOpenMain,false);
+
         if(SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverIsFirstUse)){
+            if(!SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverIsReceiveMessage)){
+                JPushInterface.stopPush(applicationContext);
+            }
             intentMainActivity();
             return;
         }

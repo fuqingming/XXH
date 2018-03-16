@@ -48,7 +48,6 @@ public class FragmentMine extends BaseFragment {
 	@BindView(R.id.ll_pop)
 	LinearLayout m_llPop;
 
-	private TelephonePopupWindow m_pwMenu;
 	private View m_pwMenuView;
 
 	@Override
@@ -127,7 +126,7 @@ public class FragmentMine extends BaseFragment {
 				getMContext().startActivity(it);
 				break;
 			case R.id.ll_phone:
-				m_pwMenu = new TelephonePopupWindow(getActivity());
+				TelephonePopupWindow m_pwMenu = new TelephonePopupWindow(getActivity());
 				//显示窗口
 				m_pwMenu.showAtLocation(m_llPop, Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0); //设置layout在PopupWindow中显示的位置
 				break;
@@ -137,7 +136,6 @@ public class FragmentMine extends BaseFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		String a = SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon);
 		if (DemoHelper.getInstance().isLoggedIn()) {
 			LoaderManager.getLoader().loadNet(m_ivIcon, SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon),
 					new ILoader.Options(R.mipmap.head_s, R.mipmap.head_s));

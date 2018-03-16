@@ -10,7 +10,7 @@
         android:id="@+id/iv_pic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@mipmap/yang"/>
+        android:background="@mipmap/station_pic"/>
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"

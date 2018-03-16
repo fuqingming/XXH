@@ -59,9 +59,6 @@ public class BaseApplication extends Application  implements ProtectedMemberKeep
 
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
-        if(!SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverIsReceiveMessage)){
-            JPushInterface.stopPush(applicationContext);
-        }
     }
     private void initLog() {
         ViseLog.getLogConfig()
