@@ -232,7 +232,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
                     return;
                 }
 
-                ChatMessageBean chatMessageBean = new ChatMessageBean(ChatMessageBean.user_char,strMessage,System.currentTimeMillis(),"",
+                ChatMessageBean chatMessageBean = new ChatMessageBean(ChatMessageBean.user_char,strMessage,System.currentTimeMillis()/1000,"",
                         SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame),
                         SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon),"");
                 m_msgDataAll.add(chatMessageBean);
