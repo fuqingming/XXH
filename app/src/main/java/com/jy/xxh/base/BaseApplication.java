@@ -18,6 +18,8 @@ import com.vise.xsnow.loader.LoaderManager;
 
 import com.jy.xxh.huanxin.DemoHelper;
 
+import cn.jpush.android.api.JPushInterface;
+
 public class BaseApplication extends Application  implements ProtectedMemberKeeper {
     public static Context applicationContext;
     private static BaseApplication instance;
@@ -52,6 +54,9 @@ public class BaseApplication extends Application  implements ProtectedMemberKeep
         DemoHelper.getInstance().init(applicationContext);
 
         MobSDK.init(this, this.getAppkey(), this.getAppSecret());
+
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
     private void initLog() {
         ViseLog.getLogConfig()

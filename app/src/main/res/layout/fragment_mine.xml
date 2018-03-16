@@ -179,7 +179,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/spliter_line_color"
-                android:layout_alignParentBottom="true"/>
+                android:layout_alignParentBottom="true"
+                android:visibility="gone"/>
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout
@@ -187,7 +188,8 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:orientation="horizontal"
-        android:background="@color/white_color">
+        android:background="@color/white_color"
+        android:visibility="gone">
         <ImageView
             android:layout_weight="0"
             android:layout_width="wrap_content"

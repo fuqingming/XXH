@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <declare-styleable name="SwipeRefresh" tools:ignore="ResourceName">
+        <attr name="fresh_model">
+            <enum name="BOTH" value="0" />
+            <enum name="ONLY_REFRESH" value="1" />
+            <enum name="ONLY_LOADINN" value="2" />
+            <enum name="SWIPE_NONE" value="3" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="SwipeNest" tools:ignore="ResourceName">
+        <attr name="fresh">
+            <enum name="BOTH" value="0" />
+            <enum name="ONLY_REFRESH" value="1" />
+            <enum name="ONLY_LOADINN" value="2" />
+            <enum name="SWIPE_NONE" value="3" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="SwipeNest_Layout" tools:ignore="ResourceName">
+
+        <attr name="layout_expend" format="boolean"/>
+
+    </declare-styleable>
+
+
+</resources>

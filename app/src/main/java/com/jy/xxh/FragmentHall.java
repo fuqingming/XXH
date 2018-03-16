@@ -22,7 +22,6 @@ import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;
 import com.jy.xxh.huanxin.DemoHelper;
-import com.jy.xxh.util.HUDProgressUtils;
 import com.jy.xxh.util.Utils;
 import com.jy.xxh.view.recyclerview.RecycleViewDivider;
 import com.joker.pager.BannerBean;
@@ -30,11 +29,14 @@ import com.joker.pager.BannerPager;
 import com.joker.pager.PagerOptions;
 import com.joker.pager.holder.ViewHolder;
 import com.joker.pager.holder.ViewHolderCreator;
-import com.kaopiz.kprogresshud.KProgressHUD;
+import com.powyin.scroll.widget.ISwipe;
+import com.powyin.scroll.widget.SwipeRefresh;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  *
@@ -44,6 +46,7 @@ public class FragmentHall extends BaseFragment {
 
 	private RecyclerView m_recyclerView;
 	private BannerPager m_bpBanner;
+	SwipeRefresh swipeRefresh;
 
 	private FragmentHallAdapter m_adapterFragmentHall;
 
@@ -65,7 +68,7 @@ public class FragmentHall extends BaseFragment {
 	@Override
 	protected void init() {
 		super.init();
-
+		swipeRefresh = getContentView().findViewById(R.id.swipe_refresh);
 		m_recyclerView = getContentView().findViewById(R.id.recycler_view);
 		m_bpBanner = getContentView().findViewById(R.id.banner_pager);
 
@@ -116,6 +119,15 @@ public class FragmentHall extends BaseFragment {
 					intentChatActivity();
 				}
 			}
+		});
+		swipeRefresh.setOnRefreshListener(new SwipeRefresh.OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				callHttpForHall();
+			}
+
+			@Override
+			public void onLoading() {}
 		});
 	}
 
@@ -229,7 +241,48 @@ public class FragmentHall extends BaseFragment {
 			}
 		});
 	}
+	private void callHttpForHall(){
 
+		HttpClient.get(ApiStores.banner, new HttpCallback<ResponseHallBean>() {
+			@Override
+			public void OnSuccess(ResponseHallBean response) {
+				if(response.getResult()){
+					swipeRefresh.setFreshResult(ISwipe.FreshStatus.SUCCESS);
+					if(m_bannerBean.size() > 0 ){
+						m_bannerBean.clear();
+						m_arrBanner.clear();
+					}
+					if(m_roomBean.size() > 0 ){
+						m_roomBean.clear();
+					}
+
+					m_bannerBean.addAll(response.getContent().getBanner());
+					for(int i = 0 ; i < m_bannerBean.size() ; i ++){
+						m_arrBanner.add(m_bannerBean.get(i).getB_link());
+					}
+					initBanner();
+					SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverIsUserOpenMain,true);
+					m_roomBean.addAll(response.getContent().getRoom());
+					m_adapterFragmentHall.notifyDataSetChanged();
+				}
+			}
+
+			@Override
+			public void OnFailure(String message) {
+				messageCenter("错误",message);
+			}
+
+			@Override
+			public void OnRequestStart() {
+				kProgressHUD.show();
+			}
+
+			@Override
+			public void OnRequestFinish() {
+				kProgressHUD.dismiss();
+			}
+		});
+	}
 	private void messageCenter(String title,String message){
 		m_adapterFragmentHall.notifyDataSetChanged();
 	}

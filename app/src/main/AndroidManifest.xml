@@ -80,8 +80,11 @@
             android:name=".ChangeNicknameActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ChatActivity"
+            android:name=".ChatActivityc"
             android:screenOrientation="portrait" />
+        <activity
+        android:name=".ChatActivity"
+        android:screenOrientation="portrait" />
         <activity
             android:name="cn.finalteam.rxgalleryfinal.ui.activity.MediaActivity"
             android:exported="true" />

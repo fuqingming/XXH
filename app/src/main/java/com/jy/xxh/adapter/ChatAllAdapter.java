@@ -30,7 +30,6 @@ import com.jy.xxh.R;
 import com.jy.xxh.bean.base.ChatMessageBean;
 import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.util.TimeUtils;
-import com.jy.xxh.util.Utils;
 import com.jy.xxh.view.commonRecyclerAdapter.CommonRecyclerAdapter;
 import com.jy.xxh.view.commonRecyclerAdapter.ViewHolder;
 import com.vise.xsnow.loader.ILoader;
@@ -42,12 +41,12 @@ import org.kymjs.kjframe.KJBitmap;
  * Created by asus on 2018/2/7.
  */
 
-public class ChatAdapterb extends CommonRecyclerAdapter<ChatMessageBean> {
+public class ChatAllAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
     private KJBitmap kjb;
     private Context mContext;
     private ChatActivity.OnChatItemClickListener listener;
 
-    public ChatAdapterb(@NonNull Context context, ChatActivity.OnChatItemClickListener listener) {
+    public ChatAllAdapter(@NonNull Context context, ChatActivity.OnChatItemClickListener listener) {
         super(context, 0);
         this.mContext = context;
         kjb = new KJBitmap();
@@ -89,7 +88,7 @@ public class ChatAdapterb extends CommonRecyclerAdapter<ChatMessageBean> {
                 sb.append(data.getC_replay_name());
                 sb.append(":");
                 sb.append(data.getC_st_content());
-                tvChatText.setText(Utils.delHTMLTag(sb.toString()));
+                tvChatText.setText(sb.toString());
             }else{
                 tvChatText.setVisibility(View.GONE);
             }
@@ -120,8 +119,8 @@ public class ChatAdapterb extends CommonRecyclerAdapter<ChatMessageBean> {
             }else{
                 charText = data.getC_st_content();
             }
-            tvChatcontent.setText(Utils.delHTMLTag(charText));
-
+//            tvChatcontent.setText(Utils.delHTMLTag(charText));
+            tvChatcontent.setText(charText);
         } else {
             tvChatcontent.setVisibility(View.GONE);
             ivChatimage.setVisibility(View.VISIBLE);
@@ -188,7 +187,7 @@ public class ChatAdapterb extends CommonRecyclerAdapter<ChatMessageBean> {
             });
         }
 
-        tvDate.setText(TimeUtils.time2String(data.getC_time_linux(), "MM-dd HH:mm"));
+        tvDate.setText(TimeUtils.time2String(data.getC_time_linux()*1000, "MM-dd HH:mm"));
 //        tvDate.setText(StringUtils.friendlyTime(StringUtils.getDataTime("yyyy-MM-dd " +"HH:mm:ss")));
 //        LoaderManager.getLoader().loadNet(holder.ivIcon, data.getUserIcon(), new ILoader.Options(R.drawable.chat_to_bg_selector, R.drawable.chat_to_bg_selector));
         LoaderManager.getLoader().loadNet(ivIcon, data.getUser_photo(), new ILoader.Options(org.kymjs.chat.R.drawable.chat_to_bg_selector, org.kymjs.chat.R.drawable.chat_to_bg_selector));
