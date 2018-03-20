@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.baidu.mobstat.StatService;
 import com.jy.xxh.http.HttpClient;
 import com.jy.xxh.util.HUDProgressUtils;
 import com.kaopiz.kprogresshud.KProgressHUD;
@@ -71,5 +72,4 @@ public abstract class BaseFragment extends Fragment {
     public LayoutInflater getMLayoutInflater() {
         return mLayoutInflater;
     }
-
 }

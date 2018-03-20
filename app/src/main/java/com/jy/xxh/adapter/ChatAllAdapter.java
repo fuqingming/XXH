@@ -69,7 +69,7 @@ public class ChatAllAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
     public void bindData(ViewHolder holder, final ChatMessageBean data, final int position) {
         RelativeLayout rlContent = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_layout_content);
         SimpleDraweeView ivIcon = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_avatar);
-        ImageView ivChatimage = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_content_image);
+        final ImageView ivChatimage = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_content_image);
         ImageView ivSendfail = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_fail);
         ProgressBar mProgress = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_progress);
         TextView tvChatcontent = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_content_text);
@@ -154,8 +154,6 @@ public class ChatAllAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
 //            }
 //        }
 
-
-
         if (listener != null) {
             tvChatcontent.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -173,7 +171,7 @@ public class ChatAllAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
                         }else if(data.getC_messageType().equals(ChatMessageBean.teacher_pic)){
                             path = data.getC_t_content();
                         }
-                        listener.onPhotoClick(position,path);
+                        listener.onPhotoClick(position,path,ivChatimage);
                     }
 //                    switch (data.getType()) {
 //                        case Message.MSG_TYPE_PHOTO:
@@ -188,8 +186,6 @@ public class ChatAllAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
         }
 
         tvDate.setText(TimeUtils.time2String(data.getC_time_linux()*1000, "MM-dd HH:mm"));
-//        tvDate.setText(StringUtils.friendlyTime(StringUtils.getDataTime("yyyy-MM-dd " +"HH:mm:ss")));
-//        LoaderManager.getLoader().loadNet(holder.ivIcon, data.getUserIcon(), new ILoader.Options(R.drawable.chat_to_bg_selector, R.drawable.chat_to_bg_selector));
         LoaderManager.getLoader().loadNet(ivIcon, data.getUser_photo(), new ILoader.Options(org.kymjs.chat.R.drawable.default_head, org.kymjs.chat.R.drawable.default_head));
 
         tvName.setText(data.getNic_name());

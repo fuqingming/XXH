@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.baidu.mobstat.StatService;
 import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.joker.pager.listener.OnItemClickListener;
@@ -205,6 +206,7 @@ public class FragmentHall extends BaseFragment {
 		if(m_bpBanner!=null){
 			m_bpBanner.startTurning();
 		}
+
 	}
 
 	@Override

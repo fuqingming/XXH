@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
+import com.baidu.mobstat.StatService;
 import com.jy.xxh.backhandler.BackHandlerHelper;
 import com.jy.xxh.http.HttpClient;
 import com.jy.xxh.util.HUDProgressUtils;
@@ -46,9 +47,19 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         if(getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+
+        StatService.onResume(this);
+
         super.onResume();
     }
 
+    @Override
+    protected void onPause() {
+
+        StatService.onPause(this);
+
+        super.onPause();
+    }
 
     protected abstract int setLayoutResourceId();
 

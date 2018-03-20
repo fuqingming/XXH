@@ -62,11 +62,13 @@ public class AttentionActivity extends BaseAppCompatActivity {
         m_recyclerView.setLoadMoreListener(loadMoreListener);
         m_recyclerView.setAdapter(m_adapterAttention);
         m_recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.VERTICAL, 1, getResources().getColor(R.color.app_backgrount_color)));
+
     }
 
     @Override
     protected void setUpData() {
         super.setUpData();
+        m_arrAttentionBean.clear();
         callHttpForAttention();
     }
 

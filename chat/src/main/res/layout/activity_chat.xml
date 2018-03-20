@@ -157,17 +157,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
-            <!--<com.powyin.scroll.widget.SwipeRefresh-->
-                <!--android:id = "@+id/swipe_refresh"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--app:fresh_model="ONLY_REFRESH"-->
-                <!--&gt;-->
+            
             <com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView
-                android:id="@+id/pullLoadMoreRecyclerView"
+                android:id="@+id/pullLoadMoreRecyclerViewAll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-
+            <com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView
+                android:id="@+id/pullLoadMoreRecyclerViewTeacher"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                />
 
             <ImageView
                 android:id="@+id/iv_only_see"
@@ -175,7 +175,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/teacher_look"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="30dp"
+                />
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"

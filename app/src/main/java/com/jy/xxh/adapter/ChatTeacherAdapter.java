@@ -69,7 +69,7 @@ public class ChatTeacherAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
     public void bindData(ViewHolder holder, final ChatMessageBean data, final int position) {
         RelativeLayout rlContent = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_layout_content);
         SimpleDraweeView ivIcon = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_avatar);
-        ImageView ivChatimage = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_content_image);
+        final ImageView ivChatimage = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_content_image);
         ImageView ivSendfail = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_fail);
         ProgressBar mProgress = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_progress);
         TextView tvChatcontent = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_content_text);
@@ -173,7 +173,7 @@ public class ChatTeacherAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
                         }else if(data.getC_messageType().equals(ChatMessageBean.teacher_pic)){
                             path = data.getC_t_content();
                         }
-                        listener.onPhotoClick(position,path);
+                        listener.onPhotoClick(position,path,ivChatimage);
                     }
 //                    switch (data.getType()) {
 //                        case Message.MSG_TYPE_PHOTO:

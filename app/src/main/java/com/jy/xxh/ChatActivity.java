@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.baidu.mobstat.StatService;
 import com.blankj.utilcode.util.SPUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyphenate.EMValueCallBack;
@@ -39,7 +41,12 @@ import com.jy.xxh.http.HttpClient;
 import com.jy.xxh.huanxin.Constant;
 import com.jy.xxh.util.ChatRoomListener;
 import com.jy.xxh.util.HUDProgressUtils;
+import com.jy.xxh.view.BigImage.FengNiaoImageSource;
 import com.kaopiz.kprogresshud.KProgressHUD;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
+import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
+import com.powyin.scroll.widget.SwipeRefresh;
 import com.vise.xsnow.loader.ILoader;
 import com.vise.xsnow.loader.LoaderManager;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
@@ -110,7 +117,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
 
     @Override
     public void setRootView() {
-        setContentView(org.kymjs.chat.R.layout.activity_chatb);
+        setContentView(org.kymjs.chat.R.layout.activity_chat);
     }
 
     @Override
@@ -367,6 +374,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
 
         Utils.setOnTouchEditTextOutSideHideIM(this,mRecyclerViewAll);
         Utils.setOnTouchEditTextOutSideHideIM(this,mRecyclerViewTeacher);
+
     }
 
     /**
@@ -375,14 +383,19 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
     private ChatActivity.OnChatItemClickListener getOnChatItemClickListener() {
         return new ChatActivity.OnChatItemClickListener() {
             @Override
-            public void onPhotoClick(int position,String imgPath) {
-//                if(data.getC_messageType().equals(ChatMessageBean.teacher_rep) || data.getC_messageType().equals(ChatMessageBean.teacher_char) || data.getC_messageType().equals(ChatMessageBean.teacher_pic)){
-//                    layoutResId = R.layout.chat_item_list_left;
-//                }else if(data.getC_messageType().equals(ChatMessageBean.user_char) || data.getC_messageType().equals(ChatMessageBean.user_pic)){
-//                    layoutResId = R.layout.chat_item_list_right;
-//                }
-                kjb.display(m_ivPicChat,imgPath);
-                m_rlPicChat.setVisibility(View.VISIBLE);
+            public void onPhotoClick(int position,String imgPath,ImageView thumb) {
+                ImageViewAware thumbAware = new ImageViewAware(thumb);
+                String url = new FengNiaoImageSource(imgPath, 3840, 5760).getThumb(100, 100).url;
+                Intent intent = new Intent(ChatActivity.this, PicViewActivity.class);
+                intent.putExtra("image", new FengNiaoImageSource(imgPath, 3840, 5760));
+                ImageSize targetSize = new ImageSize(thumbAware.getWidth(), thumbAware.getHeight());
+                String memoryCacheKey = MemoryCacheUtils.generateKey(url, targetSize);
+                intent.putExtra("cache_key", memoryCacheKey);
+                Rect rect = new Rect();
+                thumb.getGlobalVisibleRect(rect);
+                intent.putExtra("rect", rect);
+                intent.putExtra("scaleType", thumb.getScaleType());
+                startActivity(intent);
             }
 
             @Override
@@ -399,7 +412,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
      * 聊天列表中对内容的点击事件监听
      */
     public interface OnChatItemClickListener {
-        void onPhotoClick(int position, String imgPath);
+        void onPhotoClick(int position, String imgPath,ImageView imageView);
 
         void onTextClick(int position);
 
@@ -419,20 +432,28 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
         EaseUI.getInstance().getNotifier().reset();
 
         //获取当前屏幕内容的高度
-        getWindow().getDecorView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                //获取View可见区域的bottom
-                Rect rect = new Rect();
-                getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-                if(bottom!=0 && oldBottom!=0 && bottom - rect.bottom <= 0){
+//        getWindow().getDecorView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+//            @Override
+//            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+//                //获取View可见区域的bottom
+//                Rect rect = new Rect();
+//                getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+//                if(bottom!=0 && oldBottom!=0 && bottom - rect.bottom <= 0){
+//
+//                }else {
+//                    mRecyclerViewAll.scrollToPosition(adapterAll.getItemCount()-1);
+//                    mRecyclerViewTeacher.scrollToPosition(adapterTeacher.getItemCount()-1);
+//                }
+//            }
+//        });
 
-                }else {
-                    mRecyclerViewAll.scrollToPosition(adapterAll.getItemCount()-1);
-                    mRecyclerViewTeacher.scrollToPosition(adapterTeacher.getItemCount()-1);
-                }
-            }
-        });
+        StatService.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        StatService.onPause(this);
+        super.onPause();
     }
 
     private void registerReciever() {
