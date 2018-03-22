@@ -35,7 +35,7 @@ allprojects {
 ext {
     // Sdk and tools
     // Support library and architecture components support minSdk 16 and above.
-    minSdkVersion = 15
+    minSdkVersion = 16
     targetSdkVersion = 26
     compileSdkVersion = 26
 
