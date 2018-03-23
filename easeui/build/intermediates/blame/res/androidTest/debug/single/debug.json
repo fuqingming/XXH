@@ -68,40 +68,40 @@
         "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-11.8.0.aar\\14447cfb032eace3959b89943885b282\\res\\drawable\\common_google_signin_btn_icon_dark_normal.xml"
     },
     {
-        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout_ease_chat_menu_item.xml.flat",
-        "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_chat_menu_item.xml"
+        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_ease_chatting_biaoqing_btn_normal.png.flat",
+        "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ease_chatting_biaoqing_btn_normal.png"
     },
     {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4_ease_type_select_btn_nor.png.flat",
         "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ease_type_select_btn_nor.png"
     },
     {
-        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_ease_chatting_biaoqing_btn_normal.png.flat",
-        "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ease_chatting_biaoqing_btn_normal.png"
-    },
-    {
-        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable_abc_spinner_textfield_background_material.xml.flat",
-        "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable\\abc_spinner_textfield_background_material.xml"
-    },
-    {
-        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4_ease_chatto_voice_playing_f2.png.flat",
-        "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ease_chatto_voice_playing_f2.png"
+        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout_ease_chat_menu_item.xml.flat",
+        "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_chat_menu_item.xml"
     },
     {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_ease_chat_voice_call_self.png.flat",
         "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ease_chat_voice_call_self.png"
     },
     {
+        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4_ease_chatto_voice_playing_f2.png.flat",
+        "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ease_chatto_voice_playing_f2.png"
+    },
+    {
+        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable_abc_spinner_textfield_background_material.xml.flat",
+        "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable\\abc_spinner_textfield_background_material.xml"
+    },
+    {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4_ease_new_friends_icon.png.flat",
         "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ease_new_friends_icon.png"
     },
     {
-        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_ease_chat_image_pressed.png.flat",
-        "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ease_chat_image_pressed.png"
-    },
-    {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_ease_close_icon.png.flat",
         "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ease_close_icon.png"
+    },
+    {
+        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_ease_chat_image_pressed.png.flat",
+        "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ease_chat_image_pressed.png"
     },
     {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23_abc_tint_switch_track.xml.flat",
@@ -192,40 +192,40 @@
         "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ee_35.png"
     },
     {
-        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4_abc_scrubber_primary_mtrl_alpha.9.png.flat",
-        "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-mdpi-v4\\abc_scrubber_primary_mtrl_alpha.9.png"
-    },
-    {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xxhdpi-v4_abc_scrubber_primary_mtrl_alpha.9.png.flat",
         "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-xxhdpi-v4\\abc_scrubber_primary_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4_abc_scrubber_primary_mtrl_alpha.9.png.flat",
+        "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-mdpi-v4\\abc_scrubber_primary_mtrl_alpha.9.png"
     },
     {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xxhdpi-v4_abc_tab_indicator_mtrl_alpha.9.png.flat",
         "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-xxhdpi-v4\\abc_tab_indicator_mtrl_alpha.9.png"
     },
     {
-        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable_ease_search_clear.xml.flat",
-        "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_search_clear.xml"
+        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4_abc_btn_radio_to_on_mtrl_000.png.flat",
+        "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-mdpi-v4\\abc_btn_radio_to_on_mtrl_000.png"
     },
     {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-v21_abc_edit_text_material.xml.flat",
         "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-v21\\abc_edit_text_material.xml"
     },
     {
-        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4_abc_btn_radio_to_on_mtrl_000.png.flat",
-        "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-mdpi-v4\\abc_btn_radio_to_on_mtrl_000.png"
+        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable_ease_search_clear.xml.flat",
+        "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_search_clear.xml"
     },
     {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-ldrtl-hdpi-v17_abc_spinner_mtrl_am_alpha.9.png.flat",
         "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-ldrtl-hdpi-v17\\abc_spinner_mtrl_am_alpha.9.png"
     },
     {
-        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xxxhdpi-v4_abc_ic_star_half_black_36dp.png.flat",
-        "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-xxxhdpi-v4\\abc_ic_star_half_black_36dp.png"
-    },
-    {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4_abc_btn_switch_to_on_mtrl_00001.9.png.flat",
         "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-hdpi-v4\\abc_btn_switch_to_on_mtrl_00001.9.png"
+    },
+    {
+        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xxxhdpi-v4_abc_ic_star_half_black_36dp.png.flat",
+        "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-xxxhdpi-v4\\abc_ic_star_half_black_36dp.png"
     },
     {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4_ease_record_animate_08.png.flat",
@@ -256,12 +256,12 @@
         "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ease_chat_takepic_normal.png"
     },
     {
-        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-v23_abc_control_background_material.xml.flat",
-        "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-v23\\abc_control_background_material.xml"
-    },
-    {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4_ease_unread_count_bg.9.png.flat",
         "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ease_unread_count_bg.9.png"
+    },
+    {
+        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-v23_abc_control_background_material.xml.flat",
+        "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-v23\\abc_control_background_material.xml"
     },
     {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable_recall_message_bg.xml.flat",
@@ -304,12 +304,12 @@
         "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-mdpi-v4\\abc_scrubber_control_off_mtrl_alpha.png"
     },
     {
-        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_abc_scrubber_primary_mtrl_alpha.9.png.flat",
-        "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-xhdpi-v4\\abc_scrubber_primary_mtrl_alpha.9.png"
-    },
-    {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable_common_google_signin_btn_text_light_focused.xml.flat",
         "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-11.8.0.aar\\14447cfb032eace3959b89943885b282\\res\\drawable\\common_google_signin_btn_text_light_focused.xml"
+    },
+    {
+        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_abc_scrubber_primary_mtrl_alpha.9.png.flat",
+        "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-xhdpi-v4\\abc_scrubber_primary_mtrl_alpha.9.png"
     },
     {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4_ease_video_recorder_start_btn.png.flat",
@@ -320,12 +320,12 @@
         "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-mdpi-v4\\abc_scrubber_control_to_pressed_mtrl_000.png"
     },
     {
-        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4_ease_mm_listitem_disable.9.png.flat",
-        "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ease_mm_listitem_disable.9.png"
-    },
-    {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4_abc_scrubber_track_mtrl_alpha.9.png.flat",
         "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-hdpi-v4\\abc_scrubber_track_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4_ease_mm_listitem_disable.9.png.flat",
+        "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ease_mm_listitem_disable.9.png"
     },
     {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4_abc_text_select_handle_right_mtrl_dark.png.flat",
