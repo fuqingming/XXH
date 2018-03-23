@@ -3,7 +3,7 @@
     package="com.hyphenate.easeui" >
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="15"
         android:targetSdkVersion="26" />
 
 </manifest>

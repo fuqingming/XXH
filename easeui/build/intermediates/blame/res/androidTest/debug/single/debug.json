@@ -380,6 +380,10 @@
         "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\71c36e7d4ce6b40de01925510b3c28ed\\res\\drawable-xxxhdpi-v4\\abc_btn_radio_to_on_mtrl_000.png"
     },
     {
+        "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout_notification_template_custom_big.xml.flat",
+        "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.1.0.aar\\0a7ef770466aa56c0f04b8c3c6239cfb\\res\\layout\\notification_template_custom_big.xml"
+    },
+    {
         "merged": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4_ee_24.png.flat",
         "source": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ee_24.png"
     },
