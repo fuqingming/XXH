@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jy.xxh.R;
 import com.jy.xxh.bean.base.RoomBean;
+import com.jy.xxh.bean.response.ResponseHallBean;
 import com.jy.xxh.view.recyclerview.BaseRecyclerViewAdapter;
 import com.jy.xxh.view.recyclerview.BaseRecyclerViewHolder;
 import com.vise.xsnow.loader.ILoader;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
  * Date: 2017/11/13
  */
 
-public class FragmentHallAdapter extends BaseRecyclerViewAdapter<RoomBean> {
+public class FragmentHallAdapter extends BaseRecyclerViewAdaptera<RoomBean> {
 
     @BindView(R.id.iv_pic)
     SimpleDraweeView m_ivPic;
@@ -42,8 +43,7 @@ public class FragmentHallAdapter extends BaseRecyclerViewAdapter<RoomBean> {
     @BindView(R.id.tv_online)
     TextView m_tvOnline;
 
-    public FragmentHallAdapter(Context context, List<RoomBean> datas) {
-        super(context, datas);
+    public FragmentHallAdapter() {
     }
 
     @Override

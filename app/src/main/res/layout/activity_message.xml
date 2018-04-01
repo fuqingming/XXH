@@ -6,10 +6,43 @@
     android:background="@color/app_backgrount_color">
     <include layout="@layout/common_title"
         android:id="@+id/title"/>
-    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-        android:id="@+id/recycler_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:background="@color/app_backgrount_color"/>
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.github.jdsjlzx.recyclerview.LRecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+            <include
+                android:id="@+id/empty_view"
+                layout="@layout/view_empty_layout"
+                android:visibility="gone"/>
+        </FrameLayout>
+
+        <com.jy.xxh.view.error.ErrorLayout
+            android:id="@+id/error_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/top_btn"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:visibility="gone"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/dp_22"
+            android:layout_marginRight="16dp"
+            android:background="@mipmap/ic_to_top"
+            android:gravity="center"
+            />
+    </RelativeLayout>
 </LinearLayout>

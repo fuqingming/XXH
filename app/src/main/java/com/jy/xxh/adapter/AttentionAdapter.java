@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
  * Date: 2017/11/13
  */
 
-public class AttentionAdapter extends BaseRecyclerViewAdapter<AttentionBean> {
+public class AttentionAdapter extends BaseRecyclerViewAdaptera<AttentionBean> {
 
     @BindView(R.id.iv_icon)
     SimpleDraweeView m_ivIcon;
@@ -31,8 +31,7 @@ public class AttentionAdapter extends BaseRecyclerViewAdapter<AttentionBean> {
     @BindView(R.id.tv_text)
     TextView m_ivText;
 
-    public AttentionAdapter(Context context, List<AttentionBean> datas) {
-        super(context, datas);
+    public AttentionAdapter() {
     }
 
     @Override

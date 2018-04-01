@@ -46,7 +46,6 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
-import com.powyin.scroll.widget.SwipeRefresh;
 import com.vise.xsnow.loader.ILoader;
 import com.vise.xsnow.loader.LoaderManager;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;

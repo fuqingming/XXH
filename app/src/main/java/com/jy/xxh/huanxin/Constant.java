@@ -34,4 +34,5 @@ public class Constant extends EaseConstant {
 	public static final String EXTRA_CONFERENCE_IS_CREATOR = "is_creator";
 
 	public static final String BROADCAST_RECEIVEMESSAGE_CHAT = "com.inshow.xqz.broadcast.ReceiveMessage_chat";
+	public static final int PAGE_SIZE = 10;// 默认分页大小
 }

@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
  * Date: 2017/11/13
  */
 
-public class MessageAdapter extends BaseRecyclerViewAdapter<MessageBean> {
+public class MessageAdapter extends BaseRecyclerViewAdaptera<MessageBean> {
 
     @BindView(R.id.tv_title)
     TextView m_ivTitle;
@@ -28,8 +28,7 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageBean> {
     @BindView(R.id.tv_text)
     TextView m_ivText;
 
-    public MessageAdapter(Context context, List<MessageBean> datas) {
-        super(context, datas);
+    public MessageAdapter() {
     }
 
     @Override

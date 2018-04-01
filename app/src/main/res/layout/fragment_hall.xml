@@ -8,40 +8,43 @@
 
     <include layout="@layout/common_title"
         android:id="@+id/title"/>
-    <com.powyin.scroll.widget.SwipeRefresh
-        android:id = "@+id/swipe_refresh"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:fresh_model="ONLY_REFRESH"
+        android:layout_height="match_parent">
 
-        >
-        <com.jy.xxh.view.MyScrollView
-            android:id="@+id/scrollView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:focusable="true">
-            <LinearLayout
+            android:layout_height="match_parent">
+
+            <com.github.jdsjlzx.recyclerview.LRecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                />
 
-                <com.joker.pager.BannerPager
-                    android:id="@+id/banner_pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="163dp"
-                    android:background="@color/white_color"
-                    />
+            <include
+                android:id="@+id/empty_view"
+                layout="@layout/view_empty_layout"
+                android:visibility="gone"/>
+        </FrameLayout>
 
+        <com.jy.xxh.view.error.ErrorLayout
+            android:id="@+id/error_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:layout_marginTop="12dp"
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/app_backgrount_color"
-                    android:focusable="false"
-                    />
-            </LinearLayout>
-        </com.jy.xxh.view.MyScrollView>
-    </com.powyin.scroll.widget.SwipeRefresh>
+        <Button
+            android:id="@+id/top_btn"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:visibility="gone"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/dp_22"
+            android:layout_marginRight="16dp"
+            android:background="@mipmap/ic_to_top"
+            android:gravity="center"
+            />
+    </RelativeLayout>
 </LinearLayout>
