@@ -32,6 +32,7 @@ android {
         release {
             // 混淆
             minifyEnabled false
+//            shrinkResources true//去掉不用资源
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             android.applicationVariants.all { variant ->
                 variant.outputs.all {

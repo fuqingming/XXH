@@ -235,3 +235,11 @@
 -keep class org.slf4j.** {*;}
 -keep class ch.imvs.** {*;}
 -keep class com.superrtc.** { *; }
+
+-dontwarn com.github.jdsjlzx.**
+-keep class com.github.jdsjlzx.progressindicator.indicators.** { *; }
+
+-keep class org.apache.http.** { *; }
+-keep class android.net.http.** { *; }
+-dontwarn org.apache.http.**
+-dontwarn android.net.http.**</span>
