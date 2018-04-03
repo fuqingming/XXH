@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.SPUtils;
 import com.hyphenate.chat.EMImageMessageBody;
 import com.jy.xxh.ChatActivity;
-import com.jy.xxh.constants.GlobalVariables;
+import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.jy.xxh.huanxin.db.DemoDBManager;
 import com.jy.xxh.huanxin.domain.InviteMessage.InviteMessageStatus;
 import com.hyphenate.EMCallBack;

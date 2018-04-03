@@ -1,23 +1,14 @@
 package com.jy.xxh.adapter;
 
 
-import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.bumptech.glide.Glide;
 import com.jy.xxh.R;
 import com.jy.xxh.bean.base.RoomBean;
-import com.jy.xxh.bean.response.ResponseHallBean;
-import com.jy.xxh.view.recyclerview.BaseRecyclerViewAdapter;
 import com.jy.xxh.view.recyclerview.BaseRecyclerViewHolder;
-import com.vise.xsnow.loader.ILoader;
-import com.vise.xsnow.loader.LoaderManager;
-
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -29,7 +20,7 @@ import butterknife.ButterKnife;
 public class FragmentHallAdapter extends BaseRecyclerViewAdaptera<RoomBean> {
 
     @BindView(R.id.iv_pic)
-    SimpleDraweeView m_ivPic;
+    ImageView m_ivPic;
     @BindView(R.id.tv_title)
     TextView m_ivTitle;
     @BindView(R.id.tv_name)
@@ -54,7 +45,7 @@ public class FragmentHallAdapter extends BaseRecyclerViewAdaptera<RoomBean> {
     @Override
     protected void covert(BaseRecyclerViewHolder holder, final RoomBean data, final int position) {
         ButterKnife.bind(this, holder.getView());
-        LoaderManager.getLoader().loadNet(m_ivPic, data.getR_icon(),new ILoader.Options(R.mipmap.station_pic, R.mipmap.station_pic));
+        Glide.with(mContext).load(data.getR_icon()).placeholder(R.mipmap.station_pic).into(m_ivPic);
         m_ivTitle.setText(data.getR_room_breif());
         m_ivName.setText(data.getT_nic_name());
         m_ivPersionCount.setText(data.getR_t_online()+"人参与");

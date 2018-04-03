@@ -10,13 +10,11 @@ import com.blankj.utilcode.util.SPUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyphenate.EMCallBack;
 import com.jy.xxh.base.BaseAppCompatActivity;
-import com.jy.xxh.constants.GlobalVariables;
+import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.jy.xxh.http.Upload;
 import com.jy.xxh.huanxin.DemoHelper;
 import com.jy.xxh.util.CleanMessageUtil;
-import com.jy.xxh.util.HUDProgressUtils;
 import com.jy.xxh.util.Utils;
-import com.kaopiz.kprogresshud.KProgressHUD;
 import com.vise.xsnow.loader.ILoader;
 import com.vise.xsnow.loader.LoaderManager;
 

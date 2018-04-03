@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.SPUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jy.xxh.base.BaseFragment;
-import com.jy.xxh.constants.GlobalVariables;
+import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.jy.xxh.data.Const;
 import com.jy.xxh.huanxin.DemoHelper;
 import com.jy.xxh.view.switchbutton.FSwitchButton;

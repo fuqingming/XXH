@@ -28,7 +28,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.jy.xxh.ChatActivity;
 import com.jy.xxh.R;
 import com.jy.xxh.bean.base.ChatMessageBean;
-import com.jy.xxh.constants.GlobalVariables;
+import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.jy.xxh.util.TimeUtils;
 import com.jy.xxh.view.commonRecyclerAdapter.CommonRecyclerAdapter;
 import com.jy.xxh.view.commonRecyclerAdapter.ViewHolder;

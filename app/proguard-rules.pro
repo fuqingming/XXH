@@ -243,3 +243,4 @@
 -keep class android.net.http.** { *; }
 -dontwarn org.apache.http.**
 -dontwarn android.net.http.**</span>
+-keep class tv.danmaku.ijk.media.player.**{*;}

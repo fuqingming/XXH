@@ -1,21 +1,6 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Users\\fuqingming\\Documents\\GitHub\\XXH\\easeui\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-land\\values-land.xml",
-            "map": [
-                {
-                    "source": "D:\\Users\\fuqingming\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\283934e0bd9c68f57c478ae055e786c5\\res\\values-land\\values-land.xml",
-                    "from": {
-                        "startLines": "2,3,4,5",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "55,125,189,260",
-                        "endColumns": "69,63,70,67",
-                        "endOffsets": "120,184,255,323"
-                    }
-                }
-            ]
-        },
-        {
             "outputFile": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-land\\values-land.xml",
             "map": [
                 {

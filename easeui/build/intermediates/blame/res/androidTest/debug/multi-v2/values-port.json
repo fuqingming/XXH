@@ -1,21 +1,6 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Users\\fuqingming\\Documents\\GitHub\\XXH\\easeui\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-port\\values-port.xml",
-            "map": [
-                {
-                    "source": "D:\\Users\\fuqingming\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\283934e0bd9c68f57c478ae055e786c5\\res\\values-port\\values-port.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "55",
-                        "endOffsets": "106"
-                    }
-                }
-            ]
-        },
-        {
             "outputFile": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-port\\values-port.xml",
             "map": [
                 {

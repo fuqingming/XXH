@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.jy.xxh.base.FragmentActivityBase;
-import com.jy.xxh.constants.GlobalVariables;
+import com.xiao.nicevideoplayer.constants.GlobalVariables;
 
 public class MainActivity extends FragmentActivityBase {
 

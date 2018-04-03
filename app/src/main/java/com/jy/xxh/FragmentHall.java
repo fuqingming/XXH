@@ -6,9 +6,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.baidu.mobstat.StatService;
+import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -29,6 +31,7 @@ import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;
 import com.jy.xxh.huanxin.DemoHelper;
 import com.jy.xxh.util.Utils;
+import com.jy.xxh.view.recyclerview.RecycleViewDivider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,15 +43,18 @@ import java.util.List;
 public class FragmentHall extends BaseListFragment<RoomBean> {
 
 	private FragmentHallAdapter m_fragmentTrainAdapter= new FragmentHallAdapter();
-	private BannerPager m_bpBanner;
-	private List<BannerBean> m_bannerBean;
-	private ArrayList<String> m_arrBanner;
 
 	protected String toChatUsername;
 	private String m_strTeacherPhoto;
 	private String m_strTeacherName;
 	private String m_strTeacherBreif;
 	private String m_strTeacherId;
+
+	private LinearLayout m_llLive;
+	private View m_vSpliter;
+	private LinearLayout m_llLiveText;
+	private ImageView m_ivLivePic;
+	private ImageView m_ivPlay;
 
 	@Override
 	protected int getLayoutId() {
@@ -69,16 +75,20 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 	@Override
 	public void initData() {
 		super.initData();
-		m_bannerBean = new ArrayList<>();
-		m_arrBanner = new ArrayList<>();
 	}
 
 	@Override
 	protected void initLayoutManager() {
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		mRecyclerView.addItemDecoration(new RecycleViewDivider(getMContext(), LinearLayoutManager.VERTICAL, 9, getResources().getColor(R.color.app_backgrount_color)));
 		mRecyclerView.setLoadMoreEnabled(false);
-		View header = LayoutInflater.from(getMContext()).inflate(R.layout.common_fragment_hall_banner,mRecyclerView, false);
-		m_bpBanner = header.findViewById(R.id.banner_pager);
+		View header = LayoutInflater.from(getMContext()).inflate(R.layout.common_fragment_hall_live,mRecyclerView, false);
+		m_llLive = header.findViewById(R.id.ll_live);
+		m_vSpliter = header.findViewById(R.id.v_spliter);
+		m_llLiveText = header.findViewById(R.id.ll_live_text);
+		m_ivLivePic = header.findViewById(R.id.iv_live_pic);
+		m_ivPlay = header.findViewById(R.id.iv_play);
+
 		mRecyclerViewAdapter.addHeaderView(header);
 		mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
 			@Override
@@ -141,61 +151,9 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 		startActivity(it);
 	}
 
-	private void initBanner() {
-
-		final PagerOptions pagerOptions = new PagerOptions.Builder(getMContext())
-				.setTurnDuration(2000)
-				.setIndicatorSize(Utils.dp2px(getMContext(),6))
-				.setIndicatorColor(getMContext().getResources().getColor(R.color.dark),getMContext().getResources().getColor(R.color.red) )
-				.setIndicatorAlign(RelativeLayout.CENTER_IN_PARENT)
-				.setIndicatorMarginBottom(0)
-				.build();
-
-		m_bpBanner.setPagerOptions(pagerOptions).setPages(m_arrBanner, new ViewHolderCreator<BannerPagerHolder>() {
-			@Override
-			public BannerPagerHolder createViewHolder() {
-				final View view = LayoutInflater.from(getMContext()).inflate(R.layout.item_image_banner_analysis, null);
-				return new BannerPagerHolder(view);
-			}
-		});
-		m_bpBanner.startTurning();
-		m_bpBanner.setOnItemClickListener(new com.joker.pager.listener.OnItemClickListener() {
-			@Override
-			public void onItemClick(int location, int position) {
-				if(m_bannerBean.get(position).getB_turn_link() != null && !"".equals(m_bannerBean.get(position).getB_turn_link())){
-					Intent intent = new Intent();
-					intent.setAction("android.intent.action.VIEW");
-					Uri content_url = Uri.parse(m_bannerBean.get(position).getB_turn_link());
-					intent.setData(content_url);
-					startActivity(intent);
-				}
-			}
-		});
-	}
-
-	private class BannerPagerHolder extends ViewHolder<String> {
-
-		private ImageView mImage;
-
-		private BannerPagerHolder(View itemView) {
-			super(itemView);
-			mImage = itemView.findViewById(R.id.image);
-		}
-
-		@Override
-		public void onBindView(View view, String data, int position) {
-			Glide.with(mImage.getContext())
-					.load(data)
-					.into(mImage);
-		}
-	}
-
 	@Override
 	public void onResume() {
 		super.onResume();
-		if(m_bpBanner!=null){
-			m_bpBanner.startTurning();
-		}
 		StatService.onPageStart(getMContext(), "主界面");
 	}
 
@@ -209,9 +167,6 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 	@Override
 	public void onStop() {
 		super.onStop();
-		if(m_bpBanner!=null){
-			m_bpBanner.stopTurning();
-		}
 	}
 
 	protected void requestData(){
@@ -219,15 +174,16 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 			@Override
 			public void OnSuccess(ResponseHallBean response) {
 				if(response.getResult()){
-					if(m_bannerBean.size() > 0 ){
-						m_bannerBean.clear();
-						m_arrBanner.clear();
-					}
-					m_bannerBean.addAll(response.getContent().getBanner());
-					for(int i = 0 ; i < m_bannerBean.size() ; i ++){
-						m_arrBanner.add(m_bannerBean.get(i).getB_link());
-					}
-					initBanner();
+//					Glide.with(getMContext()).load(SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon)).placeholder(R.mipmap.head_s).into(m_ivIcon);
+//					if(m_bannerBean.size() > 0 ){
+//						m_bannerBean.clear();
+//						m_arrBanner.clear();
+//					}
+//					m_bannerBean.addAll(response.getContent().getBanner());
+//					for(int i = 0 ; i < m_bannerBean.size() ; i ++){
+//						m_arrBanner.add(m_bannerBean.get(i).getB_link());
+//					}
+//					initBanner();
 					executeOnLoadDataSuccess(response.getContent().getRoom());
 					totalPage = response.getContent().getRoom().size();
 				}

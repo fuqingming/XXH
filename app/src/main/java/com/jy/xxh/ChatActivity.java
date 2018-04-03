@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.baidu.mobstat.StatService;
 import com.blankj.utilcode.util.SPUtils;
+import com.bumptech.glide.Glide;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMChatRoom;
@@ -34,7 +35,10 @@ import com.jy.xxh.bean.response.ResponseBaseBean;
 import com.jy.xxh.bean.response.ResponseChatBean;
 import com.jy.xxh.bean.response.ResponseChatMessageBean;
 import com.jy.xxh.bean.response.ResponseFollowBean;
-import com.jy.xxh.constants.GlobalVariables;
+import com.xiao.nicevideoplayer.NiceVideoPlayer;
+import com.xiao.nicevideoplayer.NiceVideoPlayerManager;
+import com.xiao.nicevideoplayer.TxVideoPlayerController;
+import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;
@@ -76,6 +80,8 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
 
     public static final int MESSAGE_TYPE_TEXT = 1;          //文字消息
     public static final int MESSAGE_TYPE_PIC = 2;           //图片消息
+
+    private NiceVideoPlayer mNiceVideoPlayer;
 
     KProgressHUD kProgressHUD;
     private KJBitmap kjb;
@@ -177,6 +183,25 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
 
         callHttpFor();
 
+        initVideoPlayer();
+    }
+
+    private void initVideoPlayer() {
+        mNiceVideoPlayer = findViewById(R.id.nice_video_player);
+        mNiceVideoPlayer.setPlayerType(NiceVideoPlayer.TYPE_IJK); // IjkPlayer or MediaPlayer
+        String videoUrl = "http://gxtvod.58hengku.com/gxt/record/2018-03-14/gxt/beiyong1/2018-03-14-14:02:27_2018-03-14-15:03:29.m3u8";
+//        String videoUrl = getIntent().getStringExtra("strPlayUrl");
+//        videoUrl = Environment.getExternalStorageDirectory().getPath().concat("/办公室小野.mp4");
+        mNiceVideoPlayer.setUp(videoUrl, null);
+        TxVideoPlayerController controller = new TxVideoPlayerController(this);
+        controller.setTitle("");
+        controller.setLenght(98000);
+        Glide.with(this)
+                .load("http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-17_17-30-43.jpg")
+                .placeholder(R.mipmap.station_pic)
+                .crossFade()
+                .into(controller.imageView());
+        mNiceVideoPlayer.setController(controller);//isFullScreen
     }
 
     @Override
@@ -755,11 +780,18 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
 
     @Override
     public void onBackPressed() {
+        if (NiceVideoPlayerManager.instance().onBackPressd()) return;
         if(m_rlPicChat.getVisibility() == View.VISIBLE){
             m_rlPicChat.setVisibility(View.GONE);
             return;
         }
         finish();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        NiceVideoPlayerManager.instance().releaseNiceVideoPlayer();
     }
 
     @Override

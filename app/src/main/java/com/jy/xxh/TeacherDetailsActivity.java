@@ -10,12 +10,10 @@ import com.jy.xxh.alert.AlertUtils;
 import com.jy.xxh.base.BaseAppCompatActivity;
 import com.jy.xxh.bean.response.ResponseFollowBean;
 import com.jy.xxh.bean.response.ResponseTeacherBean;
-import com.jy.xxh.constants.GlobalVariables;
+import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;
-import com.jy.xxh.util.HUDProgressUtils;
-import com.kaopiz.kprogresshud.KProgressHUD;
 import com.vise.xsnow.loader.ILoader;
 import com.vise.xsnow.loader.LoaderManager;
 

@@ -8,13 +8,11 @@ import com.blankj.utilcode.util.SPUtils;
 import com.jy.xxh.alert.AlertUtils;
 import com.jy.xxh.base.BaseAppCompatActivity;
 import com.jy.xxh.bean.response.ResponseBaseBean;
-import com.jy.xxh.constants.GlobalVariables;
+import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;
-import com.jy.xxh.util.HUDProgressUtils;
 import com.jy.xxh.util.Utils;
-import com.kaopiz.kprogresshud.KProgressHUD;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

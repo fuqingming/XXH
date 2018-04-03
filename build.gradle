@@ -1,5 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
+apply from: "config.gradle"
 buildscript {
     ext.maven_plugin_version = "2.0"
     repositories {

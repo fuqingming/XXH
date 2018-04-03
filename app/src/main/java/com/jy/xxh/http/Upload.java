@@ -8,7 +8,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jy.xxh.R;
 import com.jy.xxh.bean.response.ResponseChangeHeadBean;
-import com.jy.xxh.constants.GlobalVariables;
+import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.vise.xsnow.loader.ILoader;
 import com.vise.xsnow.loader.LoaderManager;
 

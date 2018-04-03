@@ -1,40 +1,6 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Users\\fuqingming\\Documents\\GitHub\\XXH\\easeui\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-v16\\values-v16.xml",
-            "map": [
-                {
-                    "source": "D:\\Users\\fuqingming\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\283934e0bd9c68f57c478ae055e786c5\\res\\values-v16\\values-v16.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endLines": "5",
-                        "endColumns": "12",
-                        "endOffsets": "223"
-                    },
-                    "to": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "121",
-                        "endLines": "6",
-                        "endColumns": "12",
-                        "endOffsets": "289"
-                    }
-                },
-                {
-                    "source": "D:\\Users\\fuqingming\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.1.0.aar\\3c9f1c0df75632d876e6ed7b1c14f076\\res\\values-v16\\values-v16.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "65",
-                        "endOffsets": "116"
-                    }
-                }
-            ]
-        },
-        {
             "outputFile": "D:\\workspace\\XXH\\XXH\\easeui\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-v16\\values-v16.xml",
             "map": [
                 {
