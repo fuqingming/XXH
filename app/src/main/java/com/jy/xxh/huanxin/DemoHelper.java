@@ -15,6 +15,9 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.SPUtils;
 import com.hyphenate.chat.EMImageMessageBody;
 import com.jy.xxh.ChatActivity;
+import com.jy.xxh.R;
+import com.jy.xxh.bean.base.Messages;
+import com.jy.xxh.huanxin.utils.PreferenceManager;
 import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.jy.xxh.huanxin.db.DemoDBManager;
 import com.jy.xxh.huanxin.domain.InviteMessage.InviteMessageStatus;
@@ -52,15 +55,11 @@ import com.hyphenate.util.EMLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kymjs.chat.R;
 import com.jy.xxh.huanxin.db.InviteMessgeDao;
 import com.jy.xxh.huanxin.db.UserDao;
 import com.jy.xxh.huanxin.domain.InviteMessage;
 import com.jy.xxh.huanxin.domain.RobotUser;
 import com.jy.xxh.huanxin.parse.UserProfileManager;
-
-import org.kymjs.chat.utils.PreferenceManager;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -1160,7 +1159,7 @@ public class DemoHelper {
 			    for (EMMessage message : messages) {
                     EMLog.d(TAG, "onMessageReceived id : " + message.getMsgId());
                     // in background, do not refresh UI, notify it in notification bar
-                    EMMessage.Type msgType =  message.getType();
+                    Type msgType =  message.getType();
 
                     if(SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserId).equals(message.getStringAttribute("sayID",null))){
                         return;
@@ -1169,10 +1168,10 @@ public class DemoHelper {
                     if(!easeUI.hasForegroundActivies()){
                         Intent it = new Intent(Constant.BROADCAST_RECEIVEMESSAGE_CHAT);
                         int iMsgType = 3;
-                        if(msgType == EMMessage.Type.TXT){
+                        if(msgType == Type.TXT){
                             EMTextMessageBody textBody = (EMTextMessageBody)message.getBody();
                             String strText = textBody.getMessage();
-                            iMsgType = org.kymjs.chat.bean.Message.MSG_TYPE_TEXT;
+                            iMsgType = Messages.MSG_TYPE_TEXT;
                             it.putExtra("strText", strText);
                             String strReplay = message.getStringAttribute("replay",null);
                             if(strReplay != null && !"".equals(strReplay)){
@@ -1190,10 +1189,10 @@ public class DemoHelper {
                                 it.putExtra("strStuQuestion", "");
                             }
 
-                        }else if(msgType == EMMessage.Type.IMAGE){
+                        }else if(msgType == Type.IMAGE){
                             EMImageMessageBody imgBody = (EMImageMessageBody) message.getBody();
                             String filePath = imgBody.getRemoteUrl();
-                            iMsgType = org.kymjs.chat.bean.Message.MSG_TYPE_PHOTO;
+                            iMsgType = Messages.MSG_TYPE_PHOTO;
                             it.putExtra("strFilePath", filePath);
                         }
 

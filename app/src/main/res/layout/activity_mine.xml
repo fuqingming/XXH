@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/app_backgrount_color">
     <include layout="@layout/common_title"
@@ -147,6 +148,38 @@
                     android:src="@mipmap/more_b" />
             </LinearLayout>
 
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_receive"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        android:background="@color/white_color"
+        android:paddingLeft="15dp"
+        android:layout_marginTop="1dp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="非wifi网络播放提醒"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sixteen" />
+            <com.jy.xxh.view.switchbutton.FSwitchButton
+                android:id="@+id/sb_switch"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                app:sbIsNeedToggleAnim="true"/>
         </RelativeLayout>
     </LinearLayout>
     <Button

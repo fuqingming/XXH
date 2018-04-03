@@ -67,21 +67,21 @@ public class ChatTeacherAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
 
     @Override
     public void bindData(ViewHolder holder, final ChatMessageBean data, final int position) {
-        RelativeLayout rlContent = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_layout_content);
-        SimpleDraweeView ivIcon = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_avatar);
-        final ImageView ivChatimage = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_content_image);
-        ImageView ivSendfail = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_fail);
-        ProgressBar mProgress = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_progress);
-        TextView tvChatcontent = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_content_text);
-        TextView tvDate = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_item_date);
-        ImageView ivTeacherType = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.iv_teacher_type);
-        TextView tvName = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.tv_name);
-        TextView tvChatText = holder.viewBinder().getView().findViewById(org.kymjs.chat.R.id.chat_text);
+        RelativeLayout rlContent = holder.viewBinder().getView().findViewById(R.id.chat_item_layout_content);
+        SimpleDraweeView ivIcon = holder.viewBinder().getView().findViewById(R.id.chat_item_avatar);
+        final ImageView ivChatimage = holder.viewBinder().getView().findViewById(R.id.chat_item_content_image);
+        ImageView ivSendfail = holder.viewBinder().getView().findViewById(R.id.chat_item_fail);
+        ProgressBar mProgress = holder.viewBinder().getView().findViewById(R.id.chat_item_progress);
+        TextView tvChatcontent = holder.viewBinder().getView().findViewById(R.id.chat_item_content_text);
+        TextView tvDate = holder.viewBinder().getView().findViewById(R.id.chat_item_date);
+        ImageView ivTeacherType = holder.viewBinder().getView().findViewById(R.id.iv_teacher_type);
+        TextView tvName = holder.viewBinder().getView().findViewById(R.id.tv_name);
+        TextView tvChatText = holder.viewBinder().getView().findViewById(R.id.chat_text);
 
         //如果是老师发言显示老师图片
         if(data.getC_messageType().equals(ChatMessageBean.teacher_rep) || data.getC_messageType().equals(ChatMessageBean.teacher_char) || data.getC_messageType().equals(ChatMessageBean.teacher_pic)){
             ivTeacherType.setVisibility(View.VISIBLE);
-            rlContent.setBackgroundResource(org.kymjs.chat.R.drawable.chat_from_bg_selector);
+            rlContent.setBackgroundResource(R.drawable.chat_from_bg_selector);
             if(data.getC_messageType().equals(ChatMessageBean.teacher_rep)){
                 tvChatText.setVisibility(View.VISIBLE);
                 StringBuilder sb = new StringBuilder();
@@ -95,9 +95,9 @@ public class ChatTeacherAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
         }else{
             if(!data.getNic_name().equals(SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame))){
                 ivTeacherType.setVisibility(View.GONE);
-                rlContent.setBackgroundResource(org.kymjs.chat.R.drawable.chat_from_other_selector);
+                rlContent.setBackgroundResource(R.drawable.chat_from_other_selector);
             }else{
-                rlContent.setBackgroundResource(org.kymjs.chat.R.drawable.chat_to_bg_selector);
+                rlContent.setBackgroundResource(R.drawable.chat_to_bg_selector);
             }
         }
 
@@ -135,21 +135,21 @@ public class ChatTeacherAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
             //如果内存缓存中有要显示的图片，且要显示的图片不是holder复用的图片，则什么也不做，否则显示一张加载中的图片
             if (kjb.getMemoryCache(picPath) != null && picPath != null &&  picPath.equals(ivChatimage.getTag())) {
             } else {
-                ivChatimage.setImageResource(org.kymjs.chat.R.drawable.loading_image);
+                ivChatimage.setImageResource(R.drawable.loading_image);
             }
 
             kjb.display(ivChatimage, picPath, 300, 300);
         }
 
         //如果是表情或图片，则不显示气泡，如果是图片则显示气泡
-//        if (data.getType() != Message.MSG_TYPE_TEXT) {
+//        if (data.getType() != Messages.MSG_TYPE_TEXT) {
 //            holder.rlContent.setBackgroundResource(android.R.color.transparent);
 //        } else {
-//            if (Message.MSG_MYSELF.equals(data.getMumberType())) {
+//            if (Messages.MSG_MYSELF.equals(data.getMumberType())) {
 //                holder.rlContent.setBackgroundResource(R.drawable.chat_to_bg_selector);
-//            } else if(Message.MSG_TEACHER.equals(data.getMumberType())){
+//            } else if(Messages.MSG_TEACHER.equals(data.getMumberType())){
 //                holder.rlContent.setBackgroundResource(R.drawable.chat_from_bg_selector);
-//            }else if(Message.MSG_OTHER_MEMBER.equals(data.getMumberType())){
+//            }else if(Messages.MSG_OTHER_MEMBER.equals(data.getMumberType())){
 //                holder.rlContent.setBackgroundResource(R.drawable.chat_from_other_selector);
 //            }
 //        }
@@ -176,10 +176,10 @@ public class ChatTeacherAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
                         listener.onPhotoClick(position,path,ivChatimage);
                     }
 //                    switch (data.getType()) {
-//                        case Message.MSG_TYPE_PHOTO:
+//                        case Messages.MSG_TYPE_PHOTO:
 //                            listener.onPhotoClick(position);
 //                            break;
-//                        case Message.MSG_TYPE_FACE:
+//                        case Messages.MSG_TYPE_FACE:
 //                            listener.onFaceClick(position);
 //                            break;
 //                    }
@@ -189,7 +189,7 @@ public class ChatTeacherAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
 
         tvDate.setText(TimeUtils.time2String(data.getC_time_linux()*1000, "MM-dd HH:mm"));
 //        LoaderManager.getLoader().loadNet(holder.ivIcon, data.getUserIcon(), new ILoader.Options(R.drawable.chat_to_bg_selector, R.drawable.chat_to_bg_selector));
-        LoaderManager.getLoader().loadNet(ivIcon, data.getUser_photo(), new ILoader.Options(org.kymjs.chat.R.drawable.chat_to_bg_selector, org.kymjs.chat.R.drawable.chat_to_bg_selector));
+        LoaderManager.getLoader().loadNet(ivIcon, data.getUser_photo(), new ILoader.Options(R.drawable.chat_to_bg_selector, R.drawable.chat_to_bg_selector));
 
         tvName.setText(data.getNic_name());
 

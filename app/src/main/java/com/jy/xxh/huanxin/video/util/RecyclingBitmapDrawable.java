@@ -3,9 +3,8 @@ package com.jy.xxh.huanxin.video.util;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.compat.BuildConfig;
 import android.util.Log;
-
-import org.kymjs.chat.BuildConfig;
 
 public class RecyclingBitmapDrawable extends BitmapDrawable {
 	static final String TAG = "CountingBitmapDrawable";

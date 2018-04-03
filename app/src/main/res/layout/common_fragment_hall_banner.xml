@@ -9,7 +9,7 @@
         android:id="@+id/banner_pager"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:background="@color/white"
+        android:background="@color/white_color"
         android:layout_marginBottom="5dp"
         />
 

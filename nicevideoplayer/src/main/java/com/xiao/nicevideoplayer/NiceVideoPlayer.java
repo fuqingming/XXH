@@ -102,7 +102,7 @@ public class NiceVideoPlayer extends FrameLayout
     private String mUrl;
     private Map<String, String> mHeaders;
     private int mBufferPercentage;
-    private boolean continueFromLastPosition = true;
+    private boolean continueFromLastPosition = false;
     private long skipToPosition;
 
     public NiceVideoPlayer(Context context) {

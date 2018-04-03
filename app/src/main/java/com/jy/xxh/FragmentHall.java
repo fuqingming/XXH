@@ -50,7 +50,6 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 	private String m_strTeacherBreif;
 	private String m_strTeacherId;
 
-	private LinearLayout m_llLive;
 	private View m_vSpliter;
 	private LinearLayout m_llLiveText;
 	private ImageView m_ivLivePic;
@@ -83,11 +82,16 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 		mRecyclerView.addItemDecoration(new RecycleViewDivider(getMContext(), LinearLayoutManager.VERTICAL, 9, getResources().getColor(R.color.app_backgrount_color)));
 		mRecyclerView.setLoadMoreEnabled(false);
 		View header = LayoutInflater.from(getMContext()).inflate(R.layout.common_fragment_hall_live,mRecyclerView, false);
-		m_llLive = header.findViewById(R.id.ll_live);
 		m_vSpliter = header.findViewById(R.id.v_spliter);
 		m_llLiveText = header.findViewById(R.id.ll_live_text);
 		m_ivLivePic = header.findViewById(R.id.iv_live_pic);
 		m_ivPlay = header.findViewById(R.id.iv_play);
+		m_ivPlay.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				intentChatActivity(ChatActivity.CHAT_LIVE_PLAY);
+			}
+		});
 
 		mRecyclerViewAdapter.addHeaderView(header);
 		mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
@@ -130,19 +134,20 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 						@Override
 						public void onSuccess(Object obj)
 						{
-							intentChatActivity();
+							intentChatActivity(ChatActivity.CHAT_LIVE_TEXT);
 						}
 					});
 				}else{
-					intentChatActivity();
+					intentChatActivity(ChatActivity.CHAT_LIVE_TEXT);
 				}
 			}
 
 		});
 	}
 
-	private void intentChatActivity(){
+	private void intentChatActivity(int chatType){
 		Intent it = new Intent(getMContext(),ChatActivity.class);
+		it.putExtra("iChatType",chatType);
 		it.putExtra("strRoomId",toChatUsername);
 		it.putExtra("strTeacherPhoto",m_strTeacherPhoto);
 		it.putExtra("strTeacherName",m_strTeacherName);

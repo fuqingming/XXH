@@ -6,7 +6,7 @@ import com.hyphenate.easeui.model.EaseAtMessageHelper;
 
 import com.jy.xxh.huanxin.db.UserDao;
 import com.jy.xxh.huanxin.domain.RobotUser;
-import org.kymjs.chat.utils.PreferenceManager;
+import com.jy.xxh.huanxin.utils.PreferenceManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;

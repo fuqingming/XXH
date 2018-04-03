@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.baidu.mobstat.StatService;
 import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
@@ -30,11 +29,15 @@ import com.hyphenate.util.EMLog;
 import com.jy.xxh.adapter.ChatAllAdapter;
 import com.jy.xxh.adapter.ChatTeacherAdapter;
 import com.jy.xxh.alert.AlertUtils;
+import com.jy.xxh.base.BaseAppCompatActivity;
 import com.jy.xxh.bean.base.ChatMessageBean;
+import com.jy.xxh.bean.base.Messages;
 import com.jy.xxh.bean.response.ResponseBaseBean;
 import com.jy.xxh.bean.response.ResponseChatBean;
 import com.jy.xxh.bean.response.ResponseChatMessageBean;
 import com.jy.xxh.bean.response.ResponseFollowBean;
+import com.jy.xxh.util.Utils;
+import com.xiao.nicevideoplayer.NiceUtil;
 import com.xiao.nicevideoplayer.NiceVideoPlayer;
 import com.xiao.nicevideoplayer.NiceVideoPlayerManager;
 import com.xiao.nicevideoplayer.TxVideoPlayerController;
@@ -53,27 +56,19 @@ import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 import com.vise.xsnow.loader.ILoader;
 import com.vise.xsnow.loader.LoaderManager;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
-
-import org.kymjs.chat.bean.Message;
-import org.kymjs.chat.utils.Utils;
-import org.kymjs.kjframe.KJActivity;
-import org.kymjs.kjframe.KJBitmap;
 import org.kymjs.kjframe.utils.FileUtils;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
 import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
 import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultDisposable;
 import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
-
 import static com.hyphenate.util.EasyUtils.TAG;
 
-public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView.PullLoadMoreListener {
+public class ChatActivity extends BaseAppCompatActivity implements PullLoadMoreRecyclerView.PullLoadMoreListener {
 
     public static final int UNCONCERNED = 0;                //未关注
     public static final int ALREADY_PAID_ATTENTION_TO = 1;  //已关注
@@ -81,10 +76,14 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
     public static final int MESSAGE_TYPE_TEXT = 1;          //文字消息
     public static final int MESSAGE_TYPE_PIC = 2;           //图片消息
 
+    public static final int CHAT_LIVE_TEXT = 1;           //图片消息
+    public static final int CHAT_LIVE_PLAY = 2;           //图片消息
+
     private NiceVideoPlayer mNiceVideoPlayer;
+    private RelativeLayout m_rlTextLive;
 
     KProgressHUD kProgressHUD;
-    private KJBitmap kjb;
+    private MsgReceiver msgReceiver;
 
     protected EaseChatPrimaryMenuBase.EaseChatPrimaryMenuListener listener;
     protected ChatRoomListener chatRoomListener;
@@ -120,15 +119,15 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
     private int page;
     private int teacherPage;
 
+    private LinearLayout m_llPlay;
+
     @Override
-    public void setRootView() {
-        setContentView(org.kymjs.chat.R.layout.activity_chat);
+    protected int setLayoutResourceId() {
+        return R.layout.activity_chat;
     }
 
     @Override
-    public void initWidget() {
-        super.initWidget();
-
+    public void setUpView() {
         page = 0;
         teacherPage = 0;
         kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
@@ -137,6 +136,28 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
         String m_strTeacherBreif = getIntent().getStringExtra("strTeacherBreif");
         m_strTeacherId = getIntent().getStringExtra("strTeacherId");
         m_strRoomeId = getIntent().getStringExtra("strRoomId");
+
+        m_llPlay = findViewById(R.id.ll_play);
+        findViewById(R.id.tv_play).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                m_llPlay.setVisibility(View.GONE);
+                if (mNiceVideoPlayer.isIdle()) {
+                    mNiceVideoPlayer.start();
+                }
+            }
+        });
+
+
+        mNiceVideoPlayer = findViewById(R.id.nice_video_player);
+        m_rlTextLive = findViewById(R.id.rl_text_live);
+        if(getIntent().getIntExtra("iChatType",0) == CHAT_LIVE_TEXT){
+            m_rlTextLive.setVisibility(View.VISIBLE);
+            findViewById(R.id.rl_live).setVisibility(View.GONE);
+        }else if(getIntent().getIntExtra("iChatType",0) == CHAT_LIVE_PLAY){
+            m_rlTextLive.setVisibility(View.GONE);
+            findViewById(R.id.rl_live).setVisibility(View.VISIBLE);
+        }
 
         chatRoomListener = new ChatRoomListener() {
             @Override
@@ -149,15 +170,14 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
                 return ChatActivity.this;
             }
         };
-        kjb = new KJBitmap();
 
-        m_etEdit = findViewById(org.kymjs.chat.R.id.et_edit);
-        m_llPic = findViewById(org.kymjs.chat.R.id.ll_pic);
-        m_ivPicSend = findViewById(org.kymjs.chat.R.id.iv_pic_send);
-        m_ivPicChat = findViewById(org.kymjs.chat.R.id.iv_pic_chat);
+        m_etEdit = findViewById(R.id.et_edit);
+        m_llPic = findViewById(R.id.ll_pic);
+        m_ivPicSend = findViewById(R.id.iv_pic_send);
+        m_ivPicChat = findViewById(R.id.iv_pic_chat);
         m_rlPicChat = findViewById(R.id.rl_pic_chat);
-        m_tvSend = findViewById(org.kymjs.chat.R.id.tv_send);
-        m_ivOnlySee = findViewById(org.kymjs.chat.R.id.iv_only_see);
+        m_tvSend = findViewById(R.id.tv_send);
+        m_ivOnlySee = findViewById(R.id.iv_only_see);
         m_etEdit.setMaxHeight(Utils.dp2px(this,100));
 
         m_llPic.setVisibility(View.GONE);
@@ -187,21 +207,38 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
     }
 
     private void initVideoPlayer() {
-        mNiceVideoPlayer = findViewById(R.id.nice_video_player);
         mNiceVideoPlayer.setPlayerType(NiceVideoPlayer.TYPE_IJK); // IjkPlayer or MediaPlayer
         String videoUrl = "http://gxtvod.58hengku.com/gxt/record/2018-03-14/gxt/beiyong1/2018-03-14-14:02:27_2018-03-14-15:03:29.m3u8";
+//        String videoUrl = "http://weblbs.yystatic.com/s/21635156/21635156/finscene.swf";
 //        String videoUrl = getIntent().getStringExtra("strPlayUrl");
 //        videoUrl = Environment.getExternalStorageDirectory().getPath().concat("/办公室小野.mp4");
         mNiceVideoPlayer.setUp(videoUrl, null);
         TxVideoPlayerController controller = new TxVideoPlayerController(this);
         controller.setTitle("");
-        controller.setLenght(98000);
+//        controller.setLenght(98000);
         Glide.with(this)
-                .load("http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-17_17-30-43.jpg")
+                .load("")
                 .placeholder(R.mipmap.station_pic)
                 .crossFade()
                 .into(controller.imageView());
         mNiceVideoPlayer.setController(controller);//isFullScreen
+
+        if( !SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverWifiPlay)){
+            m_llPlay.setVisibility(View.GONE);
+            if (mNiceVideoPlayer.isIdle()) {
+                mNiceVideoPlayer.start();
+            }
+            return;
+        }else{
+            if(!NiceUtil.isWiFiActive(ChatActivity.this)){
+                m_llPlay.setVisibility(View.VISIBLE);
+            }else{
+                m_llPlay.setVisibility(View.GONE);
+                if (mNiceVideoPlayer.isIdle()) {
+                    mNiceVideoPlayer.start();
+                }
+            }
+        }
     }
 
     @Override
@@ -235,7 +272,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
             @Override
             public void onClick(View view) {
                 if(!m_bOnlySee){
-                    m_ivOnlySee.setImageResource(R.drawable.see_all);
+                    m_ivOnlySee.setImageResource(R.mipmap.see_all);
                     m_bOnlySee = true;
                     mPullLoadMoreRecyclerViewTeacher.setVisibility(View.VISIBLE);
                     mPullLoadMoreRecyclerViewAll.setVisibility(View.GONE);
@@ -247,7 +284,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
                         callHttpForSearchChatMsgTeacher(map);
                     }
                 }else{
-                    m_ivOnlySee.setImageResource(R.drawable.teacher_look);
+                    m_ivOnlySee.setImageResource(R.mipmap.teacher_look);
                     m_bOnlySee = false;
                     mPullLoadMoreRecyclerViewTeacher.setVisibility(View.GONE);
                     mPullLoadMoreRecyclerViewAll.setVisibility(View.VISIBLE);
@@ -273,7 +310,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
 //                EMMessage message = EMMessage.createTxtSendMessage(strMessage,m_strRoomeId);
 //                message.setAttribute("nickname", SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame));
 //                message.setAttribute("headerImageUrl", SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon));
-//                message.setAttribute("memberType", Message.MSG_OTHER_MEMBER);
+//                message.setAttribute("memberType", Messages.MSG_OTHER_MEMBER);
 //                message.setAttribute("messageType", ChatMessageBean.user_char);
 //                message.setChatType(EMMessage.ChatType.ChatRoom);
 //                EMClient.getInstance().chatManager().sendMessage(message);
@@ -352,7 +389,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
                     protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
                         Uri dataUri = Utils.getMediaUriFromPath(ChatActivity.this,imageRadioResultEvent.getResult().getOriginalPath());
                         if (dataUri != null) {
-                            File file = FileUtils.uri2File(aty, dataUri);
+                            File file = FileUtils.uri2File(ChatActivity.this, dataUri);
 
                             ChatMessageBean chatMessageBean = new ChatMessageBean(ChatMessageBean.user_pic, file.getAbsolutePath(),System.currentTimeMillis(),"",
                                     SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame),
@@ -362,7 +399,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
                             EMMessage messageEMM = EMMessage.createImageSendMessage(file.getAbsolutePath(), false, m_strRoomeId);
                             messageEMM.setAttribute("nickname", SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame));
                             messageEMM.setAttribute("headerImageUrl", SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon));
-                            messageEMM.setAttribute("memberType", Message.MSG_OTHER_MEMBER);
+                            messageEMM.setAttribute("memberType", Messages.MSG_OTHER_MEMBER);
                             messageEMM.setAttribute("messageType", ChatMessageBean.user_pic);
 
                             messageEMM.setChatType(EMMessage.ChatType.ChatRoom);
@@ -374,7 +411,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
     }
 
     private void initListView() {
-        mPullLoadMoreRecyclerViewAll = findViewById(org.kymjs.chat.R.id.pullLoadMoreRecyclerViewAll);
+        mPullLoadMoreRecyclerViewAll = findViewById(R.id.pullLoadMoreRecyclerViewAll);
         mRecyclerViewAll = mPullLoadMoreRecyclerViewAll.getRecyclerView();
         mRecyclerViewAll.setVerticalScrollBarEnabled(true);
         mPullLoadMoreRecyclerViewAll.setPushRefreshEnable(false);
@@ -385,7 +422,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
         mPullLoadMoreRecyclerViewAll.setAdapter(adapterAll);
         adapterAll.addAll(m_msgDataAll);
 
-        mPullLoadMoreRecyclerViewTeacher = findViewById(org.kymjs.chat.R.id.pullLoadMoreRecyclerViewTeacher);
+        mPullLoadMoreRecyclerViewTeacher = findViewById(R.id.pullLoadMoreRecyclerViewTeacher);
         mRecyclerViewTeacher = mPullLoadMoreRecyclerViewTeacher.getRecyclerView();
         mRecyclerViewTeacher.setVerticalScrollBarEnabled(true);
         mPullLoadMoreRecyclerViewTeacher.setPushRefreshEnable(false);
@@ -396,8 +433,8 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
         mPullLoadMoreRecyclerViewTeacher.setAdapter(adapterTeacher);
         adapterTeacher.addAll(m_msgTeacherDatas);
 
-        Utils.setOnTouchEditTextOutSideHideIM(this,mRecyclerViewAll);
-        Utils.setOnTouchEditTextOutSideHideIM(this,mRecyclerViewTeacher);
+//        Utils.setOnTouchEditTextOutSideHideIM(ChatActivity.this,mRecyclerViewAll);
+//        Utils.setOnTouchEditTextOutSideHideIM(ChatActivity.this,mRecyclerViewTeacher);
 
     }
 
@@ -447,6 +484,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
     protected void onDestroy() {
         super.onDestroy();
         EMClient.getInstance().chatroomManager().leaveChatRoom(m_strRoomeId);
+        unregisterReceiver(msgReceiver);
     }
 
     @Override
@@ -481,7 +519,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
     }
 
     private void registerReciever() {
-        MsgReceiver msgReceiver = new MsgReceiver();
+        msgReceiver = new MsgReceiver();
         IntentFilter filter1 = new IntentFilter();
         filter1.addAction(Constant.BROADCAST_RECEIVEMESSAGE_CHAT);
         registerReceiver(msgReceiver, filter1);
@@ -494,9 +532,9 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
             int iMsgType = intent.getIntExtra("iMsgType",3);
             String strMemberType = intent.getStringExtra("memberType");
             String strContext = "";
-            if(iMsgType == Message.MSG_TYPE_TEXT){
+            if(iMsgType == Messages.MSG_TYPE_TEXT){
                 strContext = intent.getStringExtra("strText");
-            }else if(iMsgType == Message.MSG_TYPE_PHOTO){
+            }else if(iMsgType == Messages.MSG_TYPE_PHOTO){
                 strContext = intent.getStringExtra("strFilePath");
             }
 
@@ -780,6 +818,10 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
 
     @Override
     public void onBackPressed() {
+        if (mNiceVideoPlayer.isFullScreen()) {
+            mNiceVideoPlayer.exitFullScreen();
+            return;
+        }
         if (NiceVideoPlayerManager.instance().onBackPressd()) return;
         if(m_rlPicChat.getVisibility() == View.VISIBLE){
             m_rlPicChat.setVisibility(View.GONE);

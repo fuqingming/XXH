@@ -10,6 +10,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyphenate.EMCallBack;
 import com.jy.xxh.base.BaseAppCompatActivity;
+import com.jy.xxh.view.switchbutton.FSwitchButton;
 import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.jy.xxh.http.Upload;
 import com.jy.xxh.huanxin.DemoHelper;
@@ -37,6 +38,8 @@ public class MineActivity extends BaseAppCompatActivity {
     SimpleDraweeView m_ivIcon;
     @BindView(R.id.tv_clean)
     TextView m_tvClean;
+    @BindView(R.id.sb_switch)
+    FSwitchButton m_sbSwitch;
 
     @Override
     protected int setLayoutResourceId() {
@@ -47,6 +50,21 @@ public class MineActivity extends BaseAppCompatActivity {
     protected void setUpView() {
         ButterKnife.bind(this);
         Utils.initCommonTitle(this,"我的",true);
+
+        if(SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverWifiPlay)){
+            m_sbSwitch.setChecked(true,false,true);
+        }else{
+            m_sbSwitch.setChecked(false,false,false);
+        }
+
+        m_sbSwitch.setOnCheckedChangedCallback(new FSwitchButton.OnCheckedChangedCallback()
+        {
+            @Override
+            public void onCheckedChanged(boolean checked, FSwitchButton view)
+            {
+                SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverWifiPlay,checked);
+            }
+        });
     }
 
     @OnClick({R.id.ll_icon,R.id.ll_nickname,R.id.ll_clean,R.id.btn_logout})

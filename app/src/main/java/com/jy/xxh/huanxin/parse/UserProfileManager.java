@@ -7,7 +7,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.EaseUser;
 
 import com.jy.xxh.huanxin.DemoHelper;
-import org.kymjs.chat.utils.PreferenceManager;
+import com.jy.xxh.huanxin.utils.PreferenceManager;
 
 import java.util.ArrayList;
 import java.util.List;

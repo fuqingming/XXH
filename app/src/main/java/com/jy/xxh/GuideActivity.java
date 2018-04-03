@@ -67,6 +67,7 @@ public class GuideActivity extends BaseAppCompatActivity {
         pageViews.add(vPage1);
         pageViews.add(vPage2);
 
+        SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverWifiPlay,true);
         SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverIsReceiveMessage,true);
 
         viewPager.setAdapter(new GuidePagerAdapter(GuideActivity.this, pageViews));
