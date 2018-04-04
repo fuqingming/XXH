@@ -60,20 +60,24 @@
             android:layout_marginLeft="12dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="15dp">
+
             <TextView
+                android:id="@+id/tv_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/fifteen"
+                android:text="期货行情实盘解读"
                 android:textColor="@color/black"
-                android:text="期货行情实盘解读"/>
+                android:textSize="@dimen/fifteen" />
+
             <TextView
+                android:id="@+id/tv_live_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/twelve"
-                android:textColor="@color/black"
-                android:text="直播中"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"/>
+                android:text="直播中"
+                android:textColor="@color/black"
+                android:textSize="@dimen/twelve" />
         </RelativeLayout>
     </LinearLayout>
 

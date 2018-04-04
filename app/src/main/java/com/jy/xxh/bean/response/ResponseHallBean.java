@@ -2,6 +2,7 @@ package com.jy.xxh.bean.response;
 
 import com.joker.pager.BannerBean;
 import com.jy.xxh.bean.base.RoomBean;
+import com.jy.xxh.bean.base.VideoBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +24,8 @@ public class ResponseHallBean extends ResponseBaseBean {
     }
 
     public class Content{
-        private List<BannerBean> banner = new ArrayList<>();
         private List<RoomBean> room = new ArrayList<>();
-
-        public List<BannerBean> getBanner() {
-            return banner;
-        }
-
-        public void setBanner(List<BannerBean> banner) {
-            this.banner = banner;
-        }
+        private List<VideoBean> video = new ArrayList<>();
 
         public List<RoomBean> getRoom() {
             return room;
@@ -40,6 +33,14 @@ public class ResponseHallBean extends ResponseBaseBean {
 
         public void setRoom(List<RoomBean> room) {
             this.room = room;
+        }
+
+        public List<VideoBean> getVideo() {
+            return video;
+        }
+
+        public void setVideo(List<VideoBean> video) {
+            this.video = video;
         }
     }
 }

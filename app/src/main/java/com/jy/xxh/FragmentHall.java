@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.baidu.mobstat.StatService;
+import com.bumptech.glide.Glide;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
@@ -16,6 +18,7 @@ import com.jy.xxh.adapter.FragmentHallAdapter;
 import com.jy.xxh.backhandler.OnTaskSuccessComplete;
 import com.jy.xxh.base.BaseListFragment;
 import com.jy.xxh.bean.base.RoomBean;
+import com.jy.xxh.bean.base.VideoBean;
 import com.jy.xxh.bean.response.ResponseHallBean;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
@@ -23,6 +26,9 @@ import com.jy.xxh.http.HttpClient;
 import com.jy.xxh.huanxin.DemoHelper;
 import com.jy.xxh.util.Utils;
 import com.jy.xxh.view.recyclerview.RecycleViewDivider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -42,6 +48,8 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 	private LinearLayout m_llLiveText;
 	private ImageView m_ivLivePic;
 	private ImageView m_ivPlay;
+	private TextView m_tvLiveType;
+	private TextView m_tvText;
 
 	@Override
 	protected int getLayoutId() {
@@ -71,6 +79,8 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 		mRecyclerView.setLoadMoreEnabled(false);
 		View header = LayoutInflater.from(getMContext()).inflate(R.layout.common_fragment_hall_live,mRecyclerView, false);
 		m_vSpliter = header.findViewById(R.id.v_spliter);
+		m_tvLiveType = header.findViewById(R.id.tv_live_type);
+		m_tvText = header.findViewById(R.id.tv_text);
 		m_llLiveText = header.findViewById(R.id.ll_live_text);
 		m_ivLivePic = header.findViewById(R.id.iv_live_pic);
 		m_ivPlay = header.findViewById(R.id.iv_play);
@@ -177,6 +187,11 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 //						m_arrBanner.add(m_bannerBean.get(i).getB_link());
 //					}
 //					initBanner();
+					VideoBean videoBean = response.getContent().getVideo().get(0);
+					Glide.with(getMContext()).load(videoBean.getImg_url()).placeholder(R.mipmap.station_pic).into(m_ivLivePic);
+					m_tvLiveType.setText(videoBean.getV_type());
+					m_tvText.setText(videoBean.getV_name());
+
 					executeOnLoadDataSuccess(response.getContent().getRoom());
 					totalPage = response.getContent().getRoom().size();
 				}
