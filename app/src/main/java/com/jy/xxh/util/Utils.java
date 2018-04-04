@@ -6,6 +6,9 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.IBinder;
 import android.provider.MediaStore;
@@ -24,6 +27,10 @@ import android.widget.Toast;
 import com.jy.xxh.R;
 import com.jy.xxh.backhandler.OnTaskSuccessComplete;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
@@ -513,5 +520,137 @@ public class Utils {
         htmlStr = b_space.replaceAll("");
 
         return htmlStr.trim(); // 返回文本字符串
+    }
+
+    public static int readPictureDegree(String path)
+    {
+        int degree  = 0;
+        try
+        {
+            ExifInterface exifInterface = new ExifInterface(path);
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation)
+            {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return degree;
+    }
+
+    public static Bitmap rotateBitmap(Bitmap bitmap, int rotate)
+    {
+        if(bitmap == null)
+            return null ;
+
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+
+        // Setting post rotate to 90
+        Matrix mtx = new Matrix();
+        mtx.postRotate(rotate);
+        return Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
+    }
+
+    /**
+     * @param	bitmap      原图
+     * @return  缩放Bitmap截取Bitmap最大中间部位的正方形。（根据Bitmap长宽判断截取）
+     */
+    public static Bitmap centerSquareScaleBitmap(Bitmap bitmap, Context context)
+    {
+        int m_nBitmapLength = 0; //希望得到的正方形部分的边长
+        int m_nBitmapWidth = bitmap.getWidth();
+        int m_nBitmapHeight = bitmap.getHeight();
+        float m_fScale = context.getResources().getDisplayMetrics().density;
+        int m_nScreenWidth = (int) (m_nBitmapWidth / m_fScale + 0.5f); // 屏幕宽度（dp）
+        int m_nScreenHeight = (int) (m_nBitmapHeight / m_fScale + 0.5f); // 屏幕高度（dp）
+        if (m_nScreenWidth > m_nScreenHeight)
+        {
+            m_nBitmapLength = m_nScreenHeight;
+        }
+        else
+        {
+            m_nBitmapLength = m_nScreenWidth;
+        }
+        if (null == bitmap || m_nBitmapLength <= 0)
+        {
+            return null;
+        }
+
+        Bitmap m_bitmapResult = bitmap;
+
+        if (m_nBitmapWidth > m_nBitmapLength && m_nBitmapHeight > m_nBitmapLength)
+        {
+            //压缩到一个最小长度是edgeLength的bitmap
+            int longerEdge = (int) (m_nBitmapLength * Math.max(m_nBitmapWidth, m_nBitmapHeight) / Math.min(m_nBitmapWidth, m_nBitmapHeight));
+            int scaledWidth = m_nBitmapWidth > m_nBitmapHeight ? longerEdge : m_nBitmapLength;
+            int scaledHeight = m_nBitmapWidth > m_nBitmapHeight ? m_nBitmapLength : longerEdge;
+            Bitmap m_bitmapScaled;
+
+            try
+            {
+                m_bitmapScaled = Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, true);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
+            //从图中截取正中间的正方形部分。
+            int m_nBitmapX = (scaledWidth - m_nBitmapLength) / 2;
+            int m_nBitmapY = (scaledHeight - m_nBitmapLength) / 2;
+
+            try
+            {
+                m_bitmapResult = Bitmap.createBitmap(m_bitmapScaled, m_nBitmapX, m_nBitmapY, m_nBitmapLength, m_nBitmapLength);
+                m_bitmapScaled.recycle();
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        return m_bitmapResult;
+    }
+
+    public static boolean saveBitmap(Bitmap bitmap, String strDir, String strFileName)
+    {
+        File file = new File(strDir, strFileName);
+        if (file.exists())
+        {
+            file.delete();
+        }
+
+        try
+        {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 }

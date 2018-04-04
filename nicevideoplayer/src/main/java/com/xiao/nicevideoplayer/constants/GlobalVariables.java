@@ -16,6 +16,5 @@ public class GlobalVariables {
     public final static String serverUserNickame = "serverUserNickame";
     public final static String serverIsReceiveMessage = "serverIsReceiveMessage";
     public final static String serverIsFirstUse = "serverIsFirstUse";
-    public final static String serverIsUserOpenMain = "serverIsUserOpenMain";
     public final static String serverWifiPlay = "serverWifiPlay";
 }

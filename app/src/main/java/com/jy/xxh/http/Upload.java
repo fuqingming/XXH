@@ -7,7 +7,9 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.SPUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jy.xxh.R;
+import com.jy.xxh.backhandler.OnTaskSuccessComplete;
 import com.jy.xxh.bean.response.ResponseChangeHeadBean;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.vise.xsnow.loader.ILoader;
 import com.vise.xsnow.loader.LoaderManager;
@@ -24,12 +26,14 @@ import java.io.File;
 public class Upload  extends AsyncTask<String,Void,String> {
     File file;
     Context mContext;
-    SimpleDraweeView m_ivIcon;
+    OnTaskSuccessComplete onTaskSuccess;
+    KProgressHUD kProgressHUD;
 
-    public Upload(File file, Context context,SimpleDraweeView m_ivIcon){
+    public Upload(File file, Context context, KProgressHUD kProgressHUD,OnTaskSuccessComplete onTaskSuccess){
         this.file = file;
         this.mContext = context;
-        this.m_ivIcon = m_ivIcon;
+        this.onTaskSuccess = onTaskSuccess;
+        this.kProgressHUD = kProgressHUD;
     }
     @Override
     protected String doInBackground(String... strings) {
@@ -40,40 +44,15 @@ public class Upload  extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         if(s != null){
-            ResponseChangeHeadBean responseChangeHeadBean = transform(s);
-            if(responseChangeHeadBean.getResult()){
-                Toast.makeText(mContext,responseChangeHeadBean.getMessage(),Toast.LENGTH_SHORT).show();
-                SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverUserIcon,responseChangeHeadBean.getU_photo());
-                LoaderManager.getLoader().loadNet(m_ivIcon, SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon),
-                        new ILoader.Options(R.mipmap.head_s, R.mipmap.head_s));
+            if (onTaskSuccess != null)
+            {
+                onTaskSuccess.onSuccess(s);
             }
+
         }else{
             Toast.makeText(mContext,"上传失败", Toast.LENGTH_SHORT).show();
+            onTaskSuccess.onSuccess("");
         }
-    }
-
-    private ResponseChangeHeadBean transform(String response){
-        JSONObject jsonObject = null;
-        ResponseChangeHeadBean responseChangeHeadBean = new ResponseChangeHeadBean();
-        try {
-            jsonObject = new JSONObject(response);
-            boolean result = jsonObject.getBoolean("result");
-            String message = jsonObject.getString("message");
-            int code = jsonObject.getInt("code");
-            String content = jsonObject.getString("content");
-
-            JSONObject jsonObjectContent = new JSONObject(content);
-            String u_photo = jsonObjectContent.getString("u_photo");
-
-            responseChangeHeadBean.setCode(code);
-            responseChangeHeadBean.setResult(result);
-            responseChangeHeadBean.setMessage(message);
-            responseChangeHeadBean.setU_photo(u_photo);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        return responseChangeHeadBean;
+        kProgressHUD.dismiss();
     }
 }

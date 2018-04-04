@@ -2,6 +2,8 @@ package com.jy.xxh;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -9,7 +11,11 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.SPUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyphenate.EMCallBack;
+import com.jy.xxh.backhandler.OnTaskSuccessComplete;
 import com.jy.xxh.base.BaseAppCompatActivity;
+import com.jy.xxh.bean.response.ResponseChangeHeadBean;
+import com.jy.xxh.util.DirSettings;
+import com.jy.xxh.util.FileUtil;
 import com.jy.xxh.view.switchbutton.FSwitchButton;
 import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.jy.xxh.http.Upload;
@@ -18,6 +24,9 @@ import com.jy.xxh.util.CleanMessageUtil;
 import com.jy.xxh.util.Utils;
 import com.vise.xsnow.loader.ILoader;
 import com.vise.xsnow.loader.LoaderManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 
@@ -99,6 +108,8 @@ public class MineActivity extends BaseAppCompatActivity {
                runOnUiThread(new Runnable() {
                     public void run() {
                         pd.dismiss();
+                        SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverWifiPlay,true);
+                        SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverIsReceiveMessage,true);
                         SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverUserId,"");
                         SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverUserIcon, "");
                         SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverUserTelphone, "");
@@ -151,12 +162,68 @@ public class MineActivity extends BaseAppCompatActivity {
                 .subscribe(new RxBusResultDisposable<ImageRadioResultEvent>() {
                     @Override
                     protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
+                        kProgressHUD.show();
                         String strUrl = "http://wap.ngwatch.top/index/User/changePhoto&u_id="+SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserId);
-                        String path = imageRadioResultEvent.getResult().getOriginalPath();
-                        File image = new File(path);
-                        new Upload(image,MineActivity.this,m_ivIcon).execute(strUrl);
+                        final String path = imageRadioResultEvent.getResult().getOriginalPath();
+
+                        // 压缩图片
+                        Bitmap bitmap = Utils.centerSquareScaleBitmap(BitmapFactory.decodeFile(path),MineActivity.this);
+
+                        // 如果有必要，对图片进行旋转
+                        int nDegree = Utils.readPictureDegree(path);
+                        if(nDegree != 0)
+                        {
+                            bitmap = Utils.rotateBitmap(bitmap, nDegree);
+                        }
+
+                        // 保存图片
+                        FileUtil.creatDirsIfNeed(DirSettings.getAppCacheDir());
+                        if(!Utils.saveBitmap(bitmap, DirSettings.getAppCacheDir(), "myself_tmp_head_pic.png"))
+                        {
+                            Utils.showToast(MineActivity.this, "保存图片失败");
+                        }
+
+                        File image = new File(DirSettings.getAppCacheDir()+"myself_tmp_head_pic.png");
+                        new Upload(image,MineActivity.this,kProgressHUD,new OnTaskSuccessComplete()
+                        {
+                            @Override
+                            public void onSuccess(Object obj)
+                            {
+                                ResponseChangeHeadBean responseChangeHeadBean = transform((String) obj);
+                                if(responseChangeHeadBean.getResult()){
+                                    Toast.makeText(MineActivity.this,responseChangeHeadBean.getMessage(),Toast.LENGTH_SHORT).show();
+                                    SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverUserIcon,responseChangeHeadBean.getU_photo());
+                                    LoaderManager.getLoader().loadNet(m_ivIcon, SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon),
+                                            new ILoader.Options(R.mipmap.head_s, R.mipmap.head_s));
+                                }
+                            }
+                        }).execute(strUrl);
                     }
                 })
                 .openGallery();
+    }
+
+    private ResponseChangeHeadBean transform(String response){
+        JSONObject jsonObject = null;
+        ResponseChangeHeadBean responseChangeHeadBean = new ResponseChangeHeadBean();
+        try {
+            jsonObject = new JSONObject(response);
+            boolean result = jsonObject.getBoolean("result");
+            String message = jsonObject.getString("message");
+            int code = jsonObject.getInt("code");
+            String content = jsonObject.getString("content");
+
+            JSONObject jsonObjectContent = new JSONObject(content);
+            String u_photo = jsonObjectContent.getString("u_photo");
+
+            responseChangeHeadBean.setCode(code);
+            responseChangeHeadBean.setResult(result);
+            responseChangeHeadBean.setMessage(message);
+            responseChangeHeadBean.setU_photo(u_photo);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return responseChangeHeadBean;
     }
 }

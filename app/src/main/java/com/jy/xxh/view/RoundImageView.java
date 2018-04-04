@@ -24,7 +24,7 @@ public class RoundImageView extends ImageView {
 
 
     //圆角弧度
-    private float[] rids = {10.0f,10.0f,10.0f,10.0f,0.0f,0.0f,0.0f,0.0f,};
+    private float[] rids = {18.0f,18.0f,18.0f,18.0f,0.0f,0.0f,0.0f,0.0f,};
 
     public RoundImageView(Context context) {
         super(context);

@@ -47,7 +47,6 @@ public class GuideActivity extends BaseAppCompatActivity {
     @Override
     protected void setUpView() {
         ButterKnife.bind(this);
-        SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverIsUserOpenMain,false);
 
         if(SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverIsFirstUse)){
             if(!SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverIsReceiveMessage)){

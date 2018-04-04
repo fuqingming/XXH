@@ -45,7 +45,8 @@ public class FragmentHallAdapter extends BaseRecyclerViewAdaptera<RoomBean> {
     @Override
     protected void covert(BaseRecyclerViewHolder holder, final RoomBean data, final int position) {
         ButterKnife.bind(this, holder.getView());
-        Glide.with(mContext).load(data.getR_icon()).placeholder(R.mipmap.station_pic).into(m_ivPic);
+//        Glide.with(mContext).load(data.getR_icon()).placeholder(R.mipmap.station_pic).into(m_ivPic);
+        Glide.with(mContext).load(data.getR_icon()).into(m_ivPic);
         m_ivTitle.setText(data.getR_room_breif());
         m_ivName.setText(data.getT_nic_name());
         m_ivPersionCount.setText(data.getR_t_online()+"人参与");
