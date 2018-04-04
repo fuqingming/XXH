@@ -1,15 +1,11 @@
 package com.jy.xxh.adapter;
 
 
-import android.content.Context;
 import android.widget.TextView;
 
 import com.jy.xxh.R;
 import com.jy.xxh.bean.base.MessageBean;
-import com.jy.xxh.view.recyclerview.BaseRecyclerViewAdapter;
 import com.jy.xxh.view.recyclerview.BaseRecyclerViewHolder;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,7 +15,7 @@ import butterknife.ButterKnife;
  * Date: 2017/11/13
  */
 
-public class MessageAdapter extends BaseRecyclerViewAdaptera<MessageBean> {
+public class MessageAdapter extends BaseRecyclerAdapter<MessageBean> {
 
     @BindView(R.id.tv_title)
     TextView m_ivTitle;

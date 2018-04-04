@@ -1,16 +1,12 @@
 package com.jy.xxh.base;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -23,7 +19,7 @@ import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.CommonHeader;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.jy.xxh.R;
-import com.jy.xxh.adapter.BaseRecyclerViewAdaptera;
+import com.jy.xxh.adapter.BaseRecyclerAdapter;
 import com.jy.xxh.backhandler.BackHandlerHelper;
 import com.jy.xxh.http.HttpClient;
 import com.jy.xxh.huanxin.Constant;
@@ -44,7 +40,7 @@ public abstract class BaseListActivity<T> extends AppCompatActivity {
     ErrorLayout mErrorLayout;
     protected Button toTopBtn;
 
-    protected BaseRecyclerViewAdaptera<T> mListAdapter;
+    protected BaseRecyclerAdapter<T> mListAdapter;
     protected LRecyclerViewAdapter mRecyclerViewAdapter;
 
     protected boolean isRequestInProcess = false;
@@ -215,7 +211,7 @@ public abstract class BaseListActivity<T> extends AppCompatActivity {
         mIsStart = false;
     }
 
-    protected abstract BaseRecyclerViewAdaptera<T> getListAdapter();
+    protected abstract BaseRecyclerAdapter<T> getListAdapter();
 
     protected void requestData() {
     }

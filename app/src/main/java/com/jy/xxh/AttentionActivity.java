@@ -10,7 +10,7 @@ import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.jy.xxh.adapter.AttentionAdapter;
-import com.jy.xxh.adapter.BaseRecyclerViewAdaptera;
+import com.jy.xxh.adapter.BaseRecyclerAdapter;
 import com.jy.xxh.alert.AlertUtils;
 import com.jy.xxh.base.BaseListActivity;
 import com.jy.xxh.bean.base.AttentionBean;
@@ -37,7 +37,7 @@ public class AttentionActivity extends BaseListActivity<AttentionBean> {
     }
 
     @Override
-    protected BaseRecyclerViewAdaptera<AttentionBean> getListAdapter() {
+    protected BaseRecyclerAdapter<AttentionBean> getListAdapter() {
         return m_adapterAttention;
     }
 

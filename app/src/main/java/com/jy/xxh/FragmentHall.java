@@ -1,26 +1,17 @@
 package com.jy.xxh;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.baidu.mobstat.StatService;
-import com.blankj.utilcode.util.SPUtils;
-import com.bumptech.glide.Glide;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
-import com.joker.pager.BannerBean;
-import com.joker.pager.BannerPager;
-import com.joker.pager.PagerOptions;
-import com.joker.pager.holder.ViewHolder;
-import com.joker.pager.holder.ViewHolderCreator;
-import com.jy.xxh.adapter.BaseRecyclerViewAdaptera;
+import com.jy.xxh.adapter.BaseRecyclerAdapter;
 import com.jy.xxh.adapter.FragmentHallAdapter;
 import com.jy.xxh.backhandler.OnTaskSuccessComplete;
 import com.jy.xxh.base.BaseListFragment;
@@ -32,9 +23,6 @@ import com.jy.xxh.http.HttpClient;
 import com.jy.xxh.huanxin.DemoHelper;
 import com.jy.xxh.util.Utils;
 import com.jy.xxh.view.recyclerview.RecycleViewDivider;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -67,7 +55,7 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 	}
 
 	@Override
-	protected BaseRecyclerViewAdaptera<RoomBean> getListAdapter() {
+	protected BaseRecyclerAdapter<RoomBean> getListAdapter() {
 		return m_fragmentTrainAdapter;
 	}
 

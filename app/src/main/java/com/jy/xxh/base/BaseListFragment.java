@@ -19,7 +19,7 @@ import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.CommonHeader;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.jy.xxh.R;
-import com.jy.xxh.adapter.BaseRecyclerViewAdaptera;
+import com.jy.xxh.adapter.BaseRecyclerAdapter;
 import com.jy.xxh.huanxin.Constant;
 import com.jy.xxh.view.error.ErrorLayout;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public abstract class BaseListFragment<T> extends Fragment {
     ErrorLayout mErrorLayout;
     protected Button toTopBtn;
 
-    protected BaseRecyclerViewAdaptera<T> mListAdapter;
+    protected BaseRecyclerAdapter<T> mListAdapter;
     protected LRecyclerViewAdapter mRecyclerViewAdapter;
 
     protected boolean isRequestInProcess = false;
@@ -224,7 +224,7 @@ public abstract class BaseListFragment<T> extends Fragment {
         mIsStart = false;
     }
 
-    protected abstract BaseRecyclerViewAdaptera<T> getListAdapter();
+    protected abstract BaseRecyclerAdapter<T> getListAdapter();
 
     protected void requestData() {
     }

@@ -5,7 +5,7 @@ import android.view.View;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
-import com.jy.xxh.adapter.BaseRecyclerViewAdaptera;
+import com.jy.xxh.adapter.BaseRecyclerAdapter;
 import com.jy.xxh.adapter.MessageAdapter;
 import com.jy.xxh.alert.AlertUtils;
 import com.jy.xxh.base.BaseListActivity;
@@ -38,7 +38,7 @@ public class MessageActivity extends BaseListActivity<MessageBean> {
     }
 
     @Override
-    protected BaseRecyclerViewAdaptera<MessageBean> getListAdapter() {
+    protected BaseRecyclerAdapter<MessageBean> getListAdapter() {
         return m_adapterMessage;
     }
 

@@ -17,11 +17,11 @@ import java.util.List;
  * Date: 2017/11/13
  */
 
-public abstract class BaseRecyclerViewAdaptera<T> extends RecyclerView.Adapter<BaseRecyclerViewHolder> {
+public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRecyclerViewHolder> {
     protected Context mContext;
     protected List<T> mDatas  = new ArrayList<>();
 
-    public BaseRecyclerViewAdaptera(){
+    public BaseRecyclerAdapter(){
     }
 
     @Override

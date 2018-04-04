@@ -1,18 +1,14 @@
 package com.jy.xxh.adapter;
 
 
-import android.content.Context;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jy.xxh.R;
 import com.jy.xxh.bean.base.AttentionBean;
-import com.jy.xxh.view.recyclerview.BaseRecyclerViewAdapter;
 import com.jy.xxh.view.recyclerview.BaseRecyclerViewHolder;
 import com.vise.xsnow.loader.ILoader;
 import com.vise.xsnow.loader.LoaderManager;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +18,7 @@ import butterknife.ButterKnife;
  * Date: 2017/11/13
  */
 
-public class AttentionAdapter extends BaseRecyclerViewAdaptera<AttentionBean> {
+public class AttentionAdapter extends BaseRecyclerAdapter<AttentionBean> {
 
     @BindView(R.id.iv_icon)
     SimpleDraweeView m_ivIcon;

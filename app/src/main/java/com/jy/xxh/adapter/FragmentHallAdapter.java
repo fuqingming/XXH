@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
  * Date: 2017/11/13
  */
 
-public class FragmentHallAdapter extends BaseRecyclerViewAdaptera<RoomBean> {
+public class FragmentHallAdapter extends BaseRecyclerAdapter<RoomBean> {
 
     @BindView(R.id.iv_pic)
     ImageView m_ivPic;
