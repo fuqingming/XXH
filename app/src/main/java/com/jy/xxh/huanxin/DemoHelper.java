@@ -92,7 +92,6 @@ public class DemoHelper {
     protected EMMessageListener messageListener = null;
 
 	private Map<String, EaseUser> contactList;
-
 	private Map<String, RobotUser> robotList;
 
 	private UserProfileManager userProManager;
