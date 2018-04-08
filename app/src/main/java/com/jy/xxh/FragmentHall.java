@@ -38,6 +38,7 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 
 	private FragmentHallAdapter m_fragmentTrainAdapter= new FragmentHallAdapter();
 
+	private VideoBean m_videoBean;
 	protected String toChatUsername;
 	private String m_strTeacherPhoto;
 	private String m_strTeacherName;
@@ -87,7 +88,20 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 		m_ivPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				intentChatActivity(ChatActivity.CHAT_LIVE_PLAY);
+				if (!DemoHelper.getInstance().isLoggedIn()) {
+					Intent it = new Intent(getMContext(),LoginActivity.class);
+					startActivity(it);
+					return;
+				}
+				if(!"直播中".equals(m_videoBean.getV_type())){
+					Utils.showToast(getContext(),"直播还未开始！");
+					return;
+				}
+				toChatUsername = m_videoBean.getRoom_id();
+
+				Intent it = new Intent(getMContext(),ChatLiveActivity.class);
+				it.putExtra("strRoomId",toChatUsername);
+				startActivity(it);
 			}
 		});
 
@@ -132,20 +146,19 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 						@Override
 						public void onSuccess(Object obj)
 						{
-							intentChatActivity(ChatActivity.CHAT_LIVE_TEXT);
+							intentChatActivity();
 						}
 					});
 				}else{
-					intentChatActivity(ChatActivity.CHAT_LIVE_TEXT);
+					intentChatActivity();
 				}
 			}
 
 		});
 	}
 
-	private void intentChatActivity(int chatType){
+	private void intentChatActivity(){
 		Intent it = new Intent(getMContext(),ChatActivity.class);
-		it.putExtra("iChatType",chatType);
 		it.putExtra("strRoomId",toChatUsername);
 		it.putExtra("strTeacherPhoto",m_strTeacherPhoto);
 		it.putExtra("strTeacherName",m_strTeacherName);
@@ -187,10 +200,10 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 //						m_arrBanner.add(m_bannerBean.get(i).getB_link());
 //					}
 //					initBanner();
-					VideoBean videoBean = response.getContent().getVideo().get(0);
-					Glide.with(getMContext()).load(videoBean.getImg_url()).placeholder(R.mipmap.station_pic).into(m_ivLivePic);
-					m_tvLiveType.setText(videoBean.getV_type());
-					m_tvText.setText(videoBean.getV_name());
+					m_videoBean = response.getContent().getVideo().get(0);
+					Glide.with(getMContext()).load(m_videoBean.getImg_url()).placeholder(R.mipmap.station_pic).into(m_ivLivePic);
+					m_tvLiveType.setText(m_videoBean.getV_type());
+					m_tvText.setText(m_videoBean.getV_name());
 
 					executeOnLoadDataSuccess(response.getContent().getRoom());
 					totalPage = response.getContent().getRoom().size();

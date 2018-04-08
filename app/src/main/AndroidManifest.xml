@@ -84,7 +84,12 @@
         <activity
             android:name=".ChatActivity"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
+            />
+        <activity
+            android:name=".ChatLiveActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            />
         <activity
             android:name=".PicViewActivity"
             android:screenOrientation="portrait" />

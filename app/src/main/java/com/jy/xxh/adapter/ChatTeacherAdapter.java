@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.bumptech.glide.Glide;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jy.xxh.ChatActivity;
 import com.jy.xxh.R;
@@ -68,7 +69,7 @@ public class ChatTeacherAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
     @Override
     public void bindData(ViewHolder holder, final ChatMessageBean data, final int position) {
         RelativeLayout rlContent = holder.viewBinder().getView().findViewById(R.id.chat_item_layout_content);
-        SimpleDraweeView ivIcon = holder.viewBinder().getView().findViewById(R.id.chat_item_avatar);
+        ImageView ivIcon = holder.viewBinder().getView().findViewById(R.id.chat_item_avatar);
         final ImageView ivChatimage = holder.viewBinder().getView().findViewById(R.id.chat_item_content_image);
         ImageView ivSendfail = holder.viewBinder().getView().findViewById(R.id.chat_item_fail);
         ProgressBar mProgress = holder.viewBinder().getView().findViewById(R.id.chat_item_progress);
@@ -189,8 +190,7 @@ public class ChatTeacherAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
 
         tvDate.setText(TimeUtils.time2String(data.getC_time_linux()*1000, "MM-dd HH:mm"));
 //        LoaderManager.getLoader().loadNet(holder.ivIcon, data.getUserIcon(), new ILoader.Options(R.drawable.chat_to_bg_selector, R.drawable.chat_to_bg_selector));
-        LoaderManager.getLoader().loadNet(ivIcon, data.getUser_photo(), new ILoader.Options(R.drawable.chat_to_bg_selector, R.drawable.chat_to_bg_selector));
-
+        Glide.with(mContext).load(data.getUser_photo()).placeholder(R.drawable.default_head).into(ivIcon);
         tvName.setText(data.getNic_name());
 
         mProgress.setVisibility(View.GONE);

@@ -244,6 +244,47 @@ public class Utils {
         });
     }
 
+    // 点击EditText外的地方隐藏软键盘
+    public static void setOnTouchEditTextOutSideHideIM(final Activity activity, final View rootViewInsideScrollView)
+    {
+        View vContent = ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
+        vContent.setOnTouchListener(new View.OnTouchListener()
+        {
+            public boolean onTouch(View arg0, MotionEvent arg1)
+            {
+                View view = activity.getCurrentFocus();
+                if(view != null)
+                {
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    return imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        });
+        rootViewInsideScrollView.setOnTouchListener(new View.OnTouchListener()
+        {
+            public boolean onTouch(View view, MotionEvent event)
+            {
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+
+                boolean bRet = false;
+                try
+                {
+                    bRet = imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+                return false;
+            }
+        });
+    }
+
     public static Dialog showDialog(final Context context,final Intent it)
     {
         View.OnClickListener onLeftButtonClickListener = new View.OnClickListener()

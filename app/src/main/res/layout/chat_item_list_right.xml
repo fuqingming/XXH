@@ -50,7 +50,7 @@
             <!--style="@style/chat_item_avatar"-->
             <!--android:layout_alignParentRight="true"-->
             <!--/>-->
-        <com.facebook.drawee.view.SimpleDraweeView
+        <com.jy.xxh.view.ImageViewRound
             android:id="@+id/chat_item_avatar"
             style="@style/chat_item_avatar"
             android:layout_alignParentRight="true"

@@ -11,10 +11,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import com.blankj.utilcode.util.SPUtils;
+import com.bumptech.glide.Glide;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jy.xxh.base.BaseFragment;
 import com.xiao.nicevideoplayer.constants.GlobalVariables;
@@ -42,7 +44,7 @@ public class FragmentMine extends BaseFragment {
 	@BindView(R.id.sb_switch)
 	FSwitchButton m_sbSwitch;
 	@BindView(R.id.iv_icon)
-	SimpleDraweeView m_ivIcon;
+	ImageView m_ivIcon;
 	@BindView(R.id.tv_name)
 	TextView m_tvName;
 	@BindView(R.id.ll_pop)
@@ -137,8 +139,7 @@ public class FragmentMine extends BaseFragment {
 	public void onResume() {
 		super.onResume();
 		if (DemoHelper.getInstance().isLoggedIn()) {
-			LoaderManager.getLoader().loadNet(m_ivIcon, SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon),
-					new ILoader.Options(R.mipmap.head_s, R.mipmap.head_s));
+			Glide.with(getMContext()).load(SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon)).placeholder(R.drawable.default_head).into(m_ivIcon);
 			m_tvName.setText(SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame));
 		}else{
 			m_tvName.setText("登陆/注册");

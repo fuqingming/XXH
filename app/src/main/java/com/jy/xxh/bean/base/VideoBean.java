@@ -15,6 +15,7 @@ public class VideoBean implements Serializable {
     private String video_url;
     private String v_type;
     private String v_time;
+    private String room_id;
 
     public String getV_id() {
         return v_id;
@@ -62,5 +63,13 @@ public class VideoBean implements Serializable {
 
     public void setV_time(String v_time) {
         this.v_time = v_time;
+    }
+
+    public String getRoom_id() {
+        return room_id;
+    }
+
+    public void setRoom_id(String room_id) {
+        this.room_id = room_id;
     }
 }

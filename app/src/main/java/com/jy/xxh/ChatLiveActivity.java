@@ -1,15 +1,19 @@
 package com.jy.xxh;
 
+import android.app.ActionBar;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,7 +22,7 @@ import android.widget.TextView;
 
 import com.baidu.mobstat.StatService;
 import com.blankj.utilcode.util.SPUtils;
-import com.bumptech.glide.Glide;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMClient;
@@ -27,28 +31,34 @@ import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.widget.EaseChatPrimaryMenuBase;
 import com.hyphenate.util.EMLog;
 import com.jy.xxh.adapter.ChatAllAdapter;
+import com.jy.xxh.adapter.ChatLiveAdapter;
 import com.jy.xxh.adapter.ChatTeacherAdapter;
 import com.jy.xxh.alert.AlertUtils;
+import com.jy.xxh.base.BaseAppCompatActivity;
 import com.jy.xxh.bean.base.ChatMessageBean;
 import com.jy.xxh.bean.base.Messages;
 import com.jy.xxh.bean.response.ResponseBaseBean;
 import com.jy.xxh.bean.response.ResponseChatBean;
 import com.jy.xxh.bean.response.ResponseChatMessageBean;
 import com.jy.xxh.bean.response.ResponseFollowBean;
-import com.jy.xxh.util.Utils;
-import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;
 import com.jy.xxh.huanxin.Constant;
 import com.jy.xxh.util.ChatRoomListener;
 import com.jy.xxh.util.HUDProgressUtils;
+import com.jy.xxh.util.Utils;
 import com.jy.xxh.view.BigImage.FengNiaoImageSource;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
+import com.vise.xsnow.loader.ILoader;
+import com.vise.xsnow.loader.LoaderManager;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
+import com.xiao.nicevideoplayer.NiceUtil;
+import com.xiao.nicevideoplayer.constants.GlobalVariables;
+
 import org.kymjs.kjframe.KJActivity;
 import org.kymjs.kjframe.utils.FileUtils;
 
@@ -58,6 +68,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
 import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
 import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultDisposable;
@@ -65,95 +78,85 @@ import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 
 import static com.hyphenate.util.EasyUtils.TAG;
 
-public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView.PullLoadMoreListener {
+public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecyclerView.PullLoadMoreListener {
 
-    public static final int UNCONCERNED = 0;                //未关注
-    public static final int ALREADY_PAID_ATTENTION_TO = 1;  //已关注
+    /** 文字消息 **/
+    public static final int MESSAGE_TYPE_TEXT = 1;
+    /** 图片消息 **/
+    public static final int MESSAGE_TYPE_PIC = 2;
 
-    public static final int MESSAGE_TYPE_TEXT = 1;          //文字消息
-    public static final int MESSAGE_TYPE_PIC = 2;           //图片消息
+    /** 普通模式 **/
+    public static final int MODE_NORMAL = 10;
+    /** 全屏模式  **/
+    public static final int MODE_FULL_SCREEN = 11;
+
+    private int mCurrentMode;
 
     KProgressHUD kProgressHUD;
+    @BindView(R.id.ll_play)
+    RelativeLayout m_llPlay;
+
+    private MsgReceiver msgReceiver;
 
     protected EaseChatPrimaryMenuBase.EaseChatPrimaryMenuListener listener;
     protected ChatRoomListener chatRoomListener;
 
-    private PullLoadMoreRecyclerView mPullLoadMoreRecyclerViewAll;
+    @BindView(R.id.pullLoadMoreRecyclerViewAll)
+    PullLoadMoreRecyclerView mPullLoadMoreRecyclerViewAll;
     private RecyclerView mRecyclerViewAll;
-    private PullLoadMoreRecyclerView mPullLoadMoreRecyclerViewTeacher;
-    private RecyclerView mRecyclerViewTeacher;
 
-    private EditText m_etEdit;
-    private LinearLayout m_llPic;
-    private ImageView m_ivPicSend;
-    private TextView m_tvSend;
-    private ImageView m_ivOnlySee;
-    private ImageView m_ivPicChat;
-    private RelativeLayout m_rlPicChat;
+    @BindView(R.id.et_edit)
+    EditText m_etEdit;
+    @BindView(R.id.ll_pic)
+    LinearLayout m_llPic;
+    @BindView(R.id.iv_pic_send)
+    ImageView m_ivPicSend;
+    @BindView(R.id.tv_send)
+    TextView m_tvSend;
+    @BindView(R.id.webview)
+    WebView mWebView ;
+    @BindView(R.id.iv_enlarge)
+    ImageView m_ivEnlarge;
+    @BindView(R.id.rl_live)
+    RelativeLayout m_rlLive;
 
-    private boolean m_isFollow;
-
-    private ImageView m_ivAdd;
-    private TextView m_tvFollow;
-    private RelativeLayout m_rlBtnFollow;
-
-    private List<ChatMessageBean> m_msgTeacherDatas = new ArrayList<>();
     private List<ChatMessageBean> m_msgDataAll = new ArrayList<>();
-    private ChatAllAdapter adapterAll;
-    private ChatTeacherAdapter adapterTeacher;
+    private ChatLiveAdapter adapterAll;
 
     private String m_strRoomeId;
     private String m_strTeacherId;
     private boolean m_bOnlySee = false;         //false:查看全部    true:查看老师
+
     private int page;
     private int teacherPage;
 
     @Override
     public void setRootView() {
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_chat_live);
     }
 
     @Override
     public void initWidget() {
-        super.initWidget();
-
-        initView();
-
-        initListView();
-
-        onClickView();
-
-        registerReciever();
-
-        callHttpFor();
-
-    }
-
-    private void initView() {
-        m_etEdit = findViewById(R.id.et_edit);
-        m_llPic = findViewById(R.id.ll_pic);
-        m_ivPicSend = findViewById(R.id.iv_pic_send);
-        m_ivPicChat = findViewById(R.id.iv_pic_chat);
-        m_rlPicChat = findViewById(R.id.rl_pic_chat);
-        m_tvSend = findViewById(R.id.tv_send);
-        m_ivOnlySee = findViewById(R.id.iv_only_see);
-        m_ivAdd = findViewById(R.id.iv_add);
-        m_tvFollow = findViewById(R.id.tv_follow);
-        m_rlBtnFollow = findViewById(R.id.rl_btn_follow);
+        ButterKnife.bind(this);
 
         page = 0;
         teacherPage = 0;
-        kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
         m_strTeacherId = getIntent().getStringExtra("strTeacherId");
         m_strRoomeId = getIntent().getStringExtra("strRoomId");
-        String m_strTeacherPhoto = getIntent().getStringExtra("strTeacherPhoto");
-        String m_strTeacherName = getIntent().getStringExtra("strTeacherName");
-        String m_strTeacherBreif = getIntent().getStringExtra("strTeacherBreif");
 
-        m_etEdit.setMaxHeight(Utils.dp2px(this,100));
-        m_llPic.setVisibility(View.GONE);
-        m_ivPicSend.setVisibility(View.GONE);
-        m_tvSend.setVisibility(View.VISIBLE);
+        kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
+
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        m_rlLive.setVisibility(View.VISIBLE);
+        if(!NiceUtil.isWiFiActive(ChatLiveActivity.this)){
+            m_llPlay.setVisibility(View.VISIBLE);
+        }else{
+            m_llPlay.setVisibility(View.GONE);
+            mWebView.loadUrl("http://live.guxuantang.com");
+            m_ivEnlarge.setVisibility(View.VISIBLE);
+        }
 
         chatRoomListener = new ChatRoomListener() {
             @Override
@@ -163,17 +166,45 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
 
             @Override
             protected Context setContext() {
-                return ChatActivity.this;
+                return ChatLiveActivity.this;
             }
         };
 
-        ImageView m_ivTeacherPhoto = findViewById(R.id.iv_icon);
-        TextView m_tvName = findViewById(R.id.tv_name);
-        TextView m_tvTitle = findViewById(R.id.tv_title);
+        m_etEdit.setMaxHeight(Utils.dp2px(this,100));
 
-        Glide.with(this).load(m_strTeacherPhoto).placeholder(R.mipmap.head_s).into(m_ivTeacherPhoto);
-        m_tvName.setText(m_strTeacherName);
-        m_tvTitle.setText(m_strTeacherBreif);
+        m_llPic.setVisibility(View.GONE);
+        m_ivPicSend.setVisibility(View.GONE);
+        m_tvSend.setVisibility(View.VISIBLE);
+
+        initListView();
+
+        onClickView();
+
+        registerReciever();
+
+        callHttpFor();
+    }
+
+    @OnClick({R.id.tv_play,R.id.iv_back_live,R.id.iv_enlarge})
+    public void onViewClick(View view){
+        switch (view.getId()){
+            case R.id.tv_play:
+                m_llPlay.setVisibility(View.GONE);
+                mWebView.loadUrl(getIntent().getStringExtra("strVideoUrl"));
+                mWebView.loadUrl("http://live.guxuantang.com");
+                m_ivEnlarge.setVisibility(View.VISIBLE);
+                break;
+            case R.id.iv_back_live:
+                if(!exitFullScreen()){
+                    finish();
+                }
+                break;
+            case R.id.iv_enlarge:
+                if(!exitFullScreen()){
+                    enterFullScreen();
+                }
+                break;
+        }
     }
 
     @Override
@@ -182,11 +213,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
         map.put("room_id",m_strRoomeId);
         map.put("t_type",m_bOnlySee ? 1 : 0);
         map.put("page", m_bOnlySee ? teacherPage:page);
-        if(m_bOnlySee){
-            callHttpForSearchChatMsgTeacher(map);
-        }else{
-            callHttpForSearchChatMsgAll(map);
-        }
+        callHttpForSearchChatMsgAll(map);
     }
 
     @Override
@@ -195,37 +222,6 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
     }
 
     private void onClickView(){
-
-        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-        m_ivOnlySee.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!m_bOnlySee){
-                    m_ivOnlySee.setImageResource(R.mipmap.see_all);
-                    m_bOnlySee = true;
-                    mPullLoadMoreRecyclerViewTeacher.setVisibility(View.VISIBLE);
-                    mPullLoadMoreRecyclerViewAll.setVisibility(View.GONE);
-                    if(m_msgTeacherDatas.size() == 0){
-                        Map<String, Object> map = new HashMap<>();
-                        map.put("room_id",m_strRoomeId);
-                        map.put("t_type",m_bOnlySee ? 1 : 0);
-                        map.put("page", m_bOnlySee ? teacherPage:page);
-                        callHttpForSearchChatMsgTeacher(map);
-                    }
-                }else{
-                    m_ivOnlySee.setImageResource(R.mipmap.teacher_look);
-                    m_bOnlySee = false;
-                    mPullLoadMoreRecyclerViewTeacher.setVisibility(View.GONE);
-                    mPullLoadMoreRecyclerViewAll.setVisibility(View.VISIBLE);
-                }
-            }
-        });
 
         m_tvSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -241,6 +237,15 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
                 m_msgDataAll.add(chatMessageBean);
                 adapterAll.addLast(chatMessageBean);
                 m_etEdit.setText("");
+
+//                EMMessage message = EMMessage.createTxtSendMessage(strMessage,m_strRoomeId);
+//                message.setAttribute("nickname", SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame));
+//                message.setAttribute("headerImageUrl", SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon));
+//                message.setAttribute("memberType", Messages.MSG_OTHER_MEMBER);
+//                message.setAttribute("messageType", ChatMessageBean.user_char);
+//                message.setChatType(EMMessage.ChatType.ChatRoom);
+//                EMClient.getInstance().chatManager().sendMessage(message);
+
                 callHttpForSendMsg(MESSAGE_TYPE_TEXT,strMessage,"");
                 mRecyclerViewAll.scrollToPosition(adapterAll.getItemCount()-1);
             }
@@ -252,35 +257,6 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
                 openRadio();
             }
         });
-
-        m_rlBtnFollow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                callHttpFollow();
-            }
-        });
-
-        m_rlPicChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                m_rlPicChat.setVisibility(View.GONE);
-            }
-        });
-        m_ivPicChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                m_rlPicChat.setVisibility(View.GONE);
-            }
-        });
-
-        findViewById(R.id.ll_teacher_details).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent(ChatActivity.this,TeacherDetailsActivity.class);
-                it.putExtra("strTeacherId",m_strTeacherId);
-                startActivity(it);
-            }
-        });
     }
 
     /**
@@ -288,7 +264,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
      */
     private void openRadio() {
         RxGalleryFinal
-                .with(ChatActivity.this)
+                .with(ChatLiveActivity.this)
                 .image()
                 .radio()
 //                .cropAspectRatioOptions(0, new AspectRatio("3:3", 30, 10))
@@ -297,9 +273,9 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
                 .subscribe(new RxBusResultDisposable<ImageRadioResultEvent>() {
                     @Override
                     protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
-                        Uri dataUri = Utils.getMediaUriFromPath(ChatActivity.this,imageRadioResultEvent.getResult().getOriginalPath());
+                        Uri dataUri = Utils.getMediaUriFromPath(ChatLiveActivity.this,imageRadioResultEvent.getResult().getOriginalPath());
                         if (dataUri != null) {
-                            File file = FileUtils.uri2File(aty, dataUri);
+                            File file = FileUtils.uri2File(ChatLiveActivity.this, dataUri);
 
                             ChatMessageBean chatMessageBean = new ChatMessageBean(ChatMessageBean.user_pic, file.getAbsolutePath(),System.currentTimeMillis(),"",
                                     SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame),
@@ -321,43 +297,52 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
     }
 
     private void initListView() {
-        mPullLoadMoreRecyclerViewAll = findViewById(R.id.pullLoadMoreRecyclerViewAll);
         mRecyclerViewAll = mPullLoadMoreRecyclerViewAll.getRecyclerView();
         mRecyclerViewAll.setVerticalScrollBarEnabled(true);
         mPullLoadMoreRecyclerViewAll.setPushRefreshEnable(false);
         mPullLoadMoreRecyclerViewAll.setRefreshing(true);
         mPullLoadMoreRecyclerViewAll.setLinearLayout();
         mPullLoadMoreRecyclerViewAll.setOnPullLoadMoreListener(this);
-        adapterAll = new ChatAllAdapter(this,  getOnChatItemClickListener());
+        adapterAll = new ChatLiveAdapter(this,  getOnChatItemClickListener());
         mPullLoadMoreRecyclerViewAll.setAdapter(adapterAll);
         adapterAll.addAll(m_msgDataAll);
 
-        mPullLoadMoreRecyclerViewTeacher = findViewById(R.id.pullLoadMoreRecyclerViewTeacher);
-        mRecyclerViewTeacher = mPullLoadMoreRecyclerViewTeacher.getRecyclerView();
-        mRecyclerViewTeacher.setVerticalScrollBarEnabled(true);
-        mPullLoadMoreRecyclerViewTeacher.setPushRefreshEnable(false);
-        mPullLoadMoreRecyclerViewTeacher.setRefreshing(true);
-        mPullLoadMoreRecyclerViewTeacher.setLinearLayout();
-        mPullLoadMoreRecyclerViewTeacher.setOnPullLoadMoreListener(this);
-        adapterTeacher = new ChatTeacherAdapter(this,  getOnChatItemClickListener());
-        mPullLoadMoreRecyclerViewTeacher.setAdapter(adapterTeacher);
-        adapterTeacher.addAll(m_msgTeacherDatas);
+        Utils.setOnTouchEditTextOutSideHideIM(ChatLiveActivity.this,mRecyclerViewAll);
+    }
 
-        Utils.setOnTouchEditTextOutSideHideIM(this,mRecyclerViewAll);
-        Utils.setOnTouchEditTextOutSideHideIM(this,mRecyclerViewTeacher);
+    private void enterFullScreen() {
+        if (mCurrentMode == MODE_FULL_SCREEN) return;
+        NiceUtil.scanForActivity(ChatLiveActivity.this) .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        mPullLoadMoreRecyclerViewAll.setVisibility(View.GONE);
+        findViewById(R.id.ll_edit).setVisibility(View.GONE);
+        LinearLayout.LayoutParams linearParams =(LinearLayout.LayoutParams) m_rlLive.getLayoutParams(); //取控件textView当前的布局参数
+        linearParams.height = ActionBar.LayoutParams.MATCH_PARENT;
+        mCurrentMode = MODE_FULL_SCREEN;
+    }
 
+    private boolean exitFullScreen() {
+        if (mCurrentMode == MODE_FULL_SCREEN) {
+            NiceUtil.scanForActivity(ChatLiveActivity.this).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            mPullLoadMoreRecyclerViewAll.setVisibility(View.VISIBLE);
+            findViewById(R.id.ll_edit).setVisibility(View.VISIBLE);
+            LinearLayout.LayoutParams linearParams =(LinearLayout.LayoutParams) m_rlLive.getLayoutParams(); //取控件textView当前的布局参数
+            linearParams.height = Utils.dp2px(ChatLiveActivity.this,230);
+            mCurrentMode = MODE_NORMAL;
+            return true;
+        }
+        return false;
     }
 
     /**
      * @return 聊天列表内存点击事件监听器
      */
-    private ChatActivity.OnChatItemClickListener getOnChatItemClickListener() {
-        return new ChatActivity.OnChatItemClickListener() {
+    private ChatLiveActivity.OnChatItemClickListener getOnChatItemClickListener() {
+        return new ChatLiveActivity.OnChatItemClickListener() {
             @Override
             public void onPhotoClick(int position,String imgPath,ImageView thumb) {
                 ImageViewAware thumbAware = new ImageViewAware(thumb);
                 String url = new FengNiaoImageSource(imgPath, 3840, 5760).getThumb(100, 100).url;
-                Intent intent = new Intent(ChatActivity.this, PicViewActivity.class);
+                Intent intent = new Intent(ChatLiveActivity.this, PicViewActivity.class);
                 intent.putExtra("image", new FengNiaoImageSource(imgPath, 3840, 5760));
                 ImageSize targetSize = new ImageSize(thumbAware.getWidth(), thumbAware.getHeight());
                 String memoryCacheKey = MemoryCacheUtils.generateKey(url, targetSize);
@@ -383,7 +368,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
      * 聊天列表中对内容的点击事件监听
      */
     public interface OnChatItemClickListener {
-        void onPhotoClick(int position, String imgPath,ImageView imageView);
+        void onPhotoClick(int position, String imgPath, ImageView imageView);
 
         void onTextClick(int position);
 
@@ -394,6 +379,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
     protected void onDestroy() {
         super.onDestroy();
         EMClient.getInstance().chatroomManager().leaveChatRoom(m_strRoomeId);
+        unregisterReceiver(msgReceiver);
     }
 
     @Override
@@ -428,7 +414,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
     }
 
     private void registerReciever() {
-        MsgReceiver msgReceiver = new MsgReceiver();
+        msgReceiver = new MsgReceiver();
         IntentFilter filter1 = new IntentFilter();
         filter1.addAction(Constant.BROADCAST_RECEIVEMESSAGE_CHAT);
         registerReceiver(msgReceiver, filter1);
@@ -480,19 +466,6 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
             if(isBottomAll){
                 mRecyclerViewAll.scrollToPosition(adapterAll.getItemCount()-1);
             }
-
-            if(strMemberType.equals(ChatMessageBean.teacher_char) || strMemberType.equals(ChatMessageBean.teacher_pic) || strMemberType.equals(ChatMessageBean.teacher_rep)&& m_bOnlySee){
-                boolean isBottomTeacher;
-                if(!mRecyclerViewTeacher.canScrollVertically(1)) {
-                    isBottomTeacher = true;
-                }else {
-                    isBottomTeacher = false;
-                }
-                adapterTeacher.addLast(chatMessageBean);
-                if(isBottomTeacher){
-                    mRecyclerViewTeacher.scrollToPosition(adapterTeacher.getItemCount()-1);
-                }
-            }
         }
     }
 
@@ -502,12 +475,6 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
             @Override
             public void OnSuccess(ResponseChatBean response) {
                 if(response.getResult()){
-                    if(response.getContent().getInfo().getA_id_attention() == ALREADY_PAID_ATTENTION_TO){
-                        m_isFollow = true;
-                    }else if(response.getContent().getInfo().getA_id_attention() == UNCONCERNED){
-                        m_isFollow = false;
-                    }
-                    isFollow();
                     joinRoom();
                     Map<String, Object> map = new HashMap<>();
                     map.put("room_id",m_strRoomeId);
@@ -534,16 +501,6 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
         });
     }
 
-    private void isFollow(){
-        if(m_isFollow){
-            m_ivAdd.setVisibility(View.GONE);
-            m_tvFollow.setText("已关注");
-        }else{
-            m_ivAdd.setVisibility(View.VISIBLE);
-            m_tvFollow.setText("关注");
-        }
-    }
-
     private void joinRoom(){
         EMClient.getInstance().chatroomManager().addChatRoomChangeListener(chatRoomListener);
         onChatRoomViewCreation();
@@ -558,7 +515,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(ChatActivity.this.isFinishing() || !m_strRoomeId.equals(value.getId()))
+                        if(ChatLiveActivity.this.isFinishing() || !m_strRoomeId.equals(value.getId()))
                             return;
                         EMChatRoom room = EMClient.getInstance().chatroomManager().getChatRoom(m_strRoomeId);
                         if (room != null) {
@@ -571,12 +528,6 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
 
             @Override
             public void onError(final int error, String errorMsg) {
-//                if(m_isOnlineRoom){
-//                    m_isOnlineRoom = false;
-//                    EMClient.getInstance().chatroomManager().leaveChatRoom(m_strRoomeId);
-//                    joinRoom();
-//                    return;
-//                }
                 EMLog.d(TAG, "join room failure : " + error);
                 runOnUiThread(new Runnable() {
                     @Override
@@ -659,73 +610,6 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
             }
         });
     }
-    private void callHttpForSearchChatMsgTeacher(Map<String, Object> map){
-//
-        HttpClient.post(ApiStores.seacher_record, map, new HttpCallback<ResponseChatMessageBean>() {
-            @Override
-            public void OnSuccess(final ResponseChatMessageBean response) {
-                if (response.getResult()){
-                    mPullLoadMoreRecyclerViewTeacher.setPullLoadMoreCompleted();
-                    if(response.getContent().size() == 0 ){
-                        mPullLoadMoreRecyclerViewTeacher.setPullRefreshEnable(false);
-                        return;
-                    }
-                    teacherPage ++;
-                    adapterTeacher.addAllTop(response.getContent());
-
-                    if(teacherPage == 1){
-                        mRecyclerViewTeacher.scrollToPosition(adapterTeacher.getItemCount()-1);
-                    }
-                }else {
-                    messageCenter("提示",response.getMessage());
-                }
-            }
-
-            @Override
-            public void OnFailure(String message) {
-                messageCenter("提示",message);
-            }
-
-            @Override
-            public void OnRequestStart() {
-            }
-
-            @Override
-            public void OnRequestFinish() {
-            }
-        });
-    }
-
-    private void callHttpFollow(){
-        String urlDataString = "?a_tid="+m_strTeacherId+"&a_uid="+ SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserId);
-        HttpClient.get(ApiStores.add_attension + urlDataString, new HttpCallback<ResponseFollowBean>() {
-            @Override
-            public void OnSuccess(ResponseFollowBean response) {
-                if(response.getResult()){
-                    if(response.getContent().getInfo() == ALREADY_PAID_ATTENTION_TO){
-                        m_isFollow = true;
-                    }else if(response.getContent().getInfo() == UNCONCERNED){
-                        m_isFollow = false;
-                    }
-                    isFollow();
-                }
-            }
-
-            @Override
-            public void OnFailure(String message) {
-                kProgressHUD.dismiss();
-                messageCenter("错误",message);
-            }
-
-            @Override
-            public void OnRequestStart() {
-            }
-
-            @Override
-            public void OnRequestFinish() {
-            }
-        });
-    }
 
     private void messageCenter(String title,String message){
         AlertUtils.MessageAlertShow(this, title, message);
@@ -733,11 +617,15 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
 
     @Override
     public void onBackPressed() {
-        if(m_rlPicChat.getVisibility() == View.VISIBLE){
-            m_rlPicChat.setVisibility(View.GONE);
+        if (exitFullScreen()) {
             return;
         }
         finish();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     @Override
