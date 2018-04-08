@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="app_backgrount_color">#F5F5F5</color>
+    <color name="app_bg_color">#F5EFE5</color>
+    <color name="background_tab_pressed">#6633B5E5</color>
+    <color name="black">#333333</color>
+    <color name="blue_color">#007AFF</color>
+    <color name="brown_color">#855B33</color>
+    <color name="button_bg_color_pressed">#FCFAF8</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#e35b5a</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="dark">#888888</color>
+    <color name="dialog_gray">#F9F9F9</color>
+    <color name="emoji_keyboard_bg_light">#f6f5f5</color>
+    <color name="frag_more_name_text">#ff7b7b7b</color>
+    <color name="gold">#FFD700</color>
+    <color name="gray">#808080</color>
+    <color name="green">#008000</color>
+    <color name="lib_sb_color_checked_view">#4AD863</color>
+    <color name="lib_sb_color_normal_view">#E3E3E3</color>
+    <color name="lib_sb_color_thumb_view">#FFFFFF</color>
+    <color name="lib_sb_stroke_color_checked_view">@color/lib_sb_color_checked_view</color>
+    <color name="lib_sb_stroke_color_normal_view">#D2D2D2</color>
+    <color name="lib_sb_stroke_color_thumb_view">#D2D2D2</color>
+    <color name="main_gray">#9A9A9A</color>
+    <color name="pink">#FFC0CB</color>
+    <color name="purple">#800080</color>
+    <color name="red">#DB2C2C</color>
+    <color name="red_color">#E42837</color>
+    <color name="spliter_line_color">#D8D8D8</color>
+    <color name="verify_false_color">#EC9994</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_color">#FFFFFF</color>
+    <color name="window_background">#EBEBEB</color>
+    <color name="yellow">#FFFF00</color>
+    <declare-styleable name="PagerSlidingTabStrip"><attr format="color" name="pstsIndicatorColor"/><attr format="color" name="pstsUnderlineColor"/><attr format="color" name="pstsDividerColor"/><attr format="dimension" name="pstsIndicatorHeight"/><attr format="dimension" name="pstsUnderlineHeight"/><attr format="dimension" name="pstsDividerPadding"/><attr format="dimension" name="pstsTabPaddingLeftRight"/><attr format="dimension" name="pstsScrollOffset"/><attr format="reference" name="pstsTabBackground"/><attr format="boolean" name="pstsShouldExpand"/><attr format="boolean" name="pstsTextAllCaps"/></declare-styleable>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <string name="Registration_failed">注册失败</string>
+    <string name="action_settings">Settings</string>
+    <string name="app_name">Chat</string>
+    <string name="at_your_in_group">%s在群聊中@了你</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="msg_recall_by_self">This message has been recalled by myself</string>
+    <string name="msg_recall_by_user">This message has been recalled by %1$s</string>
+    <string name="register_exceed_service_limit">您的App用户注册数量已达上限,请升级至企业版</string>
+    <string name="registration_failed_without_permission">注册失败，无权限！</string>
+    <style name="chat_item_avatar">
+        <item name="android:layout_width">42dp</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:focusable">false</item>
+        <item name="android:background">@drawable/default_head</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+    <style name="chat_item_content">
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="chat_item_date">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_chat_time_tag</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">1dp</item>
+        <item name="android:paddingBottom">1dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="chat_item_image_content">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">false</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxWidth">150dp</item>
+        <item name="android:maxHeight">150dp</item>
+        <item name="android:minHeight">50dp</item>
+        <item name="android:minWidth">50dp</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+    <style name="chat_item_text_content">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+</resources>

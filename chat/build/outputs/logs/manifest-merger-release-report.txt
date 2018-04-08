@@ -1,0 +1,37 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml:2:1-5:12
+INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml:2:1-5:12
+INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml:2:1-5:12
+INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml:2:1-5:12
+INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml:2:1-5:12
+INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml:2:1-5:12
+INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml:2:1-5:12
+	package
+		ADDED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml:3:5-29
+		INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+		INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+		ADDED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml:2:1-5:12
+		INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+		ADDED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml:2:1-5:12
+		INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml:2:11-69
+uses-sdk
+INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+		ADDED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+		INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+		ADDED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
+		INJECTED from /Users/fuqingming/Documents/GitHub/XXH/chat/src/main/AndroidManifest.xml
