@@ -1,12 +1,15 @@
 package com.jy.xxh;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -35,8 +38,8 @@ import com.jy.xxh.bean.response.ResponseBaseBean;
 import com.jy.xxh.bean.response.ResponseChatBean;
 import com.jy.xxh.bean.response.ResponseChatMessageBean;
 import com.jy.xxh.bean.response.ResponseFollowBean;
+import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.util.Utils;
-import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;
@@ -228,6 +231,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
         });
 
         m_tvSend.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NewApi")
             @Override
             public void onClick(View view) {
                 String strMessage = m_etEdit.getText().toString().trim();
@@ -436,6 +440,7 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
 
     /** 收到消息广播接收者 刷新界面 **/
     class MsgReceiver extends BroadcastReceiver {
+        @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
         @Override
         public void onReceive(Context arg0, Intent intent) {
             int iMsgType = intent.getIntExtra("iMsgType",3);

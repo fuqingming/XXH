@@ -1,5 +1,6 @@
 package com.jy.xxh;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -127,6 +128,7 @@ public class ForgetPwdActivity extends BaseAppCompatActivity {
         }
     }
 
+    @SuppressLint("NewApi")
     private boolean isPhoneValid(){
         m_strPhone = m_etPhone.getText().toString().trim();
         if(m_strPhone.isEmpty())

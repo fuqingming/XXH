@@ -1,5 +1,6 @@
 package com.jy.xxh;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +13,7 @@ import com.hyphenate.chat.EMClient;
 import com.jy.xxh.alert.AlertUtils;
 import com.jy.xxh.base.BaseAppCompatActivity;
 import com.jy.xxh.bean.response.ResponseLoginBean;
-import com.xiao.nicevideoplayer.constants.GlobalVariables;
+import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.data.Const;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
@@ -75,6 +76,7 @@ public class LoginActivity extends BaseAppCompatActivity {
     }
 
     // 检查输入项是否输入正确
+    @SuppressLint("NewApi")
     private boolean isInputValid() {
 
         m_strPhone = m_etPhone.getText().toString().trim();

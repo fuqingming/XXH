@@ -2,6 +2,8 @@ package com.jy.xxh;
 
 
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +15,7 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.jy.xxh.base.FragmentActivityBase;
-import com.xiao.nicevideoplayer.constants.GlobalVariables;
+import com.jy.xxh.constants.GlobalVariables;
 
 public class MainActivity extends FragmentActivityBase {
 
@@ -64,6 +66,7 @@ public class MainActivity extends FragmentActivityBase {
         super.onNewIntent(intent);
         setIntent(intent);
     }
+    @RequiresApi(api = Build.VERSION_CODES.DONUT)
     @Override
     protected void setUpView() {
         m_rlStartUp = findViewById(R.id.rl_start_up);

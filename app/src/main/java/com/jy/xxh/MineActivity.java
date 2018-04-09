@@ -1,5 +1,6 @@
 package com.jy.xxh;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,10 +15,10 @@ import com.hyphenate.EMCallBack;
 import com.jy.xxh.backhandler.OnTaskSuccessComplete;
 import com.jy.xxh.base.BaseAppCompatActivity;
 import com.jy.xxh.bean.response.ResponseChangeHeadBean;
+import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.util.DirSettings;
 import com.jy.xxh.util.FileUtil;
 import com.jy.xxh.view.switchbutton.FSwitchButton;
-import com.xiao.nicevideoplayer.constants.GlobalVariables;
 import com.jy.xxh.http.Upload;
 import com.jy.xxh.huanxin.DemoHelper;
 import com.jy.xxh.util.CleanMessageUtil;
@@ -160,6 +161,7 @@ public class MineActivity extends BaseAppCompatActivity {
                 .radio()
                 .imageLoader(ImageLoaderType.FRESCO)
                 .subscribe(new RxBusResultDisposable<ImageRadioResultEvent>() {
+                    @SuppressLint("NewApi")
                     @Override
                     protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
                         kProgressHUD.show();

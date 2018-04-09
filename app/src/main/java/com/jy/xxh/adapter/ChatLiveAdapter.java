@@ -29,14 +29,10 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.jy.xxh.ChatLiveActivity;
 import com.jy.xxh.R;
 import com.jy.xxh.bean.base.ChatMessageBean;
+import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.util.TimeUtils;
 import com.jy.xxh.view.commonRecyclerAdapter.CommonRecyclerAdapter;
 import com.jy.xxh.view.commonRecyclerAdapter.ViewHolder;
-import com.vise.xsnow.loader.ILoader;
-import com.vise.xsnow.loader.LoaderManager;
-import com.xiao.nicevideoplayer.constants.GlobalVariables;
-
-import org.kymjs.kjframe.KJBitmap;
 
 public class ChatLiveAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
     private ChatLiveActivity.OnChatItemClickListener listener;

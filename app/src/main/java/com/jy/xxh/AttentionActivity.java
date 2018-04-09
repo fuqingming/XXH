@@ -15,7 +15,7 @@ import com.jy.xxh.alert.AlertUtils;
 import com.jy.xxh.base.BaseListActivity;
 import com.jy.xxh.bean.base.AttentionBean;
 import com.jy.xxh.bean.response.ResponseAttentionBean;
-import com.xiao.nicevideoplayer.constants.GlobalVariables;
+import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;

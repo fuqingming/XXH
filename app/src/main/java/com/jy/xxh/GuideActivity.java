@@ -14,7 +14,7 @@ import android.widget.ImageView;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.jy.xxh.base.BaseAppCompatActivity;
-import com.xiao.nicevideoplayer.constants.GlobalVariables;
+import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.util.Utils;
 
 import com.jy.xxh.huanxin.DemoHelper;

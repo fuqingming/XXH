@@ -1,4 +1,4 @@
-package com.xiao.nicevideoplayer.constants;
+package com.jy.xxh.constants;
 
 /**
  * Created by HH

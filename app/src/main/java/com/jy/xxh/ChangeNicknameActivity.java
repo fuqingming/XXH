@@ -1,5 +1,6 @@
 package com.jy.xxh;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -8,7 +9,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.jy.xxh.alert.AlertUtils;
 import com.jy.xxh.base.BaseAppCompatActivity;
 import com.jy.xxh.bean.response.ResponseBaseBean;
-import com.xiao.nicevideoplayer.constants.GlobalVariables;
+import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;
@@ -62,6 +63,7 @@ public class ChangeNicknameActivity extends BaseAppCompatActivity {
         }
     }
     // 检查输入项是否输入正确
+    @SuppressLint("NewApi")
     private boolean isInputValid() {
 
         m_strNickname = m_etText.getText().toString().trim();

@@ -16,10 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.blankj.utilcode.util.SPUtils;
-import com.xiao.nicevideoplayer.constants.GlobalVariables;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -304,12 +300,12 @@ public class TxVideoPlayerController
     @Override
     public void onClick(View v) {
         if (v == mCenterStart) {
-            if( !SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverWifiPlay)){
-                if (mNiceVideoPlayer.isIdle()) {
-                    mNiceVideoPlayer.start();
-                }
-                return;
-            }
+//            if( !SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverWifiPlay)){
+//                if (mNiceVideoPlayer.isIdle()) {
+//                    mNiceVideoPlayer.start();
+//                }
+//                return;
+//            }
             if(!NiceUtil.isWiFiActive(mContext)){
                 NiceUtil.showDialogOpenWifi(mContext,new OnTaskSuccessComplete()
                 {

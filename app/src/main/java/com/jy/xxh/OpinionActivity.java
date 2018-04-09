@@ -1,5 +1,7 @@
 package com.jy.xxh;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -8,7 +10,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.jy.xxh.alert.AlertUtils;
 import com.jy.xxh.base.BaseAppCompatActivity;
 import com.jy.xxh.bean.response.ResponseBaseBean;
-import com.xiao.nicevideoplayer.constants.GlobalVariables;
+import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;
@@ -40,6 +42,7 @@ public class OpinionActivity extends BaseAppCompatActivity {
         m_etText.requestFocus();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @OnClick({R.id.tv_commit,R.id.iv_title_back})
     public void onViewClick(View view){
         switch (view.getId()){
