@@ -7,14 +7,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -63,6 +69,7 @@ import org.kymjs.kjframe.KJActivity;
 import org.kymjs.kjframe.utils.FileUtils;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,6 +82,8 @@ import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
 import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
 import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultDisposable;
 import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
+import cn.nodemedia.LivePlayer;
+import cn.nodemedia.LivePlayerDelegate;
 
 import static com.hyphenate.util.EasyUtils.TAG;
 
@@ -113,8 +122,10 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
     ImageView m_ivPicSend;
     @BindView(R.id.tv_send)
     TextView m_tvSend;
-    @BindView(R.id.webview)
-    WebView mWebView ;
+//    @BindView(R.id.webview)
+//    WebView mWebView ;
+    @BindView(R.id.view)
+    SurfaceView mView ;
     @BindView(R.id.iv_enlarge)
     ImageView m_ivEnlarge;
     @BindView(R.id.rl_live)
@@ -129,6 +140,10 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
 
     private int page;
     private int teacherPage;
+
+//    float srcWidth;
+//    float srcHeight;
+//    DisplayMetrics dm;
 
     @Override
     public void setRootView() {
@@ -146,16 +161,16 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
 
         kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
 
-        WebSettings webSettings = mWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+//        WebSettings webSettings = mWebView.getSettings();
+//        webSettings.setJavaScriptEnabled(true);
+//        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         m_rlLive.setVisibility(View.VISIBLE);
         if(!NiceUtil.isWiFiActive(ChatLiveActivity.this)){
             m_llPlay.setVisibility(View.VISIBLE);
         }else{
             m_llPlay.setVisibility(View.GONE);
-            mWebView.loadUrl("http://wap.ngwatch.top/index/Index/videoshow");
             m_ivEnlarge.setVisibility(View.VISIBLE);
+            initPlayer();
         }
 
         chatRoomListener = new ChatRoomListener() {
@@ -185,14 +200,139 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
         callHttpFor();
     }
 
+    private void initPlayer(){
+//        dm = getResources().getDisplayMetrics();
+        LivePlayer.init(ChatLiveActivity.this);
+        LivePlayer.setDelegate(new LivePlayerDelegate() {
+            @Override
+            public void onEventCallback(int event, String msg) {
+                Message message = new Message();
+                Bundle b = new Bundle();
+                b.putString("msg", msg);
+                message.setData(b);
+                message.what = event;
+                handler.sendMessage(message);
+            }
+        });
+        LivePlayer.setUIVIew(mView);
+        LivePlayer.setBufferTime(100);
+        LivePlayer.setMaxBufferTime(1000);
+        LivePlayer.startPlay(getIntent().getStringExtra("strLiveUrl"));
+    }
+
+//    /**
+//     * 监听手机旋转，不销毁activity进行画面旋转，再缩放显示区域
+//     */
+//    @Override
+//    public void onConfigurationChanged(Configuration newConfig) {
+//        super.onConfigurationChanged(newConfig);
+//        doVideoFix();
+//    }
+//
+//
+//
+//    /**
+//     * 视频画面高宽等比缩放，此SDK——demo 取屏幕高宽做最大高宽缩放
+//     */
+//    private void doVideoFix() {
+//        float maxWidth = dm.widthPixels;
+//        float maxHeight = dm.heightPixels;
+//        float fixWidth;
+//        float fixHeight;
+//        if (srcWidth / srcHeight <= maxWidth / maxHeight) {
+//            fixWidth = srcWidth * maxHeight / srcHeight;
+//            fixHeight = maxHeight;
+//        } else {
+//            fixWidth = maxWidth;
+//            fixHeight = srcHeight * maxWidth / srcWidth;
+//        }
+//        ViewGroup.LayoutParams lp = mView.getLayoutParams();
+//        lp.width = (int) fixWidth;
+//        lp.height = (int) fixHeight;
+//
+//        mView.setLayoutParams(lp);
+//    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
+        // 回调处理
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            switch (msg.what) {
+                case 1000:
+                    // Toast.makeText(LivePlayerDemoActivity.this, "正在连接视频",
+                    // Toast.LENGTH_SHORT).show();
+                    break;
+                case 1001:
+                    // Toast.makeText(LivePlayerDemoActivity.this, "视频连接成功",
+                    // Toast.LENGTH_SHORT).show();
+                    break;
+                case 1002:
+                    // Toast.makeText(LivePlayerDemoActivity.this, "视频连接失败",
+                    // Toast.LENGTH_SHORT).show();
+                    //流地址不存在，或者本地网络无法和服务端通信，回调这里。5秒后重连， 可停止
+                    //LivePlayer.stopPlay();
+                    break;
+                case 1003:
+                    //Toast.makeText(LivePlayerDemoActivity.this, "视频开始重连",
+                    //LivePlayer.stopPlay();	//自动重连总开关
+                    break;
+                case 1004:
+                    // Toast.makeText(LivePlayerDemoActivity.this, "视频播放结束",
+                    // Toast.LENGTH_SHORT).show();
+                    break;
+                case 1005:
+                    // Toast.makeText(LivePlayerDemoActivity.this, "网络异常,播放中断",
+                    // Toast.LENGTH_SHORT).show();
+                    //播放中途网络异常，回调这里。1秒后重连，如不需要，可停止
+                    //LivePlayer.stopPlay();
+                    break;
+                case 1100:
+//				System.out.println("NetStream.Buffer.Empty");
+                    break;
+                case 1101:
+//				System.out.println("NetStream.Buffer.Buffering");
+                    break;
+                case 1102:
+//				System.out.println("NetStream.Buffer.Full");
+                    break;
+                case 1103:
+//				System.out.println("Stream EOF");
+                    //客服端明确收到服务端发送来的 StreamEOF 和 NetStream.Play.UnpublishNotify时回调这里
+                    //收到本事件，说明：此流的发布者明确停止了发布，或者网络异常，被服务端明确关闭了流
+                    //本sdk仍然会继续在1秒后重连，如不需要，可停止
+//				LivePlayer.stopPlay();
+                    break;
+                case 1104:
+                    /**
+                     * 得到 解码后得到的视频高宽值,可用于重绘surfaceview的大小比例 格式为:{width}x{height}
+                     * 本例使用LinearLayout内嵌SurfaceView
+                     * LinearLayout的大小为最大高宽,SurfaceView在内部等比缩放,画面不失真
+                     * 等比缩放使用在不确定视频源高宽比例的场景,用上层LinearLayout限定了最大高宽
+                     */
+//                    String[] info = msg.getData().getString("msg").split("x");
+//                    srcWidth = Integer.valueOf(info[0]);
+//                    srcHeight = Integer.valueOf(info[1]);
+//                    doVideoFix();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+
     @OnClick({R.id.tv_play,R.id.iv_back_live,R.id.iv_enlarge})
     public void onViewClick(View view){
         switch (view.getId()){
             case R.id.tv_play:
                 m_llPlay.setVisibility(View.GONE);
-                mWebView.loadUrl(getIntent().getStringExtra("strVideoUrl"));
-                mWebView.loadUrl("http://live.guxuantang.com");
+//                mWebView.loadUrl(getIntent().getStringExtra("strVideoUrl"));
+//                mWebView.loadUrl("http://live.guxuantang.com");
                 m_ivEnlarge.setVisibility(View.VISIBLE);
+                initPlayer();
                 break;
             case R.id.iv_back_live:
                 if(!exitFullScreen()){
@@ -381,6 +521,7 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
         super.onDestroy();
         EMClient.getInstance().chatroomManager().leaveChatRoom(m_strRoomeId);
         unregisterReceiver(msgReceiver);
+        LivePlayer.stopPlay();
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.jy.xxh;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -57,6 +59,7 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 		return R.layout.fragment_hall;
 	}
 
+	@SuppressLint("ResourceAsColor")
 	@Override
 	public void initView() {
 		super.initView();
@@ -79,6 +82,12 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 		mRecyclerView.addItemDecoration(new RecycleViewDivider(getMContext(), LinearLayoutManager.VERTICAL, 9, getResources().getColor(R.color.app_backgrount_color)));
 		mRecyclerView.setLoadMoreEnabled(false);
 		View header = LayoutInflater.from(getMContext()).inflate(R.layout.common_fragment_hall_live,mRecyclerView, false);
+		TextView tvTitleLive = header.findViewById(R.id.tv_title_live);
+		TextPaint tpTitleLive = tvTitleLive .getPaint();
+		tpTitleLive.setFakeBoldText(true);
+		TextView tvTextLive = header.findViewById(R.id.tv_text_live);
+		TextPaint tpTextLive = tvTextLive .getPaint();
+		tpTextLive.setFakeBoldText(true);
 		m_vSpliter = header.findViewById(R.id.v_spliter);
 		m_tvLiveType = header.findViewById(R.id.tv_live_type);
 		m_tvText = header.findViewById(R.id.tv_text);
@@ -101,6 +110,7 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 
 				Intent it = new Intent(getMContext(),ChatLiveActivity.class);
 				it.putExtra("strRoomId",toChatUsername);
+				it.putExtra("strLiveUrl",m_videoBean.getVideo_url());
 				startActivity(it);
 			}
 		});

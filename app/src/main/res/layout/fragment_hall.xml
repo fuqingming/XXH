@@ -6,7 +6,7 @@
     android:background="@color/app_backgrount_color"
     >
 
-    <include layout="@layout/common_title"
+    <include layout="@layout/common_title_red"
         android:id="@+id/title"/>
     <RelativeLayout
         android:layout_width="match_parent"
