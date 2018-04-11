@@ -21,6 +21,7 @@ public class ChatMessageBean implements Serializable {
     private String nic_name;        //发言人的名称
     private String user_photo;      //发言人头像
     private String c_replay_name;   //回复用户名
+    private String c_st_id;
 
     public ChatMessageBean(String c_messageType, String c_st_content, long c_time_linux, String c_t_content, String nic_name, String user_photo, String c_replay_name) {
         this.c_messageType = c_messageType;
@@ -86,5 +87,13 @@ public class ChatMessageBean implements Serializable {
 
     public void setC_replay_name(String c_replay_name) {
         this.c_replay_name = c_replay_name;
+    }
+
+    public String getC_st_id() {
+        return c_st_id;
+    }
+
+    public void setC_st_id(String c_st_id) {
+        this.c_st_id = c_st_id;
     }
 }

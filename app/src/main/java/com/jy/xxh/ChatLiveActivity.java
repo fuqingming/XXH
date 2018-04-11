@@ -7,31 +7,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.graphics.Rect;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.baidu.mobstat.StatService;
 import com.blankj.utilcode.util.SPUtils;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMClient;
@@ -39,17 +37,14 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.widget.EaseChatPrimaryMenuBase;
 import com.hyphenate.util.EMLog;
-import com.jy.xxh.adapter.ChatAllAdapter;
 import com.jy.xxh.adapter.ChatLiveAdapter;
-import com.jy.xxh.adapter.ChatTeacherAdapter;
 import com.jy.xxh.alert.AlertUtils;
-import com.jy.xxh.base.BaseAppCompatActivity;
+import com.jy.xxh.base.VideoPlayerBaseActivity;
+import com.jy.xxh.bean.base.ChatLiveMessageBean;
 import com.jy.xxh.bean.base.ChatMessageBean;
 import com.jy.xxh.bean.base.Messages;
 import com.jy.xxh.bean.response.ResponseBaseBean;
-import com.jy.xxh.bean.response.ResponseChatBean;
-import com.jy.xxh.bean.response.ResponseChatMessageBean;
-import com.jy.xxh.bean.response.ResponseFollowBean;
+import com.jy.xxh.bean.response.ResponseChatLiveMessageBean;
 import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
@@ -60,21 +55,29 @@ import com.jy.xxh.util.HUDProgressUtils;
 import com.jy.xxh.util.NiceUtil;
 import com.jy.xxh.util.Utils;
 import com.jy.xxh.view.BigImage.FengNiaoImageSource;
+import com.jy.xxh.view.plvideoview.MediaController;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
+import com.pili.pldroid.player.AVOptions;
+import com.pili.pldroid.player.PLMediaPlayer;
+import com.pili.pldroid.player.PLOnBufferingUpdateListener;
+import com.pili.pldroid.player.PLOnCompletionListener;
+import com.pili.pldroid.player.PLOnErrorListener;
+import com.pili.pldroid.player.PLOnInfoListener;
+import com.pili.pldroid.player.PLOnPreparedListener;
+import com.pili.pldroid.player.PLOnVideoSizeChangedListener;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
-import org.kymjs.kjframe.KJActivity;
-import org.kymjs.kjframe.utils.FileUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.kymjs.kjframe.utils.FileUtils;
 import java.io.File;
-import java.text.SimpleDateFormat;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -82,12 +85,12 @@ import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
 import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
 import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultDisposable;
 import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
-import cn.nodemedia.LivePlayer;
-import cn.nodemedia.LivePlayerDelegate;
 
 import static com.hyphenate.util.EasyUtils.TAG;
 
-public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecyclerView.PullLoadMoreListener {
+public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoadMoreRecyclerView.PullLoadMoreListener {
+
+
 
     /** 文字消息 **/
     public static final int MESSAGE_TYPE_TEXT = 1;
@@ -122,16 +125,16 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
     ImageView m_ivPicSend;
     @BindView(R.id.tv_send)
     TextView m_tvSend;
-//    @BindView(R.id.webview)
-//    WebView mWebView ;
-    @BindView(R.id.view)
-    SurfaceView mView ;
+//    @BindView(R.id.view)
+//    SurfaceView mView ;
     @BindView(R.id.iv_enlarge)
     ImageView m_ivEnlarge;
     @BindView(R.id.rl_live)
     RelativeLayout m_rlLive;
 
-    private List<ChatMessageBean> m_msgDataAll = new ArrayList<>();
+    private MediaController mMediaController;
+
+    private List<ChatLiveMessageBean> m_msgDataAll = new ArrayList<>();
     private ChatLiveAdapter adapterAll;
 
     private String m_strRoomeId;
@@ -141,18 +144,27 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
     private int page;
     private int teacherPage;
 
-//    float srcWidth;
-//    float srcHeight;
-//    DisplayMetrics dm;
+    private View mLoadingView;
+    private SurfaceView mSurfaceView;
+    private PLMediaPlayer mMediaPlayer;
+    private AVOptions mAVOptions;
+    private int mSurfaceWidth = 0;
+    private int mSurfaceHeight = 0;
+    private long mLastUpdateStatTime = 0;
 
-    @Override
-    public void setRootView() {
-        setContentView(R.layout.activity_chat_live);
-    }
+    private boolean m_isCall = true;
 
     @Override
     public void initWidget() {
         ButterKnife.bind(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         page = 0;
         teacherPage = 0;
@@ -196,133 +208,166 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
         onClickView();
 
         registerReciever();
-
-        callHttpFor();
     }
 
     private void initPlayer(){
-//        dm = getResources().getDisplayMetrics();
-        LivePlayer.init(ChatLiveActivity.this);
-        LivePlayer.setDelegate(new LivePlayerDelegate() {
-            @Override
-            public void onEventCallback(int event, String msg) {
-                Message message = new Message();
-                Bundle b = new Bundle();
-                b.putString("msg", msg);
-                message.setData(b);
-                message.what = event;
-                handler.sendMessage(message);
-            }
-        });
-        LivePlayer.setUIVIew(mView);
-        LivePlayer.setBufferTime(100);
-        LivePlayer.setMaxBufferTime(1000);
-        LivePlayer.startPlay(getIntent().getStringExtra("strLiveUrl"));
+        mLoadingView = findViewById(R.id.LoadingView);
+        mSurfaceView = findViewById(R.id.SurfaceView);
+        mSurfaceView.getHolder().addCallback(mCallback);
+        mSurfaceWidth = getResources().getDisplayMetrics().widthPixels;
+        mSurfaceHeight = getResources().getDisplayMetrics().heightPixels;
+        mAVOptions = new AVOptions();
+        mAVOptions.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000);
+        mAVOptions.setInteger(AVOptions.KEY_MEDIACODEC, 0);
+        mAVOptions.setInteger(AVOptions.KEY_LIVE_STREAMING, 0);
+        mAVOptions.setInteger(AVOptions.KEY_LOG_LEVEL, 0);
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
     }
 
-//    /**
-//     * 监听手机旋转，不销毁activity进行画面旋转，再缩放显示区域
-//     */
-//    @Override
-//    public void onConfigurationChanged(Configuration newConfig) {
-//        super.onConfigurationChanged(newConfig);
-//        doVideoFix();
-//    }
-//
-//
-//
-//    /**
-//     * 视频画面高宽等比缩放，此SDK——demo 取屏幕高宽做最大高宽缩放
-//     */
-//    private void doVideoFix() {
-//        float maxWidth = dm.widthPixels;
-//        float maxHeight = dm.heightPixels;
-//        float fixWidth;
-//        float fixHeight;
-//        if (srcWidth / srcHeight <= maxWidth / maxHeight) {
-//            fixWidth = srcWidth * maxHeight / srcHeight;
-//            fixHeight = maxHeight;
-//        } else {
-//            fixWidth = maxWidth;
-//            fixHeight = srcHeight * maxWidth / srcWidth;
-//        }
-//        ViewGroup.LayoutParams lp = mView.getLayoutParams();
-//        lp.width = (int) fixWidth;
-//        lp.height = (int) fixHeight;
-//
-//        mView.setLayoutParams(lp);
-//    }
+    private SurfaceHolder.Callback mCallback = new SurfaceHolder.Callback() {
 
-    @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler() {
-        // 回调处理
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
+        public void surfaceCreated(SurfaceHolder holder) {
+            prepare();
+        }
 
-            switch (msg.what) {
-                case 1000:
-                    // Toast.makeText(LivePlayerDemoActivity.this, "正在连接视频",
-                    // Toast.LENGTH_SHORT).show();
+        @Override
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder holder) {
+            // release();
+            releaseWithoutStop();
+        }
+    };
+
+    public void releaseWithoutStop() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.setDisplay(null);
+        }
+    }
+
+    private void prepare() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.setDisplay(mSurfaceView.getHolder());
+            return;
+        }
+
+        try {
+            mMediaPlayer = new PLMediaPlayer(this, mAVOptions);
+            mMediaPlayer.setLooping(getIntent().getBooleanExtra("loop", false));
+            mMediaPlayer.setOnPreparedListener(mOnPreparedListener);
+            mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
+            mMediaPlayer.setOnErrorListener(mOnErrorListener);
+            mMediaPlayer.setOnInfoListener(mOnInfoListener);
+            mMediaPlayer.setOnBufferingUpdateListener(mOnBufferingUpdateListener);
+            // set replay if completed
+            // mMediaPlayer.setLooping(true);
+            mMediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+            mMediaPlayer.setDataSource(getIntent().getStringExtra("strLiveUrl"));
+            mMediaPlayer.setDisplay(mSurfaceView.getHolder());
+            mMediaPlayer.prepareAsync();
+        } catch (UnsatisfiedLinkError e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private PLOnBufferingUpdateListener mOnBufferingUpdateListener = new PLOnBufferingUpdateListener() {
+        @Override
+        public void onBufferingUpdate(int percent) {
+            Log.d(TAG, "onBufferingUpdate: " + percent + "%");
+            long current =  System.currentTimeMillis();
+            if (current - mLastUpdateStatTime > 3000) {
+                mLastUpdateStatTime = current;
+            }
+        }
+    };
+
+    private PLOnInfoListener mOnInfoListener = new PLOnInfoListener() {
+        @Override
+        public void onInfo(int what, int extra) {
+            Log.i(TAG, "OnInfo, what = " + what + ", extra = " + extra);
+            switch (what) {
+                case PLOnInfoListener.MEDIA_INFO_BUFFERING_START:
+                    mLoadingView.setVisibility(View.VISIBLE);
                     break;
-                case 1001:
-                    // Toast.makeText(LivePlayerDemoActivity.this, "视频连接成功",
-                    // Toast.LENGTH_SHORT).show();
+                case PLOnInfoListener.MEDIA_INFO_BUFFERING_END:
+                    mLoadingView.setVisibility(View.GONE);
                     break;
-                case 1002:
-                    // Toast.makeText(LivePlayerDemoActivity.this, "视频连接失败",
-                    // Toast.LENGTH_SHORT).show();
-                    //流地址不存在，或者本地网络无法和服务端通信，回调这里。5秒后重连， 可停止
-                    //LivePlayer.stopPlay();
+                case PLOnInfoListener.MEDIA_INFO_VIDEO_RENDERING_START:
+                    mLoadingView.setVisibility(View.GONE);
                     break;
-                case 1003:
-                    //Toast.makeText(LivePlayerDemoActivity.this, "视频开始重连",
-                    //LivePlayer.stopPlay();	//自动重连总开关
+                case PLOnInfoListener.MEDIA_INFO_VIDEO_GOP_TIME:
+                    Log.i(TAG, "Gop Time: " + extra);
                     break;
-                case 1004:
-                    // Toast.makeText(LivePlayerDemoActivity.this, "视频播放结束",
-                    // Toast.LENGTH_SHORT).show();
+                case PLOnInfoListener.MEDIA_INFO_AUDIO_RENDERING_START:
+                    mLoadingView.setVisibility(View.GONE);
                     break;
-                case 1005:
-                    // Toast.makeText(LivePlayerDemoActivity.this, "网络异常,播放中断",
-                    // Toast.LENGTH_SHORT).show();
-                    //播放中途网络异常，回调这里。1秒后重连，如不需要，可停止
-                    //LivePlayer.stopPlay();
+                case PLOnInfoListener.MEDIA_INFO_SWITCHING_SW_DECODE:
+                    Log.i(TAG, "Hardware decoding failure, switching software decoding!");
                     break;
-                case 1100:
-//				System.out.println("NetStream.Buffer.Empty");
+                case PLOnInfoListener.MEDIA_INFO_METADATA:
+                    Log.i(TAG, mMediaPlayer.getMetadata().toString());
                     break;
-                case 1101:
-//				System.out.println("NetStream.Buffer.Buffering");
+                case PLOnInfoListener.MEDIA_INFO_VIDEO_BITRATE:
+
+                case PLOnInfoListener.MEDIA_INFO_VIDEO_FPS:
                     break;
-                case 1102:
-//				System.out.println("NetStream.Buffer.Full");
+                case PLOnInfoListener.MEDIA_INFO_CONNECTED:
+                    if(m_isCall){
+                        m_isCall = false;
+                        callHttpFor();
+                    }
+                    Log.i(TAG, "Connected !");
                     break;
-                case 1103:
-//				System.out.println("Stream EOF");
-                    //客服端明确收到服务端发送来的 StreamEOF 和 NetStream.Play.UnpublishNotify时回调这里
-                    //收到本事件，说明：此流的发布者明确停止了发布，或者网络异常，被服务端明确关闭了流
-                    //本sdk仍然会继续在1秒后重连，如不需要，可停止
-//				LivePlayer.stopPlay();
-                    break;
-                case 1104:
-                    /**
-                     * 得到 解码后得到的视频高宽值,可用于重绘surfaceview的大小比例 格式为:{width}x{height}
-                     * 本例使用LinearLayout内嵌SurfaceView
-                     * LinearLayout的大小为最大高宽,SurfaceView在内部等比缩放,画面不失真
-                     * 等比缩放使用在不确定视频源高宽比例的场景,用上层LinearLayout限定了最大高宽
-                     */
-//                    String[] info = msg.getData().getString("msg").split("x");
-//                    srcWidth = Integer.valueOf(info[0]);
-//                    srcHeight = Integer.valueOf(info[1]);
-//                    doVideoFix();
-                    break;
+                case PLOnInfoListener.MEDIA_INFO_VIDEO_ROTATION_CHANGED:
+                    Log.i(TAG, "Rotation changed: " + extra);
                 default:
                     break;
             }
         }
     };
 
+    private PLOnErrorListener mOnErrorListener = new PLOnErrorListener() {
+        @Override
+        public boolean onError(int errorCode) {
+            Log.e(TAG, "Error happened, errorCode = " + errorCode);
+            switch (errorCode) {
+                case PLOnErrorListener.ERROR_CODE_IO_ERROR:
+                    return false;
+                case PLOnErrorListener.ERROR_CODE_OPEN_FAILED:
+                    m_isCall = false;
+                    break;
+                case PLOnErrorListener.ERROR_CODE_SEEK_FAILED:
+                    break;
+                default:
+                    break;
+            }
+            EventBus.getDefault().post("");
+            finish();
+            return true;
+        }
+    };
+
+    private PLOnCompletionListener mOnCompletionListener = new PLOnCompletionListener() {
+        @Override
+        public void onCompletion() {
+            Log.d(TAG, "Play Completed !");
+            finish();
+        }
+    };
+
+    private PLOnPreparedListener mOnPreparedListener = new PLOnPreparedListener() {
+        @Override
+        public void onPrepared(int preparedTime) {
+            Log.i(TAG, "On Prepared ! prepared time = " + preparedTime + " ms");
+            mMediaPlayer.start();
+        }
+    };
 
     @OnClick({R.id.tv_play,R.id.iv_back_live,R.id.iv_enlarge})
     public void onViewClick(View view){
@@ -372,9 +417,10 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
                     return;
                 }
 
-                ChatMessageBean chatMessageBean = new ChatMessageBean(ChatMessageBean.user_char,strMessage,System.currentTimeMillis()/1000,"",
+                ChatLiveMessageBean chatMessageBean = new ChatLiveMessageBean(ChatLiveMessageBean.user_char,strMessage,System.currentTimeMillis()/1000,"",
                         SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame),
-                        SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon),"");
+                        SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon),"",
+                        SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserId));
                 m_msgDataAll.add(chatMessageBean);
                 adapterAll.addLast(chatMessageBean);
                 m_etEdit.setText("");
@@ -418,16 +464,17 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
                         if (dataUri != null) {
                             File file = FileUtils.uri2File(ChatLiveActivity.this, dataUri);
 
-                            ChatMessageBean chatMessageBean = new ChatMessageBean(ChatMessageBean.user_pic, file.getAbsolutePath(),System.currentTimeMillis(),"",
+                            ChatLiveMessageBean chatMessageBean = new ChatLiveMessageBean(ChatMessageBean.user_pic, file.getAbsolutePath(),System.currentTimeMillis(),"",
                                     SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame),
-                                    SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon),"");
+                                    SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon),"",
+                                    SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserId));
                             adapterAll.addLast(chatMessageBean);
                             mRecyclerViewAll.scrollToPosition(adapterAll.getItemCount()-1);
                             EMMessage messageEMM = EMMessage.createImageSendMessage(file.getAbsolutePath(), false, m_strRoomeId);
                             messageEMM.setAttribute("nickname", SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame));
                             messageEMM.setAttribute("headerImageUrl", SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon));
                             messageEMM.setAttribute("memberType", Messages.MSG_OTHER_MEMBER);
-                            messageEMM.setAttribute("messageType", ChatMessageBean.user_pic);
+                            messageEMM.setAttribute("messageType", ChatLiveMessageBean.user_pic);
 
                             messageEMM.setChatType(EMMessage.ChatType.ChatRoom);
                             EMClient.getInstance().chatManager().sendMessage(messageEMM);
@@ -447,7 +494,6 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
         adapterAll = new ChatLiveAdapter(this,  getOnChatItemClickListener());
         mPullLoadMoreRecyclerViewAll.setAdapter(adapterAll);
         adapterAll.addAll(m_msgDataAll);
-
         Utils.setOnTouchEditTextOutSideHideIM(ChatLiveActivity.this,mRecyclerViewAll);
     }
 
@@ -521,7 +567,18 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
         super.onDestroy();
         EMClient.getInstance().chatroomManager().leaveChatRoom(m_strRoomeId);
         unregisterReceiver(msgReceiver);
-        LivePlayer.stopPlay();
+        release();
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager.abandonAudioFocus(null);
+
+    }
+
+    public void release() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
     }
 
     @Override
@@ -545,7 +602,6 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
 //                }
 //            }
 //        });
-
         StatService.onResume(this);
     }
 
@@ -581,20 +637,21 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
 
             String strNickName = intent.getStringExtra("nickname");
             String strHeaderImageUrl = intent.getStringExtra("headerImageUrl");
+            String strID = intent.getStringExtra("strID");
             long strTime = intent.getLongExtra("strTime",0);
 
-            ChatMessageBean chatMessageBean = null;
+            ChatLiveMessageBean chatMessageBean = null;
 
-            if(strMemberType.equals(ChatMessageBean.teacher_char) || strMemberType.equals(ChatMessageBean.teacher_rep)){
+            if(strMemberType.equals(ChatLiveMessageBean.teacher_char) || strMemberType.equals(ChatLiveMessageBean.teacher_rep)){
                 strContext = Utils.delHTMLTag(strContext);
             }
 
-            if(strMemberType.equals(ChatMessageBean.user_char) || strMemberType.equals(ChatMessageBean.user_pic)){
-                chatMessageBean = new ChatMessageBean(strMemberType,strContext,strTime,"",strNickName, strHeaderImageUrl,"");
-            }else if(strMemberType.equals(ChatMessageBean.teacher_char) || strMemberType.equals(ChatMessageBean.teacher_pic)){
-                chatMessageBean = new ChatMessageBean(strMemberType, "",strTime,strContext,strNickName,strHeaderImageUrl,"");
-            }else if(strMemberType.equals(ChatMessageBean.teacher_rep)){
-                chatMessageBean = new ChatMessageBean(strMemberType, strStuQuestion,strTime,strContext,strNickName, strHeaderImageUrl,strStuName);
+            if(strMemberType.equals(ChatLiveMessageBean.user_char) || strMemberType.equals(ChatLiveMessageBean.user_pic)){
+                chatMessageBean = new ChatLiveMessageBean(strMemberType,strContext,strTime,"",strNickName, strHeaderImageUrl,"",strID);
+            }else if(strMemberType.equals(ChatLiveMessageBean.teacher_char) || strMemberType.equals(ChatLiveMessageBean.teacher_pic)){
+                chatMessageBean = new ChatLiveMessageBean(strMemberType, "",strTime,strContext,strNickName,strHeaderImageUrl,"",strID);
+            }else if(strMemberType.equals(ChatLiveMessageBean.teacher_rep)){
+                chatMessageBean = new ChatLiveMessageBean(strMemberType, strStuQuestion,strTime,strContext,strNickName, strHeaderImageUrl,strStuName,strID);
             }
 
             boolean isBottomAll;
@@ -613,35 +670,12 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
     }
 
     private void callHttpFor(){
-        String urlDataString = "?t_id="+m_strTeacherId+"&u_id="+ SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserId);
-        HttpClient.get(ApiStores.Search_attension + urlDataString, new HttpCallback<ResponseChatBean>() {
-            @Override
-            public void OnSuccess(ResponseChatBean response) {
-                if(response.getResult()){
-                    joinRoom();
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("room_id",m_strRoomeId);
-                    map.put("t_type",m_bOnlySee ? 1 : 0);
-                    map.put("page", page);
-                    callHttpForSearchChatMsgAll(map);
-                }
-            }
-
-            @Override
-            public void OnFailure(String message) {
-                messageCenter("错误",message);
-            }
-
-            @Override
-            public void OnRequestStart() {
-                kProgressHUD.show();
-            }
-
-            @Override
-            public void OnRequestFinish() {
-                kProgressHUD.dismiss();
-            }
-        });
+        joinRoom();
+        Map<String, Object> map = new HashMap<>();
+        map.put("room_id",m_strRoomeId);
+        map.put("t_type",m_bOnlySee ? 1 : 0);
+        map.put("page", page);
+        callHttpForSearchChatMsgAll(map);
     }
 
     private void joinRoom(){
@@ -655,6 +689,7 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
 
             @Override
             public void onSuccess(final EMChatRoom value) {
+                kProgressHUD.dismiss();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -717,9 +752,9 @@ public class ChatLiveActivity extends KJActivity implements PullLoadMoreRecycler
     }
 
     private void callHttpForSearchChatMsgAll(Map<String, Object> map){
-        HttpClient.post(ApiStores.seacher_record ,map, new HttpCallback<ResponseChatMessageBean>() {
+        HttpClient.post(ApiStores.seacher_record ,map, new HttpCallback<ResponseChatLiveMessageBean>() {
             @Override
-            public void OnSuccess(final ResponseChatMessageBean response) {
+            public void OnSuccess(final ResponseChatLiveMessageBean response) {
                 Log.d("",response.toString());
                 if(response.getResult()){
 

@@ -1202,6 +1202,7 @@ public class DemoHelper {
                         it.putExtra("memberType",message.getStringAttribute("messageType",null));
 //                        it.putExtra("strTime",TimeUtils.time2String(message.getMsgTime(), "MM-dd HH:mm"));
                         it.putExtra("strTime",message.getMsgTime());
+                        it.putExtra("strID",message.getStringAttribute("sayID",null));
                         appContext.sendBroadcast(it);
                         getNotifier().onNewMsg(message);
                     }

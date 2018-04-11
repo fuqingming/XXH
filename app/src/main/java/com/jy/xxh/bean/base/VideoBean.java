@@ -16,6 +16,10 @@ public class VideoBean implements Serializable {
     private String v_type;
     private String v_time;
     private String room_id;
+    private String timeD;
+    private String t_v_id;
+    private String t_nic_name;
+    private String t_photo;
 
     public String getV_id() {
         return v_id;
@@ -71,5 +75,37 @@ public class VideoBean implements Serializable {
 
     public void setRoom_id(String room_id) {
         this.room_id = room_id;
+    }
+
+    public String getTimeD() {
+        return timeD;
+    }
+
+    public void setTimeD(String timeD) {
+        this.timeD = timeD;
+    }
+
+    public String getT_v_id() {
+        return t_v_id;
+    }
+
+    public void setT_v_id(String t_v_id) {
+        this.t_v_id = t_v_id;
+    }
+
+    public String getT_nic_name() {
+        return t_nic_name;
+    }
+
+    public void setT_nic_name(String t_nic_name) {
+        this.t_nic_name = t_nic_name;
+    }
+
+    public String getT_photo() {
+        return t_photo;
+    }
+
+    public void setT_photo(String t_photo) {
+        this.t_photo = t_photo;
     }
 }

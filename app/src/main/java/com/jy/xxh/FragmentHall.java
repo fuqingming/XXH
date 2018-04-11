@@ -28,6 +28,9 @@ import com.jy.xxh.http.HttpClient;
 import com.jy.xxh.huanxin.DemoHelper;
 import com.jy.xxh.util.Utils;
 import com.jy.xxh.view.recyclerview.RecycleViewDivider;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,9 @@ import java.util.List;
  *
  * */
 public class FragmentHall extends BaseListFragment<RoomBean> {
+
+	public static final String LIVE_IS_PLAY = "1";		//直播中
+	public static final String LIVE_IS_UNPLAY = "2";	//未直播
 
 	private FragmentHallAdapter m_fragmentTrainAdapter= new FragmentHallAdapter();
 
@@ -53,6 +59,10 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 	private ImageView m_ivPlay;
 	private TextView m_tvLiveType;
 	private TextView m_tvText;
+	private TextView m_tvLiveTime;
+	private LinearLayout m_llTeacherDetails;
+	private LinearLayout m_llLiveTime;
+	private ImageView m_ivIcon;
 
 	@Override
 	protected int getLayoutId() {
@@ -78,6 +88,7 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 
 	@Override
 	protected void initLayoutManager() {
+		EventBus.getDefault().register(this);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		mRecyclerView.addItemDecoration(new RecycleViewDivider(getMContext(), LinearLayoutManager.VERTICAL, 9, getResources().getColor(R.color.app_backgrount_color)));
 		mRecyclerView.setLoadMoreEnabled(false);
@@ -91,9 +102,13 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 		m_vSpliter = header.findViewById(R.id.v_spliter);
 		m_tvLiveType = header.findViewById(R.id.tv_live_type);
 		m_tvText = header.findViewById(R.id.tv_text);
+		m_tvLiveTime = header.findViewById(R.id.tv_live_time);
+		m_llTeacherDetails = header.findViewById(R.id.ll_teacher_details);
+		m_llLiveTime = header.findViewById(R.id.ll_live_time);
 		m_llLiveText = header.findViewById(R.id.ll_live_text);
 		m_ivLivePic = header.findViewById(R.id.iv_live_pic);
 		m_ivPlay = header.findViewById(R.id.iv_play);
+		m_ivIcon = header.findViewById(R.id.iv_icon);
 		m_ivPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -102,15 +117,19 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 					startActivity(it);
 					return;
 				}
-				if(!"直播中".equals(m_videoBean.getV_type())){
+				if(LIVE_IS_UNPLAY.equals(m_videoBean.getV_type())){
 					Utils.showToast(getContext(),"直播还未开始！");
 					return;
 				}
+
 				toChatUsername = m_videoBean.getRoom_id();
 
 				Intent it = new Intent(getMContext(),ChatLiveActivity.class);
 				it.putExtra("strRoomId",toChatUsername);
-				it.putExtra("strLiveUrl",m_videoBean.getVideo_url());
+				it.putExtra("strLiveUrl","rtmp://gxtplay.58hengku.com/gxt/yxfxh1");
+//				it.putExtra("strLiveUrl",m_videoBean.getVideo_url());
+//				it.putExtra("strLiveUrl","rtmp://live.hkstv.hk.lxdns.com/live/hks");
+
 				startActivity(it);
 			}
 		});
@@ -195,6 +214,12 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 		super.onStop();
 	}
 
+	@Override
+	public void onDestroy() {
+		EventBus.getDefault().unregister(this);
+		super.onDestroy();
+	}
+
 	protected void requestData(){
 		HttpClient.get(ApiStores.banner, new HttpCallback<ResponseHallBean>() {
 			@Override
@@ -211,9 +236,19 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 //					}
 //					initBanner();
 					m_videoBean = response.getContent().getVideo().get(0);
+					if(LIVE_IS_UNPLAY.equals(m_videoBean.getV_type())){
+						m_tvLiveType.setText("未直播");
+						m_llTeacherDetails.setVisibility(View.GONE);
+						m_llLiveTime.setVisibility(View.VISIBLE);
+						m_tvLiveTime.setText(m_videoBean.getTimeD());
+					}else if(LIVE_IS_PLAY.equals(m_videoBean.getV_type())){
+						m_tvLiveType.setText("直播中");
+						m_llTeacherDetails.setVisibility(View.VISIBLE);
+						m_llLiveTime.setVisibility(View.GONE);
+						Glide.with(getMContext()).load(m_videoBean.getT_photo()).placeholder(R.mipmap.head_s).into(m_ivIcon);
+						m_tvText.setText(m_videoBean.getV_name());
+					}
 					Glide.with(getMContext()).load(m_videoBean.getImg_url()).placeholder(R.mipmap.station_pic).into(m_ivLivePic);
-					m_tvLiveType.setText(m_videoBean.getV_type());
-					m_tvText.setText(m_videoBean.getV_name());
 
 					executeOnLoadDataSuccess(response.getContent().getRoom());
 					totalPage = response.getContent().getRoom().size();
@@ -234,5 +269,16 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 				executeOnLoadFinish();
 			}
 		});
+	}
+
+//	@Subscribe(threadMode = ThreadMode.MAIN)
+//	public void onDataSynEvenBus(String strTel) {
+//		m_etPhone.setText(strTel);
+//		m_etPassword.requestFocus();
+//	}
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onEventBus(String strLiveIsFalse){
+		Utils.showToast(getMContext(),"直播已经停止");
+		onRefreshView();
 	}
 }

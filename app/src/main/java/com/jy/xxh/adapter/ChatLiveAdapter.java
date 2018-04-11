@@ -28,13 +28,14 @@ import com.bumptech.glide.Glide;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jy.xxh.ChatLiveActivity;
 import com.jy.xxh.R;
+import com.jy.xxh.bean.base.ChatLiveMessageBean;
 import com.jy.xxh.bean.base.ChatMessageBean;
 import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.util.TimeUtils;
 import com.jy.xxh.view.commonRecyclerAdapter.CommonRecyclerAdapter;
 import com.jy.xxh.view.commonRecyclerAdapter.ViewHolder;
 
-public class ChatLiveAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
+public class ChatLiveAdapter extends CommonRecyclerAdapter<ChatLiveMessageBean> {
     private ChatLiveActivity.OnChatItemClickListener listener;
     private Context mContext;
 
@@ -45,9 +46,9 @@ public class ChatLiveAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
     }
 
     @Override
-    public int getItemLayoutResId(ChatMessageBean data, int position) {
+    public int getItemLayoutResId(ChatLiveMessageBean data, int position) {
         int layoutResId = -1;
-        if(data.getNic_name().equals(SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame))){
+        if(data.getC_st_id().equals(SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserId))){
             layoutResId = R.layout.chat_item_list_right;
         }else{
             layoutResId = R.layout.chat_item_list_left;
@@ -57,7 +58,7 @@ public class ChatLiveAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
     }
 
     @Override
-    public void bindData(ViewHolder holder, final ChatMessageBean data, final int position) {
+    public void bindData(ViewHolder holder, final ChatLiveMessageBean data, final int position) {
         RelativeLayout rlContent = holder.viewBinder().getView().findViewById(R.id.chat_item_layout_content);
         ImageView ivIcon = holder.viewBinder().getView().findViewById(R.id.chat_item_avatar);
         final ImageView ivChatimage = holder.viewBinder().getView().findViewById(R.id.chat_item_content_image);
@@ -70,7 +71,7 @@ public class ChatLiveAdapter extends CommonRecyclerAdapter<ChatMessageBean> {
         TextView tvChatText = holder.viewBinder().getView().findViewById(R.id.chat_text);
 
         ivTeacherType.setVisibility(View.GONE);
-        if(!data.getNic_name().equals(SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame))){
+        if(!data.getC_st_id().equals(SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserId))){
             rlContent.setBackgroundResource(R.drawable.chat_left_bg_selector);
             tvChatText.setVisibility(View.GONE);
         }else{

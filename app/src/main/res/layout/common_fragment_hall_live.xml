@@ -30,9 +30,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
-                android:text="视频直播"
+                android:text="视频直播-期货行情实盘解读"
                 android:textColor="@color/black"
-                android:textSize="@dimen/fourteen" />
+                android:textSize="@dimen/eightteen" />
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -57,19 +57,65 @@
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginRight="12dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="15dp">
+            android:layout_marginLeft="12dp">
 
-            <TextView
-                android:id="@+id/tv_text"
+            <LinearLayout
+                android:id="@+id/ll_live_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="期货行情实盘解读"
-                android:textColor="@color/black"
-                android:textSize="@dimen/fifteen" />
+                android:orientation="horizontal"
+                android:layout_centerVertical="true"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fourteen"
+                    android:textColor="#DB2C2C"
+                    android:text="每日直播："/>
+                <TextView
+                    android:id="@+id/tv_live_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fourteen"
+                    android:textColor="@color/black"
+                    android:text="9:00-11:00  1:00-3:00"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_teacher_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_centerVertical="true"
+                >
+                <FrameLayout
+                    android:id="@+id/fl_head"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp">
+
+                    <ImageView
+                        android:id="@+id/iv_icon"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" />
+
+                    <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:src="@mipmap/icon_head_mask_small" />
+                </FrameLayout>
+                <TextView
+                    android:id="@+id/tv_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="期货行情实盘解读"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fifteen"
+                    android:layout_marginLeft="3dp"/>
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/tv_live_type"
@@ -77,9 +123,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="直播中"
+                android:text=""
                 android:textColor="@color/black"
-                android:textSize="@dimen/twelve" />
+                android:textSize="@dimen/twelve"
+                />
         </RelativeLayout>
     </LinearLayout>
 
@@ -105,7 +152,7 @@
             android:id="@+id/tv_text_live"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/fourteen"
+            android:textSize="@dimen/eightteen"
             android:textColor="@color/black"
             android:text="实战文字直播"
             android:layout_marginLeft="5dp"
