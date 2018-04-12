@@ -62,7 +62,7 @@ public class HttpClient {
 
             OkHttpClient okHttpClient = builder.build();
 
-            String baseUrl = "http://wap.ngwatch.top/";
+            String baseUrl = "http://xxh.qimengzhibo.com/";
 
             mNovate = new Novate.Builder(appliactionContext)
                     .addCache(false)
