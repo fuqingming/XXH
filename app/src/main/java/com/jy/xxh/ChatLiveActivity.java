@@ -259,6 +259,7 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
             mMediaPlayer.setDataSource(getIntent().getStringExtra("strLiveUrl"));
             mMediaPlayer.setDisplay(mSurfaceView.getHolder());
             mMediaPlayer.prepareAsync();
+//            Utils.showToast(ChatLiveActivity.this,mMediaPlayer.getRtmpVideoTimestamp()+"!!@@"+mMediaPlayer.getRtmpAudioTimestamp ());
         } catch (UnsatisfiedLinkError e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -1,1 +1,1 @@
-include ':app', ':xsnow', ':netexpand', ':sugar-ui', ':library', ':easeui',':nicevideoplayer'
+include ':app', ':xsnow', ':netexpand', ':sugar-ui', ':library', ':easeui'
