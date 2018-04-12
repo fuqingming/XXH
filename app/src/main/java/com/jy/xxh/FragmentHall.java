@@ -22,12 +22,17 @@ import com.jy.xxh.base.BaseListFragment;
 import com.jy.xxh.bean.base.RoomBean;
 import com.jy.xxh.bean.base.VideoBean;
 import com.jy.xxh.bean.response.ResponseHallBean;
+import com.jy.xxh.bean.response.ResponseHallLiveTypeBean;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;
 import com.jy.xxh.huanxin.DemoHelper;
+import com.jy.xxh.util.HUDProgressUtils;
 import com.jy.xxh.util.Utils;
+import com.jy.xxh.view.error.ErrorLayout;
 import com.jy.xxh.view.recyclerview.RecycleViewDivider;
+import com.kaopiz.kprogresshud.KProgressHUD;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -43,6 +48,8 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 
 	public static final String LIVE_IS_PLAY = "1";		//直播中
 	public static final String LIVE_IS_UNPLAY = "2";	//未直播
+
+	KProgressHUD kProgressHUD;
 
 	private FragmentHallAdapter m_fragmentTrainAdapter= new FragmentHallAdapter();
 
@@ -74,6 +81,7 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 	public void initView() {
 		super.initView();
 		Utils.initCommonTitle(getContentView(),"直播");
+		kProgressHUD = new HUDProgressUtils().showLoadingImage(getMContext());
 	}
 
 	@Override
@@ -117,20 +125,8 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 					startActivity(it);
 					return;
 				}
-				if(LIVE_IS_UNPLAY.equals(m_videoBean.getV_type())){
-					Utils.showToast(getContext(),"直播还未开始！");
-					return;
-				}
 
-				toChatUsername = m_videoBean.getRoom_id();
-
-				Intent it = new Intent(getMContext(),ChatLiveActivity.class);
-				it.putExtra("strRoomId",toChatUsername);
-				it.putExtra("strLiveUrl","rtmp://gxtplay.58hengku.com/gxt/yxfxh1");
-//				it.putExtra("strLiveUrl",m_videoBean.getVideo_url());
-//				it.putExtra("strLiveUrl","rtmp://live.hkstv.hk.lxdns.com/live/hks");
-
-				startActivity(it);
+				requestDataLiveType();
 			}
 		});
 
@@ -225,16 +221,6 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 			@Override
 			public void OnSuccess(ResponseHallBean response) {
 				if(response.getResult()){
-//					Glide.with(getMContext()).load(SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon)).placeholder(R.mipmap.head_s).into(m_ivIcon);
-//					if(m_bannerBean.size() > 0 ){
-//						m_bannerBean.clear();
-//						m_arrBanner.clear();
-//					}
-//					m_bannerBean.addAll(response.getContent().getBanner());
-//					for(int i = 0 ; i < m_bannerBean.size() ; i ++){
-//						m_arrBanner.add(m_bannerBean.get(i).getB_link());
-//					}
-//					initBanner();
 					m_videoBean = response.getContent().getVideo().get(0);
 					if(LIVE_IS_UNPLAY.equals(m_videoBean.getV_type())){
 						m_tvLiveType.setText("未直播");
@@ -271,14 +257,62 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 		});
 	}
 
-//	@Subscribe(threadMode = ThreadMode.MAIN)
-//	public void onDataSynEvenBus(String strTel) {
-//		m_etPhone.setText(strTel);
-//		m_etPassword.requestFocus();
-//	}
+	private void requestDataLiveType(){
+		HttpClient.get(ApiStores.banners, new HttpCallback<ResponseHallLiveTypeBean>() {
+			@Override
+			public void OnSuccess(ResponseHallLiveTypeBean response) {
+				if(response.getResult()){
+					if(LIVE_IS_UNPLAY.equals(response.getContent().get(0).getV_type())){
+						m_tvLiveType.setText("未直播");
+						m_llTeacherDetails.setVisibility(View.GONE);
+						m_llLiveTime.setVisibility(View.VISIBLE);
+						m_tvLiveTime.setText(m_videoBean.getTimeD());
+					}else if(LIVE_IS_PLAY.equals(response.getContent().get(0).getV_type())){
+						m_tvLiveType.setText("直播中");
+						m_llTeacherDetails.setVisibility(View.VISIBLE);
+						m_llLiveTime.setVisibility(View.GONE);
+						Glide.with(getMContext()).load(m_videoBean.getT_photo()).placeholder(R.mipmap.head_s).into(m_ivIcon);
+						m_tvText.setText(m_videoBean.getV_name());
+					}
+
+					if(LIVE_IS_UNPLAY.equals(m_videoBean.getV_type())){
+						Utils.showToast(getContext(),"直播还未开始！");
+						return;
+					}
+
+					toChatUsername = m_videoBean.getRoom_id();
+
+					Intent it = new Intent(getMContext(),ChatLiveActivity.class);
+					it.putExtra("strRoomId",toChatUsername);
+//				it.putExtra("strLiveUrl","rtmp://gxtplay.58hengku.com/gxt/yxfxh1");
+					it.putExtra("strLiveUrl",m_videoBean.getVideo_url());
+//					it.putExtra("strLiveUrl","rtmp://gxtplay.58hengku.com/gxt/linshiyong ");
+//				it.putExtra("strLiveUrl","rtmp://live.hkstv.hk.lxdns.com/live/hks");
+
+					startActivity(it);
+				}
+			}
+
+			@Override
+			public void OnFailure(String message) {
+				executeOnLoadDataError(null);
+			}
+
+			@Override
+			public void OnRequestStart() {
+				kProgressHUD.show();
+			}
+
+			@Override
+			public void OnRequestFinish() {
+				kProgressHUD.dismiss();
+			}
+		});
+	}
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onEventBus(String strLiveIsFalse){
 		Utils.showToast(getMContext(),"直播已经停止");
-		onRefreshView();
+//		onRefreshView();
+//		m_videoBean.setV_type(LIVE_IS_UNPLAY);
 	}
 }

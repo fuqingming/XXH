@@ -24,6 +24,8 @@ public class ApiStores {
 
     /** banner  聊天室列表 */
     public static final String banner = indexVersion + "banner";
+    /** banner  聊天室列表直播状态 */
+    public static final String banners = indexVersion + "banners";
 
     /** 修改昵称 */
     public static final String changeName = urlVersion + "changeName";

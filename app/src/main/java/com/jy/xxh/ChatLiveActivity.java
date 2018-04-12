@@ -90,8 +90,6 @@ import static com.hyphenate.util.EasyUtils.TAG;
 
 public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoadMoreRecyclerView.PullLoadMoreListener {
 
-
-
     /** 文字消息 **/
     public static final int MESSAGE_TYPE_TEXT = 1;
     /** 图片消息 **/
@@ -148,8 +146,6 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
     private SurfaceView mSurfaceView;
     private PLMediaPlayer mMediaPlayer;
     private AVOptions mAVOptions;
-    private int mSurfaceWidth = 0;
-    private int mSurfaceHeight = 0;
     private long mLastUpdateStatTime = 0;
 
     private boolean m_isCall = true;
@@ -172,10 +168,6 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
         m_strRoomeId = getIntent().getStringExtra("strRoomId");
 
         kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
-
-//        WebSettings webSettings = mWebView.getSettings();
-//        webSettings.setJavaScriptEnabled(true);
-//        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         m_rlLive.setVisibility(View.VISIBLE);
         if(!NiceUtil.isWiFiActive(ChatLiveActivity.this)){
             m_llPlay.setVisibility(View.VISIBLE);
@@ -214,8 +206,6 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
         mLoadingView = findViewById(R.id.LoadingView);
         mSurfaceView = findViewById(R.id.SurfaceView);
         mSurfaceView.getHolder().addCallback(mCallback);
-        mSurfaceWidth = getResources().getDisplayMetrics().widthPixels;
-        mSurfaceHeight = getResources().getDisplayMetrics().heightPixels;
         mAVOptions = new AVOptions();
         mAVOptions.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000);
         mAVOptions.setInteger(AVOptions.KEY_MEDIACODEC, 0);
@@ -570,7 +560,6 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
         release();
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         audioManager.abandonAudioFocus(null);
-
     }
 
     public void release() {
