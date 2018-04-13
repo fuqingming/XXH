@@ -16,14 +16,11 @@ import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -55,7 +52,6 @@ import com.jy.xxh.util.HUDProgressUtils;
 import com.jy.xxh.util.NiceUtil;
 import com.jy.xxh.util.Utils;
 import com.jy.xxh.view.BigImage.FengNiaoImageSource;
-import com.jy.xxh.view.plvideoview.MediaController;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
@@ -67,9 +63,7 @@ import com.pili.pldroid.player.PLOnCompletionListener;
 import com.pili.pldroid.player.PLOnErrorListener;
 import com.pili.pldroid.player.PLOnInfoListener;
 import com.pili.pldroid.player.PLOnPreparedListener;
-import com.pili.pldroid.player.PLOnVideoSizeChangedListener;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
-
 import org.greenrobot.eventbus.EventBus;
 import org.kymjs.kjframe.utils.FileUtils;
 import java.io.File;
@@ -85,7 +79,6 @@ import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
 import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
 import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultDisposable;
 import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
-
 import static com.hyphenate.util.EasyUtils.TAG;
 
 public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoadMoreRecyclerView.PullLoadMoreListener {
@@ -123,14 +116,10 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
     ImageView m_ivPicSend;
     @BindView(R.id.tv_send)
     TextView m_tvSend;
-//    @BindView(R.id.view)
-//    SurfaceView mView ;
     @BindView(R.id.iv_enlarge)
     ImageView m_ivEnlarge;
     @BindView(R.id.rl_live)
     RelativeLayout m_rlLive;
-
-    private MediaController mMediaController;
 
     private List<ChatLiveMessageBean> m_msgDataAll = new ArrayList<>();
     private ChatLiveAdapter adapterAll;
@@ -143,24 +132,15 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
     private int teacherPage;
 
     private View mLoadingView;
-    private SurfaceView mSurfaceView;
+    @BindView(R.id.SurfaceView)
+    SurfaceView mSurfaceView;
     private PLMediaPlayer mMediaPlayer;
     private AVOptions mAVOptions;
     private long mLastUpdateStatTime = 0;
 
-    private boolean m_isCall = true;
-
     @Override
     public void initWidget() {
         ButterKnife.bind(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         page = 0;
         teacherPage = 0;
@@ -169,13 +149,6 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
 
         kProgressHUD = new HUDProgressUtils().showLoadingImage(this);
         m_rlLive.setVisibility(View.VISIBLE);
-        if(!NiceUtil.isWiFiActive(ChatLiveActivity.this)){
-            m_llPlay.setVisibility(View.VISIBLE);
-        }else{
-            m_llPlay.setVisibility(View.GONE);
-            m_ivEnlarge.setVisibility(View.VISIBLE);
-            initPlayer();
-        }
 
         chatRoomListener = new ChatRoomListener() {
             @Override
@@ -195,16 +168,20 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
         m_ivPicSend.setVisibility(View.GONE);
         m_tvSend.setVisibility(View.VISIBLE);
 
+        initPlayer();
+
         initListView();
 
         onClickView();
 
         registerReciever();
+
+        callHttpFor();
     }
 
     private void initPlayer(){
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mLoadingView = findViewById(R.id.LoadingView);
-        mSurfaceView = findViewById(R.id.SurfaceView);
         mSurfaceView.getHolder().addCallback(mCallback);
         mAVOptions = new AVOptions();
         mAVOptions.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000);
@@ -247,19 +224,23 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
 
         try {
             mMediaPlayer = new PLMediaPlayer(this, mAVOptions);
-            mMediaPlayer.setLooping(getIntent().getBooleanExtra("loop", false));
+            mMediaPlayer.setLooping(false);
             mMediaPlayer.setOnPreparedListener(mOnPreparedListener);
             mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
             mMediaPlayer.setOnErrorListener(mOnErrorListener);
             mMediaPlayer.setOnInfoListener(mOnInfoListener);
             mMediaPlayer.setOnBufferingUpdateListener(mOnBufferingUpdateListener);
-            // set replay if completed
-            // mMediaPlayer.setLooping(true);
             mMediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
             mMediaPlayer.setDataSource(getIntent().getStringExtra("strLiveUrl"));
+//            mMediaPlayer.setDataSource("rtmp://live.hkstv.hk.lxdns.com/live/hks");
             mMediaPlayer.setDisplay(mSurfaceView.getHolder());
-            mMediaPlayer.prepareAsync();
-//            Utils.showToast(ChatLiveActivity.this,mMediaPlayer.getRtmpVideoTimestamp()+"!!@@"+mMediaPlayer.getRtmpAudioTimestamp ());
+            if(!NiceUtil.isWiFiActive(ChatLiveActivity.this)){
+                m_llPlay.setVisibility(View.VISIBLE);
+            }else{
+                m_llPlay.setVisibility(View.GONE);
+                m_ivEnlarge.setVisibility(View.VISIBLE);
+                mMediaPlayer.prepareAsync();
+            }
         } catch (UnsatisfiedLinkError e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -309,10 +290,6 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
                 case PLOnInfoListener.MEDIA_INFO_VIDEO_FPS:
                     break;
                 case PLOnInfoListener.MEDIA_INFO_CONNECTED:
-                    if(m_isCall){
-                        m_isCall = false;
-                        callHttpFor();
-                    }
                     Log.i(TAG, "Connected !");
                     break;
                 case PLOnInfoListener.MEDIA_INFO_VIDEO_ROTATION_CHANGED:
@@ -331,7 +308,6 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
                 case PLOnErrorListener.ERROR_CODE_IO_ERROR:
                     return false;
                 case PLOnErrorListener.ERROR_CODE_OPEN_FAILED:
-                    m_isCall = false;
                     break;
                 case PLOnErrorListener.ERROR_CODE_SEEK_FAILED:
                     break;
@@ -364,11 +340,13 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
     public void onViewClick(View view){
         switch (view.getId()){
             case R.id.tv_play:
+                if(!NiceUtil.isNetworkAvalible(ChatLiveActivity.this)){
+                    Utils.showDialogWifi(ChatLiveActivity.this);
+                    return;
+                }
                 m_llPlay.setVisibility(View.GONE);
-//                mWebView.loadUrl(getIntent().getStringExtra("strVideoUrl"));
-//                mWebView.loadUrl("http://live.guxuantang.com");
                 m_ivEnlarge.setVisibility(View.VISIBLE);
-                initPlayer();
+                mMediaPlayer.prepareAsync();
                 break;
             case R.id.iv_back_live:
                 if(!exitFullScreen()){
@@ -748,7 +726,6 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
                 Log.d("",response.toString());
                 if(response.getResult()){
 
-                    mPullLoadMoreRecyclerViewAll.setPullLoadMoreCompleted();
                     if(response.getContent().size() == 0 ){
                         mPullLoadMoreRecyclerViewAll.setPullRefreshEnable(false);
                         return;
@@ -775,6 +752,7 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
 
             @Override
             public void OnRequestFinish() {
+                mPullLoadMoreRecyclerViewAll.setPullLoadMoreCompleted();
             }
         });
     }

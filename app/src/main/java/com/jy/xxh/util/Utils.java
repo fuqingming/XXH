@@ -12,6 +12,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.IBinder;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -283,6 +284,35 @@ public class Utils {
         return showCommonDialog(context,
                 "页面跳转",
                 "是否离开当前页面，前往积分兑换码中心，使用兑换码。",
+                "取消",
+                onLeftButtonClickListener,
+                "立即前往",
+                onRightButtonClickListener);
+    }
+
+    public static Dialog showDialogWifi(final Activity activity)
+    {
+        View.OnClickListener onLeftButtonClickListener = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+//                context.startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+            }
+        };
+
+        View.OnClickListener onRightButtonClickListener = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                activity.startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), 0);
+            }
+        };
+
+        return showCommonDialog(activity,
+                "网络状态提示",
+                "当前没有可以使用的网络，请设置网络！",
                 "取消",
                 onLeftButtonClickListener,
                 "立即前往",

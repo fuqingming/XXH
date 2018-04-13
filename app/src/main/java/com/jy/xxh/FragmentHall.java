@@ -28,6 +28,7 @@ import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;
 import com.jy.xxh.huanxin.DemoHelper;
 import com.jy.xxh.util.HUDProgressUtils;
+import com.jy.xxh.util.NiceUtil;
 import com.jy.xxh.util.Utils;
 import com.jy.xxh.view.error.ErrorLayout;
 import com.jy.xxh.view.recyclerview.RecycleViewDivider;
@@ -125,7 +126,10 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 					startActivity(it);
 					return;
 				}
-
+				if(!NiceUtil.isNetworkAvalible(getContext())){
+					Utils.showDialogWifi(getActivity());
+					return;
+				}
 				requestDataLiveType();
 			}
 		});
@@ -158,6 +162,10 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 				if (!DemoHelper.getInstance().isLoggedIn()) {
 					Intent it = new Intent(getMContext(),LoginActivity.class);
 					startActivity(it);
+					return;
+				}
+				if(!NiceUtil.isNetworkAvalible(getContext())){
+					Utils.showDialogWifi(getActivity());
 					return;
 				}
 				toChatUsername = m_fragmentTrainAdapter.getListData().get(position).getR_room_id();
