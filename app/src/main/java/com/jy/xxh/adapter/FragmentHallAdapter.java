@@ -2,6 +2,7 @@ package com.jy.xxh.adapter;
 
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,6 +34,9 @@ public class FragmentHallAdapter extends BaseRecyclerAdapter<RoomBean> {
     LinearLayout m_llItemClick;
     @BindView(R.id.tv_online)
     TextView m_tvOnline;
+    @BindView(R.id.ll_width)
+    LinearLayout llWith;
+
 
     public FragmentHallAdapter() {
     }
@@ -45,8 +49,20 @@ public class FragmentHallAdapter extends BaseRecyclerAdapter<RoomBean> {
     @Override
     protected void covert(BaseRecyclerViewHolder holder, final RoomBean data, final int position) {
         ButterKnife.bind(this, holder.getView());
-//        Glide.with(mContext).load(data.getR_icon()).placeholder(R.mipmap.station_pic).into(m_ivPic);
         Glide.with(mContext).load(data.getR_icon()).into(m_ivPic);
+//        Glide.with(mContext).load(data.getR_icon()).placeholder(R.mipmap.station_pic).into(m_ivPic);
+
+        m_ivPic.post(new Runnable() {
+            @Override
+            public void run() {
+                int height = llWith.getMeasuredWidth();
+
+                ViewGroup.LayoutParams tvShowAllPara = m_ivPic.getLayoutParams();
+                tvShowAllPara.width = height;
+                m_ivPic.setLayoutParams(tvShowAllPara);
+            }
+        });
+//        Glide.with(mContext).load(data.getR_icon()).into(m_ivPic);
         m_ivTitle.setText(data.getR_room_breif());
         m_ivName.setText(data.getT_nic_name());
         m_ivPersionCount.setText(data.getR_t_online()+"人参与");
