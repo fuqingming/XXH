@@ -393,7 +393,7 @@ public class ChatLiveActivity extends VideoPlayerBaseActivity implements PullLoa
                 m_msgDataAll.add(chatMessageBean);
                 adapterAll.addLast(chatMessageBean);
                 m_etEdit.setText("");
-                Utils.hintKeyboard(ChatLiveActivity.this,m_etEdit);
+
 //                EMMessage message = EMMessage.createTxtSendMessage(strMessage,m_strRoomeId);
 //                message.setAttribute("nickname", SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame));
 //                message.setAttribute("headerImageUrl", SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon));

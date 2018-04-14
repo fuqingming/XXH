@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/fourteen"
                 android:textColor="@color/black"
-                android:hint="请输入密码"
+                android:hint="输入6～18位数字字母组合"
                 android:textColorHint="@color/dark"
                 android:background="@null"
                 android:layout_marginLeft="10dp"

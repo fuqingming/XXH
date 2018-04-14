@@ -240,7 +240,7 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 						m_llTeacherDetails.setVisibility(View.VISIBLE);
 						m_llLiveTime.setVisibility(View.GONE);
 						Glide.with(getMContext()).load(m_videoBean.getT_photo()).placeholder(R.mipmap.head_s).into(m_ivIcon);
-						m_tvText.setText(m_videoBean.getT_nic_name());
+						m_tvText.setText(m_videoBean.getV_name());
 					}
 					Glide.with(getMContext()).load(m_videoBean.getImg_url()).placeholder(R.mipmap.station_pic).into(m_ivLivePic);
 
@@ -280,7 +280,7 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 						m_llTeacherDetails.setVisibility(View.VISIBLE);
 						m_llLiveTime.setVisibility(View.GONE);
 						Glide.with(getMContext()).load(m_videoBean.getT_photo()).placeholder(R.mipmap.head_s).into(m_ivIcon);
-						m_tvText.setText(m_videoBean.getT_nic_name());
+						m_tvText.setText(m_videoBean.getV_name());
 					}
 
 					if(LIVE_IS_UNPLAY.equals(m_videoBean.getV_type())){
