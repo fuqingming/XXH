@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baidu.mobstat.StatService;
+import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -23,6 +24,7 @@ import com.jy.xxh.bean.base.RoomBean;
 import com.jy.xxh.bean.base.VideoBean;
 import com.jy.xxh.bean.response.ResponseHallBean;
 import com.jy.xxh.bean.response.ResponseHallLiveTypeBean;
+import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;
@@ -71,6 +73,8 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 	private LinearLayout m_llTeacherDetails;
 	private LinearLayout m_llLiveTime;
 	private ImageView m_ivIcon;
+
+	private boolean m_isFirstOpen = true;
 
 	@Override
 	protected int getLayoutId() {
@@ -225,7 +229,14 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 	}
 
 	protected void requestData(){
-		HttpClient.get(ApiStores.banner, new HttpCallback<ResponseHallBean>() {
+		String strUrl;
+		if(m_isFirstOpen && DemoHelper.getInstance().isLoggedIn()){
+			strUrl = ApiStores.banner+"?uid="+ SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserId);
+		}else{
+			strUrl = ApiStores.banner;
+		}
+
+		HttpClient.get(strUrl, new HttpCallback<ResponseHallBean>() {
 			@Override
 			public void OnSuccess(ResponseHallBean response) {
 				if(response.getResult()){
@@ -261,6 +272,7 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 			@Override
 			public void OnRequestFinish() {
 				executeOnLoadFinish();
+				m_isFirstOpen = false;
 			}
 		});
 	}
