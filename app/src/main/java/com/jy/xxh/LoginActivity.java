@@ -100,20 +100,21 @@ public class LoginActivity extends BaseAppCompatActivity {
         }
 
         String m_strPassword = m_etPassword.getText().toString().trim();
-		if(m_strPassword.isEmpty())
-		{
-			Utils.showToast(this, "请输入密码");
-            m_etPassword.requestFocus();
-			return false;
-		}else if(m_strPassword.length() < Const.FieldRange.PASSWORD_MIN_LEN){
-		    Utils.showToast(this,"密码不能少于6位");
-            m_etPassword.requestFocus();
-            return false;
-        }else if(!RegexUtil.checkPassword(m_strPassword)){
-            Utils.showToast(this,"输入6～18位数字字母组合");
+        if(m_strPassword.isEmpty())
+        {
+            Utils.showToast(this, "请输入密码");
             m_etPassword.requestFocus();
             return false;
         }
+//		else if(m_strPassword.length() < Const.FieldRange.PASSWORD_MIN_LEN){
+//		    Utils.showToast(this,"密码不能少于6位");
+//            m_etPassword.requestFocus();
+//            return false;
+//        }else if(!RegexUtil.checkPassword(m_strPassword)){
+//            Utils.showToast(this,"输入6～18位数字字母组合");
+//            m_etPassword.requestFocus();
+//            return false;
+//        }
         m_strMd5Pwd = MD5.encode(m_strPassword);
         return true;
     }

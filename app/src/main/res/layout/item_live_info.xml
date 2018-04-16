@@ -7,18 +7,36 @@
     android:id="@+id/ll_item_click"
     >
     <LinearLayout
+        android:id="@+id/ll_width"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/shape_rectangle_gray"
         android:layout_marginLeft="7dp"
         android:layout_marginRight="7dp">
-
-        <com.jy.xxh.view.RoundImageView
-            android:id="@+id/iv_pic"
+        <FrameLayout
+            android:id="@+id/fl_head"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/station_pic"
+                android:scaleType="fitXY"
+                />
+            <ImageView
+                android:id="@+id/iv_pic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/zhanwei"
+                android:scaleType="fitXY"/>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tv_title"
