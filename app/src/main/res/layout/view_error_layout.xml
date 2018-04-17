@@ -27,11 +27,23 @@
                     android:background="@mipmap/ic_page_failed"
                     android:visibility="gone" />
 
-                <ProgressBar
-                    android:id="@+id/animProgress"
-                    android:layout_width="30dip"
-                    android:layout_height="30dip"
-                    style="@style/loading" />
+                <LinearLayout
+                    android:id="@+id/ll_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+                    <ProgressBar
+                        android:id="@+id/animProgress"
+                        android:layout_width="30dip"
+                        android:layout_height="30dip"
+                        style="@android:style/Widget.ProgressBar"   />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="正在加载中..."
+                        android:layout_marginTop="10dp"/>
+                </LinearLayout>
             </RelativeLayout>
 
             <TextView

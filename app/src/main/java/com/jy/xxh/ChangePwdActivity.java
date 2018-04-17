@@ -160,6 +160,7 @@ public class ChangePwdActivity extends BaseAppCompatActivity {
                     login(m_strMd5Pwd,response.getMessage());
                 }else{
                     Utils.showToast(ChangePwdActivity.this,response.getMessage());
+                    kProgressHUD.dismiss();
                 }
             }
 

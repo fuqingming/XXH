@@ -22,6 +22,7 @@ public class ErrorLayout extends LinearLayout implements
     public static final int NODATA_ENABLE_CLICK = 5;
     public static final int NO_LOGIN = 6;
 
+    private LinearLayout llProgress;
     private ProgressBar animProgress;
     private boolean clickEnable = true;
     private final Context context;
@@ -50,6 +51,7 @@ public class ErrorLayout extends LinearLayout implements
         tv = (TextView) view.findViewById(R.id.tv_error_layout);
         mLayout = (RelativeLayout) view.findViewById(R.id.pageerrLayout);
         animProgress = (ProgressBar) view.findViewById(R.id.animProgress);
+        llProgress = view.findViewById(R.id.ll_progress);
         setBackgroundColor(-1);
         setOnClickListener(this);
         img.setOnClickListener(new OnClickListener() {
@@ -152,11 +154,13 @@ public class ErrorLayout extends LinearLayout implements
             }
             img.setVisibility(View.VISIBLE);
             animProgress.setVisibility(View.GONE);
+            animProgress.setVisibility(View.GONE);
             clickEnable = true;
             break;
         case NETWORK_LOADING:
             mErrorState = NETWORK_LOADING;
             // animProgress.setBackgroundDrawable(SkinsUtil.getDrawable(context,"loadingpage_bg"));
+            animProgress.setVisibility(View.VISIBLE);
             animProgress.setVisibility(View.VISIBLE);
             img.setVisibility(View.GONE);
             tv.setText(R.string.error_view_loading);
