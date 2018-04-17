@@ -28,7 +28,7 @@ public class MessageActivity extends BaseListActivity<MessageBean> {
     @Override
     public void initView() {
         super.initView();
-        Utils.initCommonTitle(this,"我的消息");
+        Utils.initCommonTitle(this,"我的消息",true);
     }
 
     @Override

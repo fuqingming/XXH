@@ -18,10 +18,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.mobstat.StatService;
 import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
+import com.hyphenate.EMCallBack;
 import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMClient;
@@ -39,6 +41,8 @@ import com.jy.xxh.bean.response.ResponseChatBean;
 import com.jy.xxh.bean.response.ResponseChatMessageBean;
 import com.jy.xxh.bean.response.ResponseFollowBean;
 import com.jy.xxh.constants.GlobalVariables;
+import com.jy.xxh.huanxin.DemoHelper;
+import com.jy.xxh.huanxin.db.DemoDBManager;
 import com.jy.xxh.util.Utils;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
@@ -709,7 +713,9 @@ public class ChatActivity extends KJActivity implements PullLoadMoreRecyclerView
                 if(response.getResult()){
                     if(response.getContent().getInfo() == ALREADY_PAID_ATTENTION_TO){
                         m_isFollow = true;
+                        Utils.showToast(ChatActivity.this,"已关注");
                     }else if(response.getContent().getInfo() == UNCONCERNED){
+                        Utils.showToast(ChatActivity.this,"已取消关注");
                         m_isFollow = false;
                     }
                     isFollow();

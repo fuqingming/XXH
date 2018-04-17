@@ -28,7 +28,7 @@ public class AttentionActivity extends BaseListActivity<AttentionBean> {
     @Override
     public void initView() {
         super.initView();
-        Utils.initCommonTitle(this,"我的关注");
+        Utils.initCommonTitle(this,"我的关注",true);
     }
 
     @Override

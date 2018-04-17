@@ -30,6 +30,7 @@ import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;
 import com.jy.xxh.huanxin.DemoHelper;
 import com.jy.xxh.util.HUDProgressUtils;
+import com.jy.xxh.util.ImageLoader;
 import com.jy.xxh.util.NiceUtil;
 import com.jy.xxh.util.Utils;
 import com.jy.xxh.view.error.ErrorLayout;
@@ -253,7 +254,8 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 						Glide.with(getMContext()).load(m_videoBean.getT_photo()).placeholder(R.mipmap.head_s).into(m_ivIcon);
 						m_tvText.setText(m_videoBean.getT_nic_name());
 					}
-					Glide.with(getMContext()).load(m_videoBean.getImg_url()).placeholder(R.mipmap.station_pic).into(m_ivLivePic);
+//					Glide.with(getMContext()).load(m_videoBean.getImg_url()).placeholder(R.mipmap.station_pic).into(m_ivLivePic);
+					ImageLoader.getInstace().loadImg(getMContext(), m_ivLivePic, m_videoBean.getImg_url());
 
 					executeOnLoadDataSuccess(response.getContent().getRoom());
 					totalPage = response.getContent().getRoom().size();
@@ -287,17 +289,14 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 						m_llTeacherDetails.setVisibility(View.GONE);
 						m_llLiveTime.setVisibility(View.VISIBLE);
 						m_tvLiveTime.setText(m_videoBean.getTimeD());
+						Utils.showToast(getContext(),"直播还未开始！");
+						return;
 					}else if(LIVE_IS_PLAY.equals(response.getContent().get(0).getV_type())){
 						m_tvLiveType.setText("直播中");
 						m_llTeacherDetails.setVisibility(View.VISIBLE);
 						m_llLiveTime.setVisibility(View.GONE);
 						Glide.with(getMContext()).load(m_videoBean.getT_photo()).placeholder(R.mipmap.head_s).into(m_ivIcon);
 						m_tvText.setText(m_videoBean.getT_nic_name());
-					}
-
-					if(LIVE_IS_UNPLAY.equals(m_videoBean.getV_type())){
-						Utils.showToast(getContext(),"直播还未开始！");
-						return;
 					}
 
 					toChatUsername = m_videoBean.getRoom_id();

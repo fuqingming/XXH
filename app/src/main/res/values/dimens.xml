@@ -10,7 +10,7 @@
     <dimen name="fifteen">15dp</dimen>
     <dimen name="sixteen">16dp</dimen>
     <dimen name="seventeen">17dp</dimen>
-    <dimen name="eightteen">17dp</dimen>
+    <dimen name="eightteen">18dp</dimen>
     <dimen name="twenty">20dp</dimen>
     <dimen name="thirty">30dp</dimen>
     <dimen name="forty">40dp</dimen>
@@ -67,4 +67,6 @@
     <!-- 手柄view边框大小 -->
     <dimen name="lib_sb_stroke_width_thumb_view">1px</dimen>
 
+    <dimen name="hall_icon_width">64dp</dimen>
+    <dimen name="hall_icon_height">64dp</dimen>
 </resources>

@@ -22,12 +22,19 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <com.jy.xxh.view.ImageViewRound
-                    android:id="@+id/iv_icon"
+                <RelativeLayout
                     android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    />
+                    android:layout_height="50dp"
+                    android:background="#80FFFFFF">
+                    <com.jy.xxh.view.ImageViewRound
+                        android:id="@+id/iv_icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="2dp"
+                        android:scaleType="centerCrop"
+                        />
+                </RelativeLayout>
+
                 <TextView
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
@@ -41,7 +48,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/my_more_w"
+                android:background="@mipmap/more_ww"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"/>
         </RelativeLayout>

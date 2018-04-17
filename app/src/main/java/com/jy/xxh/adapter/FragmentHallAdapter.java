@@ -6,10 +6,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.jy.xxh.R;
 import com.jy.xxh.bean.base.RoomBean;
+import com.jy.xxh.util.ImageLoader;
 import com.jy.xxh.view.recyclerview.BaseRecyclerViewHolder;
+import com.vise.xsnow.loader.ILoader;
+import com.vise.xsnow.loader.LoaderManager;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -49,9 +55,9 @@ public class FragmentHallAdapter extends BaseRecyclerAdapter<RoomBean> {
     @Override
     protected void covert(BaseRecyclerViewHolder holder, final RoomBean data, final int position) {
         ButterKnife.bind(this, holder.getView());
-        Glide.with(mContext).load(data.getR_icon()).into(m_ivPic);
+//        Glide.with(mContext).load(data.getR_icon()).into(m_ivPic);
 //        Glide.with(mContext).load(data.getR_icon()).placeholder(R.mipmap.station_pic).into(m_ivPic);
-
+        ImageLoader.getInstace().loadImg(mContext, m_ivPic, data.getR_icon());
         m_ivPic.post(new Runnable() {
             @Override
             public void run() {

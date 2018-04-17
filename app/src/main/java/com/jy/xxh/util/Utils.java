@@ -48,7 +48,7 @@ public class Utils {
     // 设置通用Title
     public static void initCommonTitle(final Activity activity, final String strTitle, Boolean bShowReturnButton)
     {
-        initCommonTitle(activity, strTitle, bShowReturnButton, R.mipmap.back_b);
+        initCommonTitle(activity, strTitle, bShowReturnButton, R.mipmap.back_w);
     }
 
     // 设置通用Title

@@ -36,6 +36,9 @@ public class ApiStores {
     /** 忘记密码 */
     public static final String chengePwd = urlVersion + "chengePwd";
 
+    /** 修改密码 */
+    public static final String changePwd = urlVersion + "changePwd2";
+
     /** 我的消息 */
     public static final String my_Notice = noticeVersion + "my_Notice";
 

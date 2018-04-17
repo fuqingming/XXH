@@ -45,8 +45,8 @@ public class GuideActivity extends BaseAppCompatActivity {
     }
 
     @Override
-    protected void setUpView() {
-        ButterKnife.bind(this);
+    protected void init() {
+        super.init();
 
         if(SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverIsFirstUse)){
             if(!SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverIsReceiveMessage)){
@@ -55,6 +55,11 @@ public class GuideActivity extends BaseAppCompatActivity {
             intentMainActivity();
             return;
         }
+    }
+
+    @Override
+    protected void setUpView() {
+        ButterKnife.bind(this);
 
         DemoHelper.getInstance().initHandler(this.getMainLooper());
 

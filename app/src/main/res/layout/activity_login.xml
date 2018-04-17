@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white_color">
 
-    <include layout="@layout/common_title"
+    <include layout="@layout/common_title_red"
         android:id="@+id/title"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -84,8 +84,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:visibility="gone">
+            android:layout_marginTop="20dp">
             <TextView
                 android:id="@+id/tv_fast_register"
                 android:layout_width="wrap_content"
@@ -108,17 +107,49 @@
         </RelativeLayout>
 
     </LinearLayout>
-    <TextView
-        android:id="@+id/tv_login"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:textSize="@dimen/sixteen"
-        android:textColor="@color/white_color"
-        android:text="登 录"
-        android:gravity="center"
-        android:background="@drawable/shape_red_bg"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginLeft="35dp"
         android:layout_marginRight="35dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="100dp"/>
+        android:layout_marginBottom="100dp">
+        <LinearLayout
+            android:id="@+id/ll_agreement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="40dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/twelve"
+                android:textColor="@color/dark"
+                android:text="*点击登录即表示已阅读并同意"/>
+
+            <TextView
+                android:id="@+id/tv_http"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/twelve"
+                android:textColor="@color/red"
+                android:text="《用户服务协议》"
+                />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_login"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:textSize="@dimen/sixteen"
+            android:textColor="@color/white_color"
+            android:text="登 录"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:background="@drawable/shape_red_bg"
+            />
+    </LinearLayout>
+
 </RelativeLayout>

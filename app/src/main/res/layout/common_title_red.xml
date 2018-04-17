@@ -32,6 +32,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:textSize="@dimen/sixteen"
+        android:textColor="@color/white_color"
         android:paddingLeft="10dp"
         android:gravity="center" />
 
@@ -48,6 +50,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:paddingRight="10dp"
+        android:textSize="@dimen/sixteen"
+        android:textColor="@color/white_color"
         android:layout_centerVertical="true"/>
 
 </RelativeLayout>

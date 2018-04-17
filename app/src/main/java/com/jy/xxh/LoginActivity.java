@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -14,7 +15,6 @@ import com.jy.xxh.alert.AlertUtils;
 import com.jy.xxh.base.BaseAppCompatActivity;
 import com.jy.xxh.bean.response.ResponseLoginBean;
 import com.jy.xxh.constants.GlobalVariables;
-import com.jy.xxh.data.Const;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
 import com.jy.xxh.http.HttpClient;
@@ -56,7 +56,7 @@ public class LoginActivity extends BaseAppCompatActivity {
         m_etPhone.requestFocus();
     }
 
-    @OnClick({R.id.tv_login,R.id.tv_fast_register,R.id.tv_forget_password})
+    @OnClick({R.id.tv_login,R.id.tv_fast_register,R.id.tv_forget_password,R.id.tv_http})
     public void onViewClick(View view){
         switch (view.getId()){
             case R.id.tv_login:
@@ -65,12 +65,17 @@ public class LoginActivity extends BaseAppCompatActivity {
                 }
                 break;
             case R.id.tv_fast_register:
-                Intent it = new Intent(LoginActivity.this,RegisterActivity.class);
-                startActivity(it);
+                Utils.showToast(LoginActivity.this,"请联系专属客服进行注册！");
+//                Intent it = new Intent(LoginActivity.this,RegisterActivity.class);
+//                startActivity(it);
                 break;
             case R.id.tv_forget_password:
                 Intent it1 = new Intent(LoginActivity.this,ForgetPwdActivity.class);
                 startActivity(it1);
+                break;
+            case R.id.tv_http:
+                Intent it2 = new Intent(LoginActivity.this,AgreementActivity.class);
+                startActivity(it2);
                 break;
         }
     }
@@ -134,6 +139,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                     login(response.getContent().getInfo().getU_pwd());
                 }else{
                     Utils.showToast(LoginActivity.this,response.getMessage());
+                    kProgressHUD.dismiss();
                 }
             }
 

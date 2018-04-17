@@ -77,7 +77,7 @@ public class MineActivity extends BaseAppCompatActivity {
         });
     }
 
-    @OnClick({R.id.ll_icon,R.id.ll_nickname,R.id.ll_clean,R.id.btn_logout})
+    @OnClick({R.id.ll_icon,R.id.ll_nickname,R.id.ll_clean,R.id.btn_logout,R.id.ll_change_pwd})
     public void onViewClick(View view){
         switch (view.getId()){
             case R.id.ll_icon:
@@ -92,6 +92,10 @@ public class MineActivity extends BaseAppCompatActivity {
                 break;
             case R.id.btn_logout:
                 logout();
+                break;
+            case R.id.ll_change_pwd:
+                Intent intent = new Intent(MineActivity.this,ChangePwdActivity.class);
+                startActivity(intent);
                 break;
         }
     }

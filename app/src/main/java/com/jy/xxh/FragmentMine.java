@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,7 +18,6 @@ import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.jy.xxh.base.BaseFragment;
 import com.jy.xxh.constants.GlobalVariables;
-import com.jy.xxh.data.Const;
 import com.jy.xxh.huanxin.DemoHelper;
 import com.jy.xxh.view.switchbutton.FSwitchButton;
 import butterknife.BindView;
@@ -179,21 +177,6 @@ public class FragmentMine extends BaseFragment {
 						}
 					}
 					return true;
-				}
-			});
-
-			m_tvSales.setOnClickListener(new View.OnClickListener()//拨号
-			{
-
-				@Override
-				public void onClick(View v)
-				{
-					String strPhone = Const.Phone.CUSTOMER_SERVICE_PHONE_PLAY;
-					Intent intent = new Intent(Intent.ACTION_DIAL);
-					Uri data = Uri.parse("tel:" + strPhone);
-					intent.setData(data);
-					startActivity(intent);
-					dismiss();
 				}
 			});
 

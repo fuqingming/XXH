@@ -76,10 +76,16 @@
             android:name=".ForgetPwdActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ChangePwdActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".MineActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ChangeNicknameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AgreementActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ChatActivity"

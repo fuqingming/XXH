@@ -12,4 +12,7 @@
     <item name="lib_sb_view_checked" type="id"/>
     <!--手柄view的id-->
     <item name="lib_sb_view_thumb" type="id"/>
+
+    <item type="id" name="tag_image_keep_ratio" />
+    <item type="id" name="tag_imageview_url" />
 </resources>
