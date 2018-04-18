@@ -169,6 +169,13 @@ public class ErrorLayout extends LinearLayout implements
         case HIDE_LAYOUT:
             setVisibility(View.GONE);
             break;
+        case NODATA:
+            img.setVisibility(View.GONE);
+            animProgress.setVisibility(View.GONE);
+            llProgress.setVisibility(View.GONE);
+            clickEnable = false;
+            tv.setText(R.string.error_view_no_data);
+            break;
         default:
             break;
         }

@@ -255,22 +255,22 @@ public abstract class BaseListFragment<T> extends Fragment {
 
         mErrorLayout.setErrorType(ErrorLayout.HIDE_LAYOUT);
 
-        if (mCurrentPage == 1) {
-            mListAdapter.setDataList(data);
-        } else {
-            mListAdapter.addAll(data);
-        }
-
         // 判断等于是因为最后有一项是listview的状态
         if (mListAdapter.getItemCount() == 0) {
 
             if (needShowEmptyNoData()) {
-                mErrorLayout.setNoDataContent(getNoDataTip());
-                mErrorLayout.setErrorType(ErrorLayout.NODATA);
                 mErrorLayout.setErrorType(ErrorLayout.HIDE_LAYOUT);
             }
         }
 
+        if (mCurrentPage == 1) {
+            mListAdapter.setDataList(data);
+            if(mListAdapter.getItemCount() == 0){
+                mErrorLayout.setErrorType(ErrorLayout.NODATA);
+            }
+        } else {
+            mListAdapter.addAll(data);
+        }
     }
 
     protected boolean needShowEmptyNoData() {
