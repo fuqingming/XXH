@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import com.hyphenate.EMCallBack;
 import com.jy.xxh.backhandler.OnTaskSuccessComplete;
 import com.jy.xxh.base.BaseAppCompatActivity;
 import com.jy.xxh.bean.response.ResponseChangeHeadBean;
+import com.jy.xxh.cache.AsyncImageLoader;
 import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.util.DirSettings;
 import com.jy.xxh.util.FileUtil;
@@ -26,6 +28,7 @@ import com.jy.xxh.util.Utils;
 import com.vise.xsnow.loader.ILoader;
 import com.vise.xsnow.loader.LoaderManager;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,7 +48,7 @@ public class MineActivity extends BaseAppCompatActivity {
     @BindView(R.id.tv_nickname)
     TextView m_tvNickname;
     @BindView(R.id.iv_icon)
-    SimpleDraweeView m_ivIcon;
+    ImageView m_ivIcon;
     @BindView(R.id.tv_clean)
     TextView m_tvClean;
     @BindView(R.id.sb_switch)
@@ -60,6 +63,8 @@ public class MineActivity extends BaseAppCompatActivity {
     protected void setUpView() {
         ButterKnife.bind(this);
         Utils.initCommonTitle(this,"我的",true);
+
+        AsyncImageLoader.getInstace(this).loadBitmap(m_ivIcon,  SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon), R.mipmap.head_s);
 
         if(SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverWifiPlay)){
             m_sbSwitch.setChecked(true,false,true);
@@ -149,8 +154,6 @@ public class MineActivity extends BaseAppCompatActivity {
     protected void onResume() {
         super.onResume();
         m_tvNickname.setText(SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame));
-        LoaderManager.getLoader().loadNet(m_ivIcon, SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon),
-                new ILoader.Options(R.mipmap.head_s, R.mipmap.head_s));
         String lenth = CleanMessageUtil.getTotalCacheSize(MineActivity.this);
         m_tvClean.setText(lenth);
     }
@@ -190,6 +193,7 @@ public class MineActivity extends BaseAppCompatActivity {
                         }
 
                         File image = new File(DirSettings.getAppCacheDir()+"myself_tmp_head_pic.png");
+                        final Bitmap finalBitmap = bitmap;
                         new Upload(image,MineActivity.this,kProgressHUD,new OnTaskSuccessComplete()
                         {
                             @Override
@@ -199,8 +203,8 @@ public class MineActivity extends BaseAppCompatActivity {
                                 if(responseChangeHeadBean.getResult()){
                                     Toast.makeText(MineActivity.this,responseChangeHeadBean.getMessage(),Toast.LENGTH_SHORT).show();
                                     SPUtils.getInstance(GlobalVariables.serverSp).put(GlobalVariables.serverUserIcon,responseChangeHeadBean.getU_photo());
-                                    LoaderManager.getLoader().loadNet(m_ivIcon, SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon),
-                                            new ILoader.Options(R.mipmap.head_s, R.mipmap.head_s));
+                                    m_ivIcon.setImageBitmap(finalBitmap);
+                                    EventBus.getDefault().post(finalBitmap);
                                 }
                             }
                         }).execute(strUrl);

@@ -6,6 +6,24 @@
     android:background="@color/white_color"
     android:id="@+id/ll_item_click"
     >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="215dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        >
+        <ImageView
+            android:id="@+id/iv_pic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/zhanwei"
+            android:scaleType="fitXY"/>
+    </RelativeLayout>
     <LinearLayout
         android:id="@+id/ll_width"
         android:layout_width="match_parent"
@@ -13,30 +31,9 @@
         android:orientation="vertical"
         android:background="@drawable/shape_rectangle_gray"
         android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp">
-        <FrameLayout
-            android:id="@+id/fl_head"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="-2dp">
 
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@mipmap/station_pic"
-                android:scaleType="fitXY"
-                />
-            <ImageView
-                android:id="@+id/iv_pic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/zhanwei"
-                android:scaleType="fitXY"/>
-        </FrameLayout>
 
         <TextView
             android:id="@+id/tv_title"

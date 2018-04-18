@@ -78,11 +78,12 @@ public class ChangePwdActivity extends BaseAppCompatActivity {
             Utils.showToast(this, "请输入原密码");
             m_etPwdBellow.requestFocus();
             return false;
-        }else if(strPasswordBellow.length() < Const.FieldRange.PASSWORD_MIN_LEN){
-            Utils.showToast(this,"密码不能少于6位");
-            m_etPwdBellow.requestFocus();
-            return false;
         }
+//        else if(strPasswordBellow.length() < Const.FieldRange.PASSWORD_MIN_LEN){
+//            Utils.showToast(this,"密码不能少于6位");
+//            m_etPwdBellow.requestFocus();
+//            return false;
+//        }
 
         String m_strPasswordNew = m_etPwdNew.getText().toString().trim();
         if(m_strPasswordNew.isEmpty())

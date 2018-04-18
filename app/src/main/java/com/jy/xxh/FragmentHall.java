@@ -24,6 +24,7 @@ import com.jy.xxh.bean.base.RoomBean;
 import com.jy.xxh.bean.base.VideoBean;
 import com.jy.xxh.bean.response.ResponseHallBean;
 import com.jy.xxh.bean.response.ResponseHallLiveTypeBean;
+import com.jy.xxh.cache.AsyncImageLoader;
 import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.http.ApiStores;
 import com.jy.xxh.http.HttpCallback;
@@ -255,8 +256,8 @@ public class FragmentHall extends BaseListFragment<RoomBean> {
 						m_tvText.setText(m_videoBean.getT_nic_name());
 					}
 //					Glide.with(getMContext()).load(m_videoBean.getImg_url()).placeholder(R.mipmap.station_pic).into(m_ivLivePic);
-					ImageLoader.getInstace().loadImg(getMContext(), m_ivLivePic, m_videoBean.getImg_url());
-
+//					ImageLoader.getInstace().loadImg(getMContext(), m_ivLivePic, m_videoBean.getImg_url());
+					AsyncImageLoader.getInstace(getMContext()).loadBitmap(m_ivLivePic, m_videoBean.getImg_url(), R.mipmap.station_pic);
 					executeOnLoadDataSuccess(response.getContent().getRoom());
 					totalPage = response.getContent().getRoom().size();
 				}

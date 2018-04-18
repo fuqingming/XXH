@@ -1,6 +1,7 @@
 package com.jy.xxh.adapter;
 
 
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,6 +12,8 @@ import com.bumptech.glide.Glide;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jy.xxh.R;
 import com.jy.xxh.bean.base.RoomBean;
+import com.jy.xxh.cache.AsyncImageLoader;
+import com.jy.xxh.cache.ImageCacheManager;
 import com.jy.xxh.util.ImageLoader;
 import com.jy.xxh.view.recyclerview.BaseRecyclerViewHolder;
 import com.vise.xsnow.loader.ILoader;
@@ -43,8 +46,11 @@ public class FragmentHallAdapter extends BaseRecyclerAdapter<RoomBean> {
     @BindView(R.id.ll_width)
     LinearLayout llWith;
 
+    private AsyncImageLoader imageLoader;
 
     public FragmentHallAdapter() {
+        ImageCacheManager cacheMgr = new ImageCacheManager(mContext);
+        imageLoader = new AsyncImageLoader(mContext, cacheMgr.getMemoryCache(), cacheMgr.getPlacardFileCache());
     }
 
     @Override
@@ -57,17 +63,26 @@ public class FragmentHallAdapter extends BaseRecyclerAdapter<RoomBean> {
         ButterKnife.bind(this, holder.getView());
 //        Glide.with(mContext).load(data.getR_icon()).into(m_ivPic);
 //        Glide.with(mContext).load(data.getR_icon()).placeholder(R.mipmap.station_pic).into(m_ivPic);
-        ImageLoader.getInstace().loadImg(mContext, m_ivPic, data.getR_icon());
-        m_ivPic.post(new Runnable() {
-            @Override
-            public void run() {
-                int height = llWith.getMeasuredWidth();
-
-                ViewGroup.LayoutParams tvShowAllPara = m_ivPic.getLayoutParams();
-                tvShowAllPara.width = height;
-                m_ivPic.setLayoutParams(tvShowAllPara);
-            }
-        });
+        m_ivPic.setTag(data.getR_icon());
+        AsyncImageLoader.getInstace(mContext).loadBitmap(m_ivPic, data.getR_icon(), R.mipmap.station_pic);
+//        ImageLoader.getInstace().loadRoundedCornersImg(getMContext(), m_ivIcon, url,15,getResources().getDrawable(R.drawable.head_s));
+//        Bitmap bmp = imageLoader.loadBitmap(m_ivPic, data.getR_icon(), true);
+//        if(bmp == null) {
+//            m_ivPic.setImageResource(R.mipmap.station_pic);
+//        } else {
+//            m_ivPic.setImageBitmap(bmp);
+//        }
+//        ImageLoader.getInstace().loadImg(mContext, m_ivPic, data.getR_icon());
+//        m_ivPic.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                int height = llWith.getMeasuredWidth();
+//
+//                ViewGroup.LayoutParams tvShowAllPara = m_ivPic.getLayoutParams();
+//                tvShowAllPara.width = height;
+//                m_ivPic.setLayoutParams(tvShowAllPara);
+//            }
+//        });
 //        Glide.with(mContext).load(data.getR_icon()).into(m_ivPic);
         m_ivTitle.setText(data.getR_room_breif());
         m_ivName.setText(data.getT_nic_name());

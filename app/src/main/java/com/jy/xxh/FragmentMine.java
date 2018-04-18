@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,9 +18,16 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.jy.xxh.base.BaseFragment;
+import com.jy.xxh.cache.AsyncImageLoader;
 import com.jy.xxh.constants.GlobalVariables;
 import com.jy.xxh.huanxin.DemoHelper;
+import com.jy.xxh.util.Utils;
 import com.jy.xxh.view.switchbutton.FSwitchButton;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -61,6 +69,11 @@ public class FragmentMine extends BaseFragment {
 	@Override
 	protected void setUpView() {
 		super.setUpView();
+
+		EventBus.getDefault().register(this);
+
+		AsyncImageLoader.getInstace(getMContext()).loadBitmap(m_ivIcon,  SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon), R.mipmap.head_s);
+
 		if(SPUtils.getInstance(GlobalVariables.serverSp).getBoolean(GlobalVariables.serverIsReceiveMessage)){
 			m_sbSwitch.setChecked(true,false,true);
 		}else{
@@ -134,7 +147,6 @@ public class FragmentMine extends BaseFragment {
 	public void onResume() {
 		super.onResume();
 		if (DemoHelper.getInstance().isLoggedIn()) {
-			Glide.with(getMContext()).load(SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserIcon)).placeholder(R.drawable.default_head).into(m_ivIcon);
 			m_tvName.setText(SPUtils.getInstance(GlobalVariables.serverSp).getString(GlobalVariables.serverUserNickame));
 		}else{
 			m_tvName.setText("登陆/注册");
@@ -190,5 +202,16 @@ public class FragmentMine extends BaseFragment {
 				}
 			});
 		}
+	}
+
+	@Override
+	public void onDestroy() {
+		EventBus.getDefault().unregister(this);
+		super.onDestroy();
+	}
+
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onEventBus(Bitmap bitmap){
+		m_ivIcon.setImageBitmap(bitmap);
 	}
 }
